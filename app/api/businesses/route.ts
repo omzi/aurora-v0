@@ -29,8 +29,8 @@ const POST = async (request: NextRequest) => {
   try {
 		if (!token) throw new Error('Unauthenticated!');
     
+    body.user = { connect: { id: token.sub } };
     const data = BusinessSchema.parse(body) as Prisma.BusinessCreateInput;
-    data.user = { connect: { id: token.sub } };
 
 		const business = await prisma.business.create({ data });
 

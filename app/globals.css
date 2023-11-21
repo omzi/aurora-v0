@@ -94,7 +94,7 @@ body,
 }
 
 .form-button {
-  @apply flex justify-center w-full px-3 py-2 text-sm font-semibold text-white rounded-md shadow-sm bg-core hover:bg-blue-700 disabled:bg-blue-500 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600;
+  @apply flex justify-center w-full px-3 py-2 text-sm font-medium text-white rounded-md shadow-sm bg-core hover:bg-blue-700 disabled:bg-blue-500 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600;
 }
 
 /* Account Profile  */

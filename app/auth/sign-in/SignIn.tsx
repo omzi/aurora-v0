@@ -11,11 +11,11 @@ import {
 import * as z from 'zod';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 import Loader from 'react-ts-loaders';
 import { toast } from 'react-toastify';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '#/components/ui/input';
 import { UserSchema } from '#/lib/validations';
@@ -31,7 +31,6 @@ const SignInSchema = UserSchema.pick({
 const SignIn = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [githubLoading, setGithubLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
@@ -42,10 +41,9 @@ const SignIn = () => {
   });
   const { handleSubmit } = form;
 
-  const socialAction = async (action: 'google' | 'github') => {
+  const socialAction = async (action: 'google') => {
     setIsSubmitting(true);
     setGoogleLoading(true);
-    setGithubLoading(true);
 
     try {
       const callback = await signIn(action, { redirect: false });
@@ -61,7 +59,6 @@ const SignIn = () => {
     } finally {
       setIsSubmitting(false);
       setGoogleLoading(false);
-      setGithubLoading(false);
     }
   }
 
@@ -74,7 +71,6 @@ const SignIn = () => {
     try {
       setIsSubmitting(true);
       setGoogleLoading(true);
-      setGithubLoading(true);
 
       const callback = await signIn('credentials', { ...data, redirect: false });
       if (callback?.error) return toast.error('Invalid credentials!');
@@ -91,7 +87,6 @@ const SignIn = () => {
     } finally {
       setIsSubmitting(false);
       setGoogleLoading(false);
-      setGithubLoading(false);
     }
   };
 	
@@ -145,6 +140,7 @@ const SignIn = () => {
                           type='text'
                           disabled={isSubmitting}
                           id={field.name}
+                          autoComplete='email'
                           placeholder='Your email'
                           className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
                           {...field}
@@ -175,7 +171,7 @@ const SignIn = () => {
                         </div>
                         <Input
                           type='password'
-                          autoComplete='new-password'
+                          autoComplete='password'
                           disabled={isSubmitting}
                           id={field.name}
                           placeholder='Your password'
@@ -189,14 +185,14 @@ const SignIn = () => {
                 )}
               />
 
-              {/* <div className='text-sm text-right'>
+              <div className='text-sm text-right'>
                 <Link
                   href={'/auth/forgot-password'}
                   className="className='font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot your password?
                 </Link>
-              </div> */}
+              </div>
 
               <div>
                 <button type='submit' disabled={isSubmitting} className='form-button'>
@@ -206,63 +202,46 @@ const SignIn = () => {
                 </button>
               </div>
 
-              <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+              {/* <div className="mt-6">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 text-dark-2 dark:text-light-2 bg-light-2/25 dark:bg-dark-2">Or, sign in with</span>
+                  </div>
                 </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 text-dark-2 dark:text-light-2 bg-light-2/25 dark:bg-dark-2">Or, sign in with</span>
+
+                <div className="mt-6">
+                  <AuthSocialButton
+                    loading={googleLoading}
+                    text='Sign up with Google'
+                    icon={
+                      <>
+                        <svg className='w-5 h-5' viewBox='0 0 48 48'>
+                          <path
+                            fill='#FFC107'
+                            d='M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z'
+                          ></path>
+                          <path
+                            fill='#FF3D00'
+                            d='M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z'
+                          ></path>
+                          <path
+                            fill='#4CAF50'
+                            d='M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z'
+                          ></path>
+                          <path
+                            fill='#1976D2'
+                            d='M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z'
+                          ></path>
+                        </svg>
+                      </>
+                    }
+                    onClick={() => socialAction('google')}
+                  />
                 </div>
-              </div>
-
-              <div className="mt-6">
-                <AuthSocialButton
-                  loading={googleLoading}
-                  text='Sign up with Google'
-                  icon={
-                    <>
-                      <svg className='w-5 h-5' viewBox='0 0 48 48'>
-                        <path
-                          fill='#FFC107'
-                          d='M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z'
-                        ></path>
-                        <path
-                          fill='#FF3D00'
-                          d='M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z'
-                        ></path>
-                        <path
-                          fill='#4CAF50'
-                          d='M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z'
-                        ></path>
-                        <path
-                          fill='#1976D2'
-                          d='M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z'
-                        ></path>
-                      </svg>
-                    </>
-                  }
-                  onClick={() => socialAction('google')}
-                />
-
-                {/* <AuthSocialButton
-                  loading={githubLoading}
-                  text='Sign up with GitHub'
-                  icon={
-                    <>
-                      <svg className='w-5 h-5' fill='#000' viewBox='0 0 20 20'>
-                        <path
-                          fillRule='evenodd'
-                          d='M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                    </>
-                  }
-                  onClick={() => socialAction('github')}
-                /> */}
-              </div>
-            </div>
+              </div> */}
             </form>
           </Form>
         </div>
