@@ -9,7 +9,9 @@ const GET = async (request: NextRequest) => {
 	const token = await getToken({ req: request });
 
   try {
-		if (!token) throw new Error('Unauthenticated!');
+		if (!token) {
+      return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
+    }
 
 		const businesses = await prisma.business.findMany({
       where: { userId: token.sub }
@@ -27,7 +29,9 @@ const POST = async (request: NextRequest) => {
   const token = await getToken({ req: request });
 
   try {
-		if (!token) throw new Error('Unauthenticated!');
+		if (!token) {
+      return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
+    }
     
     body.user = { connect: { id: token.sub } };
     const data = BusinessSchema.parse(body) as Prisma.BusinessCreateInput;
@@ -50,7 +54,9 @@ const PUT = async (request: NextRequest) => {
   const token = await getToken({ req: request });
 
   try {
-    if (!token) throw new Error('Unauthenticated!');
+    if (!token) {
+      return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
+    }
     const { id, ...data } = body;
 
     const existingBusiness = await prisma.business.findFirst({

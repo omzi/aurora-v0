@@ -6,7 +6,9 @@ const GET = async (request: NextRequest) => {
   const token = await getToken({ req: request });
 
   try {
-    if (!token) throw new Error('Unauthenticated!');
+    if (!token) {
+      return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
+    }
 
     // Fetch the user's last created business
     const lastCreatedBusiness = await prisma.business.findFirst({

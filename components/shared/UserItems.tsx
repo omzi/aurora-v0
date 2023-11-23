@@ -15,9 +15,9 @@ import {
 } from '#/components/ui/dropdown-menu';
 import Image from 'next/image';
 import { ChevronsLeftRight } from 'lucide-react';
+import { generateDefaultAvatar } from '#/lib/utils';
 import { useSession, signOut } from 'next-auth/react';
 import ConfirmLogoutModal from '#/components/modals/ConfirmLogoutModal';
-import { generateDefaultAvatar } from '#/lib/utils';
 
 const UserItems = () => {
   const { data: session } = useSession();
@@ -48,7 +48,7 @@ const UserItems = () => {
 					</div>
 					<DropdownMenuSeparator />
 					<ConfirmLogoutModal onConfirm={signOut}>
-						<DropdownMenuItem asChild className='w-full cursor-pointer text-muted-foreground' onClick={() => signOut()}>
+						<DropdownMenuItem asChild className='w-full cursor-pointer text-muted-foreground'>
 							Log Out
 						</DropdownMenuItem>
 					</ConfirmLogoutModal>

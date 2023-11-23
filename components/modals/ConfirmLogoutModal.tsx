@@ -35,12 +35,8 @@ const ConfirmLogoutModal = ({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm}>
-            Log Out
-          </AlertDialogAction>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirm}>Log Out</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

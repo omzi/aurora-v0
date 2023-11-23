@@ -64,3 +64,9 @@ export const generateRandomChars = (() => {
 
   return Object.assign(((len: number, ...set: string[]) => [...iter(len, set.flat())].join('')), sets);
 })();
+
+export const getInitials = (name: string): string => {
+  const [first, second = ''] = name.split(' ');
+
+  return (first + second).toUpperCase();
+}

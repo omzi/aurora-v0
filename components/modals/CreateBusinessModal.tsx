@@ -68,6 +68,7 @@ const CreateBusinessModal = () => {
       toast.success('Business created successfully!', { icon: '🎉' });
       form.reset();
       onClose();
+      window.location.assign('/dashboard');
 
       return;
     } catch (error) {

@@ -14,19 +14,26 @@ import {
 	Wallet
 } from 'lucide-react';
 import Item from './Item';
-import { cn } from '#/lib/utils';
+import { cn, generateDefaultAvatar } from '#/lib/utils';
 import UserItems from './UserItems';
 import { useMediaQuery } from 'usehooks-ts';
 import { usePathname } from 'next/navigation';
 import { useSearch } from '#/hooks/useSearch';
 import { useSettings } from '#/hooks/useSettings';
 import { ElementRef, useEffect, useRef, useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import BusinessSwitcher from '../BusinessSwitcher';
+import getBusinesses from '#/lib/actions/getBusinesses';
+import { Business, SuccessResponse } from '#/common.types';
+import { toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
+import UserButton from '../UserButton';
+import { Skeleton } from '../ui/skeleton';
 
 const Navigation = () => {
-	const search = useSearch();
 	const settings = useSettings();
 	const pathname = usePathname();
+  const { data: session } = useSession();
 	const isMobile = useMediaQuery('(max-width: 768px)');
 
 	const isResizingRef = useRef(false);
@@ -43,7 +50,7 @@ const Navigation = () => {
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isMobile]);
-
+ 
 	useEffect(() => {
 		if (isMobile) {
 			collapse();
@@ -105,6 +112,20 @@ const Navigation = () => {
 	}
 
   const queryClient = useQueryClient();
+	const { data: businesses, isPending } = useQuery({
+		queryKey: [`userBusinesses`],
+		queryFn: async () => {
+			try {
+				const response = await getBusinesses() as SuccessResponse<Business[]>;
+		
+				console.log('Get Businesses Query :>>', response);
+				return response.data;
+			} catch (error) {
+				toast.error('An error occurred while fetching your businesses ;(');
+				throw error;
+			}
+		}
+	});
 
 	return (
     <>
@@ -116,7 +137,8 @@ const Navigation = () => {
 			>
         <div>
           <div className="flex items-center justify-between">
-						<UserItems />
+						{/* <UserItems /> */}
+						{isPending ? <BusinessSwitcher.Skeleton /> : <BusinessSwitcher items={businesses} />}
 						<div
 							role='button'
 							onClick={collapse}
@@ -129,6 +151,7 @@ const Navigation = () => {
 						onClick={() => {}}
 						label="Dashboard"
 						icon={Dashboard}
+						active={pathname === '/dashboard'}
 					/>
 					{/* <Item
 						onClick={() => {}}
@@ -145,16 +168,19 @@ const Navigation = () => {
 						onClick={() => {}}
 						label="Customers"
 						icon={Users}
+						active={pathname === '/customers'}
 					/>
 					<Item
 						onClick={() => {}}
 						label="Invoices"
 						icon={Receipt}
+						active={pathname === '/invoices'}
 					/>
 					<Item
 						onClick={() => {}}
 						label="Business Info"
 						icon={Info}
+						active={pathname === '/business'}
 					/>
 					{/* <Item
 						onClick={() => {}}
@@ -165,11 +191,13 @@ const Navigation = () => {
 						onClick={settings.onOpen}
 						label="Settings"
 						icon={Settings}
+						active={settings.isOpen}
 					/>
 					<Item
 						onClick={() => {}}
 						label="Profile"
 						icon={User}
+						active={pathname === '/profile'}
 					/>
         </div>
         <div
@@ -185,9 +213,18 @@ const Navigation = () => {
 					isResetting && 'transition-all ease-in-out duration-300',
 					isMobile && 'left-0 w-full'
 				)}
-			>
-				<nav className='bg-transparent px-3 py-2 w-full'>
-					{isCollapsed && <MenuIcon onClick={resetWidth} role='button' className='h-6 w-6 text-muted-foreground' />}
+			>                                                                                                                                                           
+				<nav className='flex items-center justify-between w-full bg-[#efefef] dark:bg-black px-3 py-2.5'>
+					{isCollapsed ? <MenuIcon onClick={resetWidth} role='button' className='h-6 w-6 text-muted-foreground' /> : <div className='h-6 w-6'></div>}
+					{session && session.user ? (
+						<UserButton
+							profilePicture={session.user.image || generateDefaultAvatar(session.user.email!)}
+							profilePictureAlt='Profile picture'
+							avatarFallback={session.user.name!}
+							fullName={session.user.name!}
+							email={session.user.email!}
+						/>
+					) : <Skeleton className='w-8 h-8 rounded-full' />}
 				</nav>
 			</div>
     </>
