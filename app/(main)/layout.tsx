@@ -62,7 +62,7 @@ const UserLayout = ({
   return (
     <div className='h-full flex'>
 			<Navigation />
-			<main className='h-full flex-1 overflow-y-auto'>
+			<main className='h-full mt-[4rem] flex-1 overflow-y-auto'>
 				{children}
 			</main>
 		</div>

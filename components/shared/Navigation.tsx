@@ -17,7 +17,7 @@ import Item from './Item';
 import { cn, generateDefaultAvatar } from '#/lib/utils';
 import UserItems from './UserItems';
 import { useMediaQuery } from 'usehooks-ts';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSearch } from '#/hooks/useSearch';
 import { useSettings } from '#/hooks/useSettings';
 import { ElementRef, useEffect, useRef, useState } from 'react';
@@ -29,10 +29,12 @@ import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
 import UserButton from '../UserButton';
 import { Skeleton } from '../ui/skeleton';
+import Logo from './Logo';
 
 const Navigation = () => {
 	const settings = useSettings();
 	const pathname = usePathname();
+	const router = useRouter()
   const { data: session } = useSession();
 	const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -168,13 +170,13 @@ const Navigation = () => {
 						onClick={() => {}}
 						label="Customers"
 						icon={Users}
-						active={pathname === '/customers'}
+						active={pathname.startsWith('/customers') }
 					/>
 					<Item
-						onClick={() => {}}
+						onClick={() => {router.push('/invoices')}}
 						label="Invoices"
 						icon={Receipt}
-						active={pathname === '/invoices'}
+						active={pathname.startsWith('/invoices')}
 					/>
 					<Item
 						onClick={() => {}}
@@ -209,13 +211,14 @@ const Navigation = () => {
 			<div
 				ref={navBarRef}
 				className={cn(
-					'absolute top-0 z-[99999] left-60 w-[100%-240px]',
+					'fixed top-0 z-[99999] left-60 w-[100%-240px]',
 					isResetting && 'transition-all ease-in-out duration-300',
 					isMobile && 'left-0 w-full'
 				)}
 			>                                                                                                                                                           
-				<nav className='flex items-center justify-between w-full bg-[#efefef] dark:bg-black px-3 py-2.5'>
+				<nav className='flex items-center justify-between w-full shadow-ab dark:bg-black px-3 py-2.5'>
 					{isCollapsed ? <MenuIcon onClick={resetWidth} role='button' className='h-6 w-6 text-muted-foreground' /> : <div className='h-6 w-6'></div>}
+					<div className='w-full flex  justify-start'><div className='scale-[0.85] '><Logo/></div></div>
 					{session && session.user ? (
 						<UserButton
 							profilePicture={session.user.image || generateDefaultAvatar(session.user.email!)}

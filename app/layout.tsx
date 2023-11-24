@@ -11,6 +11,11 @@ import { ThemeProvider } from '#/components/providers/ThemeProvider';
 import { ModalProvider } from '#/components/providers/ModalProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { UserProvider } from '#/components/contexts/UserContext';
+import {Poppins, PT_Sans, Plus_Jakarta_Sans, Open_Sans, Montserrat} from "next/font/google"
+
+ const ys = Plus_Jakarta_Sans({subsets: ['latin'], weight: ['400','200', '300','500', '700', '800']})
+const pt = Montserrat({ subsets: ['latin']})
+
 
 const queryClient = new QueryClient();
 
@@ -23,7 +28,7 @@ const RootLayout = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang='en' className='font-kollektif' suppressHydrationWarning>
+      <html lang='en' className={pt.className} suppressHydrationWarning>
         <body>
           <SessionProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem storageKey='theme'>

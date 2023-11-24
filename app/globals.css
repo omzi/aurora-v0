@@ -126,3 +126,9 @@ body,
   opacity: 0;
   pointer-events: none;
 }
+
+.shadow-ab {
+  --tw-shadow: 0 2px 5px 1px rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 2px 5px 1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
