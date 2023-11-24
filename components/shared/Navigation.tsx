@@ -32,9 +32,9 @@ import { Skeleton } from '../ui/skeleton';
 import Logo from './Logo';
 
 const Navigation = () => {
+	const router = useRouter();
 	const settings = useSettings();
 	const pathname = usePathname();
-	const router = useRouter()
   const { data: session } = useSession();
 	const isMobile = useMediaQuery('(max-width: 768px)');
 
@@ -43,6 +43,10 @@ const Navigation = () => {
 	const navBarRef = useRef<ElementRef<'div'>>(null);
 	const [isResetting, setIsResetting] = useState(false);
 	const [isCollapsed, setIsCollapsed] = useState(isMobile);
+
+	const navigateTo = (path: string) => {
+		router.push(path);
+	}
 
 	useEffect(() => {
 		if (isMobile) {
@@ -138,8 +142,7 @@ const Navigation = () => {
 				)}
 			>
         <div>
-          <div className="flex items-center justify-between">
-						{/* <UserItems /> */}
+          <div className='flex items-center justify-between'>
 						{isPending ? <BusinessSwitcher.Skeleton /> : <BusinessSwitcher items={businesses} />}
 						<div
 							role='button'
@@ -150,8 +153,8 @@ const Navigation = () => {
 						</div>
 					</div>
 					<Item
-						onClick={() => {}}
-						label="Dashboard"
+						onClick={() => navigateTo('/dashboard')}
+						label='Dashboard'
 						icon={Dashboard}
 						active={pathname === '/dashboard'}
 					/>
@@ -167,37 +170,38 @@ const Navigation = () => {
 						isSearch
 					/> */}
 					<Item
-						onClick={() => {}}
-						label="Customers"
+						onClick={() => navigateTo('/customers')}
+						label='Customers'
 						icon={Users}
 						active={pathname.startsWith('/customers') }
 					/>
 					<Item
-						onClick={() => {router.push('/invoices')}}
+						onClick={() => navigateTo('/invoices')}
 						label="Invoices"
 						icon={Receipt}
 						active={pathname.startsWith('/invoices')}
 					/>
 					<Item
-						onClick={() => {}}
-						label="Business Info"
+						onClick={() => navigateTo('/business')}
+						label='Business Info'
 						icon={Info}
 						active={pathname === '/business'}
 					/>
-					{/* <Item
+					<Item
 						onClick={() => {}}
-						label="Withdrawals"
+						label='Withdrawals'
 						icon={Wallet}
-					/> */}
+						active={pathname === '/withdrawals'}
+					/>
 					<Item
 						onClick={settings.onOpen}
-						label="Settings"
+						label='Settings'
 						icon={Settings}
 						active={settings.isOpen}
 					/>
 					<Item
-						onClick={() => {}}
-						label="Profile"
+						onClick={() => navigateTo('/profile')}
+						label='Profile'
 						icon={User}
 						active={pathname === '/profile'}
 					/>
@@ -211,19 +215,18 @@ const Navigation = () => {
 			<div
 				ref={navBarRef}
 				className={cn(
-					'fixed top-0 z-[99999] left-60 w-[100%-240px]',
+					'absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]',
 					isResetting && 'transition-all ease-in-out duration-300',
 					isMobile && 'left-0 w-full'
 				)}
 			>                                                                                                                                                           
 				<nav className='flex items-center justify-between w-full shadow-ab dark:bg-black px-3 py-2.5'>
-					{isCollapsed ? <MenuIcon onClick={resetWidth} role='button' className='h-6 w-6 text-muted-foreground' /> : <div className='h-6 w-6'></div>}
-					<div className='w-full flex  justify-start'><div className='scale-[0.85] '><Logo/></div></div>
+					{isCollapsed && <MenuIcon onClick={resetWidth} role='button' className='h-6 w-6 text-muted-foreground' />}
+					<div className='w-full flex justify-start'><div className='scale-[0.85] '><Logo/></div></div>
 					{session && session.user ? (
 						<UserButton
 							profilePicture={session.user.image || generateDefaultAvatar(session.user.email!)}
 							profilePictureAlt='Profile picture'
-							avatarFallback={session.user.name!}
 							fullName={session.user.name!}
 							email={session.user.email!}
 						/>

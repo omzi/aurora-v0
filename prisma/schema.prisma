@@ -65,15 +65,16 @@ model Business {
 }
 
 model Customer {
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  email      String
-  // ... other customer details
-  business   Business  @relation(fields: [businessId], references: [id])
-  businessId String    @db.ObjectId
-  invoices   Invoice[]
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  phoneNumber String
+  address     String?
+  business    Business  @relation(fields: [businessId], references: [id])
+  businessId  String    @db.ObjectId
+  invoices    Invoice[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 enum InvoiceStatus {
@@ -86,7 +87,7 @@ model Invoice {
   amount     Float
   dueDate    DateTime
   status     InvoiceStatus
-  // ... other invoice details
+  items      Json
   business   Business      @relation(fields: [businessId], references: [id])
   businessId String        @db.ObjectId
   customer   Customer      @relation(fields: [customerId], references: [id])
