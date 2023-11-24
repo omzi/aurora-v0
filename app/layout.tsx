@@ -7,10 +7,10 @@ import { SessionProvider } from 'next-auth/react';
 import 'react-toastify/dist/ReactToastify.min.css';
 import { EdgeStoreProvider } from '#/lib/edgestore';
 import { Theme, ToastContainer } from 'react-toastify';
+import { UserProvider } from '#/components/contexts/UserContext';
 import { ThemeProvider } from '#/components/providers/ThemeProvider';
 import { ModalProvider } from '#/components/providers/ModalProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { UserProvider } from '#/components/contexts/UserContext';
 
 const queryClient = new QueryClient();
 

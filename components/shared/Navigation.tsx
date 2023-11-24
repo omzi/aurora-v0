@@ -29,6 +29,7 @@ import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
 import UserButton from '../UserButton';
 import { Skeleton } from '../ui/skeleton';
+import Logo from './Logo';
 
 const Navigation = () => {
 	const router = useRouter();
@@ -172,13 +173,13 @@ const Navigation = () => {
 						onClick={() => navigateTo('/customers')}
 						label='Customers'
 						icon={Users}
-						active={pathname === '/customers'}
+						active={pathname.startsWith('/customers') }
 					/>
 					<Item
 						onClick={() => navigateTo('/invoices')}
 						label="Invoices"
 						icon={Receipt}
-						active={pathname === '/invoices'}
+						active={pathname.startsWith('/invoices')}
 					/>
 					<Item
 						onClick={() => navigateTo('/business')}
@@ -219,8 +220,9 @@ const Navigation = () => {
 					isMobile && 'left-0 w-full'
 				)}
 			>                                                                                                                                                           
-				<nav className='flex items-center justify-between w-full bg-[#efefef] dark:bg-black px-3 py-2.5'>
-					{isCollapsed ? <MenuIcon onClick={resetWidth} role='button' className='h-6 w-6 text-muted-foreground' /> : <div className='h-6 w-6'></div>}
+				<nav className='flex items-center justify-between w-full shadow-ab dark:bg-black px-3 py-2.5'>
+					{isCollapsed && <MenuIcon onClick={resetWidth} role='button' className='h-6 w-6 text-muted-foreground' />}
+					<div className='w-full flex justify-start'><div className='scale-[0.85] '><Logo/></div></div>
 					{session && session.user ? (
 						<UserButton
 							profilePicture={session.user.image || generateDefaultAvatar(session.user.email!)}

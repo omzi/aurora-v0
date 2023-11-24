@@ -1,9 +1,11 @@
 import { cn } from '#/lib/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // TODO: Add font for logo text
 const Logo = () => {
 	return (
+    <Link href={'/'}>
     <div className='hidden md:flex items-center gap-x-2'>
       <Image
         src='/images/logo-text-dark.png'
@@ -19,7 +21,7 @@ const Logo = () => {
         className='block dark:hidden'
         alt='Aurora Logo'
       />
-    </div>
+    </div></Link>
   );
 }
 
