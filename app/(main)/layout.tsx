@@ -60,9 +60,9 @@ const UserLayout = ({
 	}, [isOpen, onOpen, selectedBusiness]);
 	
   return (
-    <div className='h-full flex'>
+    <div className='h-full overflow-hidden flex'>
 			<Navigation />
-			<main className='h-full flex-1 overflow-y-auto'>
+			<main className='h-[calc(100%-60px)] mt-[60px] flex-1 overflow-y-auto'>
 				{children}
 			</main>
 		</div>
