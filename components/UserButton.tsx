@@ -20,11 +20,11 @@ import { signOut } from 'next-auth/react';
 import { ExternalLinkIcon } from 'lucide-react';
 import { Button } from '#/components/ui/button';
 import ConfirmLogoutModal from '#/components/modals/ConfirmLogoutModal';
+import { Skeleton } from './ui/skeleton';
 
 interface UserButtonProps {
   profilePicture: string;
   profilePictureAlt: string;
-  avatarFallback: string;
   fullName: string;
   email: string;
 }
@@ -32,7 +32,6 @@ interface UserButtonProps {
 const UserButton = ({
 	profilePicture,
 	profilePictureAlt,
-	avatarFallback,
 	fullName,
 	email
 }: UserButtonProps) => {
@@ -44,7 +43,7 @@ const UserButton = ({
         <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
           <Avatar className='h-8 w-8'>
             <AvatarImage src={profilePicture} alt={profilePictureAlt} />
-            <AvatarFallback>{avatarFallback}</AvatarFallback>
+            <AvatarFallback><Skeleton className='w-8 h-8 rounded-full' /></AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

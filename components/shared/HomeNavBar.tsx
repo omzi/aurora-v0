@@ -25,7 +25,6 @@ const HomeNavBar = () => {
           <UserButton
             profilePicture={session.user.image || generateDefaultAvatar(session.user.email!)}
             profilePictureAlt='Profile picture'
-            avatarFallback={session.user.name!}
             fullName={session.user.name!}
             email={session.user.email!}
           />
