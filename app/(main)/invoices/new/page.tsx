@@ -3,6 +3,7 @@
 import { XIcon } from 'lucide-react';
 import React from 'react';
 import { useConfirmLeave } from '#/hooks/useConfirmLeave';
+import { useSetInvoice, useInvoiceItems } from '#/hooks/useSetInvoice';
 import {
   SelectValue,
   SelectTrigger,
@@ -20,11 +21,37 @@ import {
   Card,
   CardFooter
 } from '#/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "#/components/ui/table"
 import { Label } from '#/components/ui/label';
 import { Input } from '#/components/ui/input';
 
 const NewInvoice = () => {
   const invoiceExit = useConfirmLeave();
+  const [description, price, quantity, total, setDescription, setPrice, setQuantity, setTotal, reset] = useSetInvoice((state) => [state.description, state.price, state.quantity, state.total, state.setDescription, state.setPrice, state.setQuantity, state.setTotal, state.reset]);
+  const [InvoiceItems, totalCost, setInvoiceItems, setTotalCost, resetInvoice] = useInvoiceItems((state) => [state.InvoiceItems, state.totalCost, state.setInvoiceItems, state.setTotalCost, state.resetInvoice])
+
+  const onAdd = () => {
+    const newInvoice = {
+      id: new Date().getTime().toString(),
+      description,
+      price,
+      quantity,
+      total
+    };
+    setInvoiceItems(newInvoice);
+    setTotalCost(total);
+    reset();
+    console.log(InvoiceItems);
+  }
 
   return (
     <div className='flex flex-col px-4 py-8 md:px-8 md:py-12'>
@@ -74,30 +101,74 @@ const NewInvoice = () => {
           <CardTitle>Invoice Items</CardTitle>
         </CardHeader>
         <CardContent className='flex gap-1'>
-          <div className='grid grid-cols-1 flex-1 gap-4 md:grid-cols-4'>
-            <div className='space-y-2'>
-              <Label htmlFor='description'>Description</Label>
-              <Input id='description' placeholder='Item description' />
-            </div>
-            <div className='space-y-2'>
-              <Label htmlFor='quantity'>Quantity</Label>
-              <Input id='quantity' placeholder='Quantity' type='number' />
-            </div>
-            <div className='space-y-2'>
-              <Label htmlFor='unit-price'>Unit Price (₦)</Label>
-              <Input id='unit-price' placeholder='Unit price' type='number' />
-            </div>
-            <div className='space-y-2'>
-              <Label htmlFor='total-price'>Total Price (₦)</Label>
-              <Input id='total-price' placeholder='Total price' type='number' disabled />
-            </div>
-          </div>
-					<div className='w-6 cursor-pointer flex items-center justify-center rounded-sm bg-white/10 hover:bg-white/25'>
-						<XIcon className='w-4 h-4 text-white cursor-pointer' />
-					</div>
+          <Table>
+            <TableCaption></TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="">Description</TableHead>
+                <TableHead>Quantity</TableHead>
+                <TableHead>Unit Price (₦)</TableHead>
+                <TableHead className="text-right">Total Price (₦)</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {InvoiceItems && InvoiceItems.map((invoice) => (
+                <TableRow key={invoice.id}>
+                  <TableCell className="font-medium">{invoice.description}</TableCell>
+                  <TableCell>{invoice.quantity}</TableCell>
+                  <TableCell>{invoice.price}</TableCell>
+                  <TableCell className="text-right">{invoice.total}</TableCell>
+                </TableRow>
+              ))}
+              <TableRow className=''>
+                    <TableCell className='space-y-2'>
+                      {/* <Label htmlFor='description'>Description</Label> */}
+                      <Input id='description' type='text' placeholder='Item description' value={description} onChange={(e) => setDescription(e.target.value)}/>
+                    </TableCell>
+                    <TableCell className='space-y-2'>
+                      {/* <Label htmlFor='quantity'>Quantity</Label> */}
+                      <Input id='quantity' placeholder='Quantity' type='number' value={quantity} onChange={(e) => setQuantity(e.target.valueAsNumber)} />
+                    </TableCell>
+                    <TableCell className='space-y-2'>
+                      {/* <Label htmlFor='unit-price'>Unit Price (₦)</Label> */}
+                      <Input 
+                        id='unit-price' 
+                        placeholder='Unit price' 
+                        type='number' 
+                        value={price} 
+                        onChange={(e) => {
+                          setPrice(e.target.valueAsNumber)
+                          setTotal()
+                        }} 
+                        />
+                    </TableCell>
+                    <TableCell className='space-y-2'>
+                      {/* <Label htmlFor='total-price'>Total Price (₦)</Label> */}
+                      <Input 
+                        id='total-price' 
+                        placeholder='Total price' 
+                        type='number' 
+                        value={total} 
+                        disabled />
+                    </TableCell>
+                  
+                  <TableCell className='w-4 h-4 cursor-pointer rounded-sm bg-white/10 hover:bg-white/25'>
+                    <XIcon onClick={reset} className='w-4 h-4 text-black cursor-pointer' />
+                  </TableCell>
+              </TableRow>
+            </TableBody>
+            {/* <TableFooter>
+              <TableRow>
+                <TableCell colSpan={3}>Total</TableCell>
+                <TableCell className="text-right">$2,500.00</TableCell>
+              </TableRow>
+            </TableFooter> */}
+          </Table>
+          
         </CardContent>
-        <CardFooter className='flex items-center'>
-          <Button size='sm'>Add Item</Button>
+        <CardFooter className='flex items-center justify-between'>
+          <Button onClick={resetInvoice} size='sm'>Clear Invoice</Button>
+          <Button onClick={onAdd} size='sm'>Add Item</Button>
         </CardFooter>
       </Card>
       <Card className='flex flex-col mt-4 w-full sm:w-96 ml-auto'>
@@ -110,7 +181,7 @@ const NewInvoice = () => {
         </CardContent> */}
         <CardContent className='flex items-center justify-between'>
           <span className='mr-4'>Total Amount (₦):</span>
-          <span className='text-lg font-semibold'>1000</span>
+          <span className='text-lg font-semibold'>{totalCost.toFixed(2)}</span>
         </CardContent>
       </Card>
       <div className='flex items-center mt-6'>
