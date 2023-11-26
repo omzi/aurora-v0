@@ -60,9 +60,9 @@ model Business {
   userId         String     @db.ObjectId
   customers      Customer[]
   invoices       Invoice[]
-  registrationNumber String
+  registrationNumber String?
   email           String
-  category        String
+  category        String?
   mobileNumber    String
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt

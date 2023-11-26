@@ -51,8 +51,13 @@ const CreateBusinessModal = () => {
     'Manufacturing',
     'Hospitality',
     'Financial services',
-    'Real estate',
-    'Media and Entertainment'
+    'Media and Entertainment', 
+    'Agriculture',
+    'Education',
+    'healthcare',
+    'Transportation and logistics',
+    'Utitlities',
+    'Textiles'
   ]
   useEffect(()=>{
     if (businessModal.isEditMode) {
@@ -220,7 +225,8 @@ const CreateBusinessModal = () => {
                   )}
                 />
 
-                {/* Business Category */}
+                <div className='grid grid-cols-1 sm:grid-cols-2 w-full gap-4 items-start'>
+                  {/* Business Category */}
                 <FormField
                   control={form.control}
                   name='category'
@@ -245,7 +251,7 @@ const CreateBusinessModal = () => {
                             <SelectTrigger className=' account-form-input  !w-full !py-1.5 pl-[2.5rem] '>
                               <SelectValue className='!pl-[3rem]' placeholder='Select a category' />
                             </SelectTrigger>
-                            <SelectContent className='!w-full flex !min-w-full z-[999999] shadow-lg rounded-md mt-[1rem] bg-white'>
+                            <SelectContent className='!w-full flex !min-w-full z-[999999] shadow-lg !h-full !max-h-[15rem] overflow-auto rounded-md mt-[1rem] bg-white dark:bg-dark-3'>
                               <SelectGroup className='w-full'>
                                 {categories.map(category => <SelectItem key={category} value={category} >{category}</SelectItem>)}
                               </SelectGroup>
@@ -292,9 +298,11 @@ const CreateBusinessModal = () => {
                     </FormItem>
                   )}
                 />
+                </div>
 
                 
-                {/* Business Email */}
+               <div className='grid grid-cols-1 sm:grid-cols-2 w-full gap-4 items-start'>
+                     {/* Business Email */}
                 <FormField
                   control={form.control}
                   name='email'
@@ -363,6 +371,7 @@ const CreateBusinessModal = () => {
                     </FormItem>
                   )}
                 />
+               </div>
 
                 {/* Business Description */}
                 <FormField

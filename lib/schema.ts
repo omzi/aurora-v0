@@ -13,8 +13,8 @@ export const BusinessSchema = DatabaseRecordSchema.extend({
   logo: z.string().optional(),
   description: z.string(),
   email: z.string(),
-  registrationNumber: z.string(),
-  category: z.string(),
+  registrationNumber: z.string().optional(),
+  category: z.string().optional(),
   mobileNumber: z.string(),
   contactDetails: z.string().optional(),
   user: z.object({
