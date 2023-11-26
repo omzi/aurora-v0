@@ -10,9 +10,14 @@ interface DatabaseRecord {
 }
 
 export interface Business extends DatabaseRecord {
+ 
   name: string;
   logo: string;
   description?: string;
+  email?: string;
+  category?: string;
+  mobileNumber?: string;
+  registrationNumber?: string;
   contactDetails?: string;
 }
 

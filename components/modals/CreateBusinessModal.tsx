@@ -22,34 +22,57 @@ import { useForm } from 'react-hook-form';
 import { Business } from '#/common.types';
 import { isBase64Image } from '#/lib/utils';
 import { Input } from '#/components/ui/input';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Button } from '#/components/ui/button';
 import { BusinessSchema } from '#/lib/validations';
 import { Textarea } from '#/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useBusinessModal } from '#/hooks/useBusinessModal';
-import { ImageIcon, PencilIcon, StoreIcon } from 'lucide-react';
+import { AtSignIcon, BookCheckIcon, ImageIcon, LampDeskIcon, PencilIcon, PhoneIcon, StoreIcon } from 'lucide-react';
 import { useUserContext } from '../contexts/UserContext';
 import { useEdgeStore } from '#/lib/edgestore';
+import { Select, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { SelectContent } from '@radix-ui/react-select';
+import { ScrollArea } from '../ui/scroll-area';
 
 const CreateBusinessModal = () => {
   const { edgestore } = useEdgeStore();
 	const businessModal = useBusinessModal();
 	const [files, setFiles] = useState<File[]>([]);
-  const { selectBusiness } = useUserContext();
+  const { selectBusiness, selectedBusiness } = useUserContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 	const onClose = useBusinessModal(state => state.onClose);
+  
 	const form = useForm<z.infer<typeof BusinessSchema>>({
-    resolver: zodResolver(BusinessSchema),
-		defaultValues: {
-			name: '',
-			logo: '',
-			description: ''
-		}
+    resolver: zodResolver(BusinessSchema)
+		
   });
+  const categories = [
+    'Manufacturing',
+    'Hospitality',
+    'Financial services',
+    'Media and Entertainment', 
+    'Agriculture',
+    'Education',
+    'healthcare',
+    'Transportation and logistics',
+    'Utitlities',
+    'Textiles'
+  ]
+  useEffect(()=>{
+    if (businessModal.isEditMode) {
+      form.setValue('name', selectedBusiness?.name as string)
+      form.setValue('category', selectedBusiness?.category as string)
+      form.setValue('email', selectedBusiness?.email as string)
+      form.setValue('registrationNumber', selectedBusiness?.registrationNumber as string)
+      form.setValue('mobileNumber', selectedBusiness?.mobileNumber as string)
+      form.setValue('description', selectedBusiness?.description as string)
+      form.setValue('logo', selectedBusiness?.logo)
+    }
+    else form.reset()
+  },[businessModal.isOpen , businessModal.isEditMode])
 
 	const onSubmit = async (data: z.infer<typeof BusinessSchema>) => {
-    console.log(data);
 
     try {
       setIsSubmitting(true);
@@ -60,15 +83,22 @@ const CreateBusinessModal = () => {
         const { url } = await edgestore.publicFiles.upload({ file });
         data.logo = url;
       }
+      const editPayload = {
+        id : selectedBusiness?.id,
+        ...data
+      }
 
-      const response = await axios.post<{ data: Business }>('/api/businesses', data);
+      const response = businessModal.isEditMode ?
+        await axios.put<{ data: Business }>('/api/businesses', editPayload)
+      : await axios.post<{ data: Business }>('/api/businesses', data);
+
 			const { data: business } = response.data;
       selectBusiness(business);
-			console.log('Business :>>', business);
-      toast.success('Business created successfully!', { icon: '🎉' });
+      toast.success( businessModal.isEditMode? 
+        'Business Info Updated!' : 'Business created successfully!', { icon: '🎉' });
       form.reset();
       onClose();
-      window.location.assign('/dashboard');
+      !businessModal.isEditMode && window.location.assign('/dashboard');
 
       return;
     } catch (error) {
@@ -101,167 +131,317 @@ const CreateBusinessModal = () => {
 
 	return (
     <Dialog open={businessModal.isOpen} onOpenChange={businessModal.onClose}>
-      <DialogContent>
-        <DialogHeader className='border-b pb-3'>
+      <DialogContent className='overflow-hidden'>
+        <DialogHeader className='border-b pb-2'>
           <h2 className='text-lg font-normal text-dark-1 dark:text-light-2'>
-            Create A Business
+            {businessModal.isEditMode ? 'Edit Business Info' : 'Create A Business'}
           </h2>
         </DialogHeader>
-        <div className='flex items-center justify-between'>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='flex flex-col justify-start gap-4 w-full'
-            >
-              {/* Business Logo */}
-              <FormField
-                control={form.control}
-                name='logo'
-                render={({ field }) => (
-                  <>
-										<FormItem className='flex gap-4 flex-col items-start sm:flex-row sm:items-center'>
-											<FormLabel className='account-form-image-label'>
-												{field.value ? (
-													<Image
-														src={field.value}
-														alt='Business Logo'
-														width={60}
-														height={60}
-														priority
-														className='w-[60px] h-[60px] rounded-full object-cover'
-													/>
-												) : (
-													<ImageIcon
-														width={48}
-														height={48}
-														className='p-2 rounded-full'
-													/>
-												)}
-											</FormLabel>
-											<FormControl className='cursor-pointer'>
-												<label htmlFor='image'>
-													<span className='rounded-md bg-white px-2.5 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>
-														Upload Business Logo
-													</span>
-													<Input
-														type='file'
-														disabled={isSubmitting}
-														id='image'
-														accept='image/*'
-														className='sr-only'
-														onChange={(e) => handleImageUpload(e, field.onChange)}
-													/>
-												</label>
-											</FormControl>
-										</FormItem>
-										<FormMessage className='text-red-400' />
-									</>
-                )}
-              />
+        <ScrollArea className='h-full max-h-[75vh]'>
+          <div className='flex items-center px-2 mb-4 justify-between'>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className='flex flex-col justify-start gap-4 w-full'
+              >
+                {/* Business Logo */}
+                <FormField
+                  control={form.control}
+                  name='logo'
+                  render={({ field }) => (
+                    <>
+                      <FormItem className='flex gap-4 flex-col items-start sm:flex-row sm:items-center'>
+                        <FormLabel className='account-form-image-label'>
+                          {field.value ? (
+                            <Image
+                              src={field.value}
+                              alt='Business Logo'
+                              width={60}
+                              height={60}
+                              priority
+                              className='w-[60px] h-[60px] rounded-full object-cover'
+                            />
+                          ) : (
+                            <ImageIcon
+                              width={48}
+                              height={48}
+                              className='p-2 rounded-full'
+                            />
+                          )}
+                        </FormLabel>
+                        <FormControl className='cursor-pointer'>
+                          <label htmlFor='image'>
+                            <span className='rounded-md bg-white px-2.5 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>
+                              {businessModal.isEditMode? 'Change Business Logo' : 'Upload Business Logo'}
+                            </span>
+                            <Input
+                              type='file'
+                              disabled={isSubmitting}
+                              id='image'
+                              accept='image/*'
+                              className='sr-only'
+                              onChange={(e) => handleImageUpload(e, field.onChange)}
+                            />
+                          </label>
+                        </FormControl>
+                      </FormItem>
+                      <FormMessage className='text-red-400' />
+                    </>
+                  )}
+                />
 
-              {/* Business Name */}
-              <FormField
-                control={form.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel
-                      htmlFor={field.name}
-                      className='text-base-semibold text-dark-1 dark:text-light-2'
-                    >
-                      Business Name
-                    </FormLabel>
-                    <FormControl>
-                      <div className='relative rounded-md shadow-sm'>
+                {/* Business Name */}
+                <FormField
+                  control={form.control}
+                  name='name'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel
+                        htmlFor={field.name}
+                        className='text-base-semibold text-dark-1 dark:text-light-2'
+                      >
+                        Business Name
+                      </FormLabel>
+                      <FormControl>
+                        <div className='relative rounded-md shadow-sm'>
+                          <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                            <StoreIcon
+                              className='w-5 h-5 text-gray-400'
+                              aria-hidden='true'
+                            />
+                          </div>
+                          <Input
+                            type='text'
+                            disabled={isSubmitting}
+                            id={field.name}
+                            placeholder='Your business name'
+                            className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage className='text-red-400' />
+                    </FormItem>
+                  )}
+                />
+
+                <div className='grid grid-cols-1 sm:grid-cols-2 w-full gap-4 items-start'>
+                  {/* Business Category */}
+                <FormField
+                  control={form.control}
+                  name='category'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel
+                        htmlFor={field.name}
+                        className='text-base-semibold text-dark-1 dark:text-light-2'
+                      >
+                        Business Category
+                      </FormLabel>
+                      <FormControl>
+                        <div className='relative rounded-md shadow-sm'>
                         <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
-                          <StoreIcon
-                            className='w-5 h-5 text-gray-400'
-                            aria-hidden='true'
+                            <LampDeskIcon
+                              className='w-5 h-5 text-gray-400'
+                              aria-hidden='true'
+                            />
+                          </div>
+                          
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <SelectTrigger className=' account-form-input  !w-full !py-1.5 pl-[2.5rem] '>
+                              <SelectValue className='!pl-[3rem]' placeholder='Select a category' />
+                            </SelectTrigger>
+                            <SelectContent className='!w-full flex !min-w-full z-[999999] shadow-lg !h-full !max-h-[15rem] overflow-auto rounded-md mt-[1rem] bg-white dark:bg-dark-3'>
+                              <SelectGroup className='w-full'>
+                                {categories.map(category => <SelectItem key={category} value={category} >{category}</SelectItem>)}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </FormControl>
+                      <FormMessage className='text-red-400' />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Registration Number */}
+                <FormField
+                  control={form.control}
+                  name='registrationNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel
+                        htmlFor={field.name}
+                        className='text-base-semibold text-dark-1 dark:text-light-2'
+                      >
+                        Registration nuumber
+                      </FormLabel>
+                      <FormControl>
+                        <div className='relative rounded-md shadow-sm'>
+                          <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                            <BookCheckIcon
+                              className='w-5 h-5 text-gray-400'
+                              aria-hidden='true'
+                            />
+                          </div>
+                          <Input
+                            type='text'
+                            disabled={isSubmitting}
+                            id={field.name}
+                            placeholder='Your business regitration no'
+                            className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
+                            {...field}
                           />
                         </div>
-                        <Input
-                          type='text'
-                          disabled={isSubmitting}
-                          id={field.name}
-                          placeholder='Your business name'
-                          className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage className='text-red-400' />
-                  </FormItem>
-                )}
-              />
+                      </FormControl>
+                      <FormMessage className='text-red-400' />
+                    </FormItem>
+                  )}
+                />
+                </div>
 
-              {/* Business Description */}
-              <FormField
-                control={form.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel
-                      htmlFor={field.name}
-                      className='text-base-semibold text-dark-1 dark:text-light-2'
-                    >
-                      Business Description
-                    </FormLabel>
-                    <FormControl>
-                      <div className='relative rounded-md shadow-sm'>
-                        <div className='absolute inset-y-0 top-0 left-0 pt-3 pl-3 pointer-events-none'>
-                          <PencilIcon
-                            className='w-5 h-5 text-gray-400'
-                            aria-hidden='true'
+                
+               <div className='grid grid-cols-1 sm:grid-cols-2 w-full gap-4 items-start'>
+                     {/* Business Email */}
+                <FormField
+                  control={form.control}
+                  name='email'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel
+                        htmlFor={field.name}
+                        className='text-base-semibold text-dark-1 dark:text-light-2'
+                      >
+                        Business e-mail
+                      </FormLabel>
+                      <FormControl>
+                        <div className='relative rounded-md shadow-sm'>
+                          <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                            <AtSignIcon
+                              className='w-5 h-5 text-gray-400'
+                              aria-hidden='true'
+                            />
+                          </div>
+                          <Input
+                            type='text'
+                            disabled={isSubmitting}
+                            id={field.name}
+                            placeholder='Your business email'
+                            className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
+                            {...field}
                           />
                         </div>
-                        <Textarea
-                          id={field.name}
-                          disabled={isSubmitting}
-                          rows={3}
-                          placeholder='Describe your business in 100 characters'
-                          className='account-form-textarea custom-scrollbar block w-full rounded-md border-0 py-1.5 pl-10'
-                          {...field}
+                      </FormControl>
+                      <FormMessage className='text-red-400' />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Business Email */}
+                <FormField
+                  control={form.control}
+                  name='mobileNumber'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel
+                        htmlFor={field.name}
+                        className='text-base-semibold text-dark-1 dark:text-light-2'
+                      >
+                        Business Phone Number
+                      </FormLabel>
+                      <FormControl>
+                        <div className='relative rounded-md shadow-sm'>
+                          <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                            <PhoneIcon
+                              className='w-5 h-5 text-gray-400'
+                              aria-hidden='true'
+                            />
+                          </div>
+                          <Input
+                            type='text'
+                            disabled={isSubmitting}
+                            id={field.name}
+                            placeholder='Your business mobile number'
+                            className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage className='text-red-400' />
+                    </FormItem>
+                  )}
+                />
+               </div>
+
+                {/* Business Description */}
+                <FormField
+                  control={form.control}
+                  name='description'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel
+                        htmlFor={field.name}
+                        className='text-base-semibold text-dark-1 dark:text-light-2'
+                      >
+                        Business Description
+                      </FormLabel>
+                      <FormControl>
+                        <div className='relative rounded-md shadow-sm'>
+                          <div className='absolute inset-y-0 top-0 left-0 pt-3 pl-3 pointer-events-none'>
+                            <PencilIcon
+                              className='w-5 h-5 text-gray-400'
+                              aria-hidden='true'
+                            />
+                          </div>
+                          <Textarea
+                            id={field.name}
+                            disabled={isSubmitting}
+                            rows={1}
+                            placeholder='Describe your business in 100 characters'
+                            className='account-form-textarea custom-scrollbar block w-full rounded-md border-0 py-1.5 pl-10'
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage className='text-red-400' />
+                    </FormItem>
+                  )}
+                />
+
+                <div className='space-x-2 flex items-center justify-end'>
+                  <Button
+                    variant='outline'
+                    type='button'
+                    disabled={isSubmitting}
+                    onClick={businessModal.onClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type='submit'
+                    disabled={isSubmitting}
+                    className='relative bg-core hover:bg-blue-800 text-light-2'
+                  >
+                    {isSubmitting ? (
+                      <span className='opacity-0'>{businessModal.isEditMode? 'Save changes' : 'Create business'}</span>
+                    ) : (
+                      <span className='opacity-100'>{businessModal.isEditMode? 'Save changes' : 'Create business'}</span>
+                    )}
+                    {isSubmitting && (
+                      <div className='absolute flex items-center justify-center w-full h-full'>
+                        <Loader
+                          type='spinner'
+                          size={28}
+                          className='text-black dark:text-white leading-[0]'
                         />
                       </div>
-                    </FormControl>
-                    <FormMessage className='text-red-400' />
-                  </FormItem>
-                )}
-              />
-
-              <div className='space-x-2 flex items-center justify-end'>
-                <Button
-									variant='outline'
-									type='button'
-									disabled={isSubmitting}
-									onClick={businessModal.onClose}
-								>
-                  Cancel
-                </Button>
-                <Button
-                  type='submit'
-                  disabled={isSubmitting}
-                  className='relative bg-core hover:bg-blue-800 text-light-2'
-                >
-                  {isSubmitting ? (
-                    <span className='opacity-0'>Create business</span>
-                  ) : (
-                    <span className='opacity-100'>Create business</span>
-                  )}
-                  {isSubmitting && (
-                    <div className='absolute flex items-center justify-center w-full h-full'>
-                      <Loader
-                        type='spinner'
-                        size={28}
-                        className='text-black dark:text-white leading-[0]'
-                      />
-                    </div>
-                  )}
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </div>
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
