@@ -53,6 +53,17 @@ export const BusinessSchema = z.object({
   description: z.string()
     .refine(value => value && value.length > 0, 'Business description is required')
     .refine(value => value && value.length <= 500, 'Business description must not be more than 500 characters.'),
+  registrationNumber: z.string()
+    .refine(value => value && value.length > 0, 'Business registration number is required')
+    .refine(value => value && value.length <= 100, 'registration number must not be more than 100 characters.'),
+  category: z.string()
+    .refine(value => value && value.length > 0, 'Business registration number is required'),
+   email: z.string()
+    .refine(value => value && value.length > 0, 'Business e-mail is required')
+    .refine(value => /\S+@\S+\.\S+/.test(value), 'Please enter a valid email address'),
+  mobileNumber: z.string()
+    .refine(value => value && value.length > 0, 'Business numbeer is required')
+    .refine(value => value && value.length <= 11, 'Mobiile number must not be more than 11 characters.'),
   contactDetails: z.string()
     .refine(value => value && value.length > 0, 'Contact details are required')
     .refine(value => value && value.length <= 200, 'Contact details must not be more than 200 characters.').optional()
