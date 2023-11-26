@@ -18,8 +18,8 @@ const BusinessInfo = () => {
 			<h1 className='md:text-2xl text-xl font-semibold'>Business Information</h1>
 			<Button onClick={businessModal.onOpen} variant={'outline'}>New Business</Button>
 			</div>
-			{ false && 
-				<div className='h-full flex flex-col items-center justify-center space-y-4'>
+			{ !selectedBusiness ?
+				<div className='h-full p-4 md:p-[3rem] pt-[1.5rem]  lg:pt-[3rem] mt-[1.3rem] border-t-[1px] flex flex-col items-center justify-center space-y-4'>
 				<div className='relative w-[300px] h-[300px]'>
 					<Image
 						src='/images/empty-state.png'
@@ -32,14 +32,15 @@ const BusinessInfo = () => {
 					Welcome to your Aurora
 				</h2>
 			</div>
-			}
-			<div className='p-4 md:p-[3rem] pt-[1.5rem]  lg:pt-[3rem] mt-[1.3rem] border-t-[1px] w-full flex'>
+			:
+				<>
+						<div className='p-4 md:p-[3rem] pt-[1.5rem]  lg:pt-[3rem] mt-[1.3rem] border-t-[1px] w-full flex'>
 				<div className='flex flex-col lg:flex-row items-center w-full  gap-[1.5rem] lg:gap-[5rem]'>
 				{selectedBusiness?.logo ? (
 					<Avatar className='w-[6rem] h-[6rem] rounded-[50%]'>
 					<AvatarImage
-					  src={selectedBusiness.logo}
-					  alt={selectedBusiness.name}
+					  src={selectedBusiness!.logo}
+					  alt={selectedBusiness!.name}
 					/>
 					<AvatarFallback><Skeleton className='h-4 w-4 rounded' /></AvatarFallback>
 				  </Avatar>
@@ -84,6 +85,8 @@ const BusinessInfo = () => {
 			</div>
 			<Button onClick={businessModal.toggleEditOpen} className='mx-auto'>Edit Business informatiion</Button>
 
+				</>
+			}
 		</div>
 	)
 }
