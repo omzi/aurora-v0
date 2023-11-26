@@ -68,7 +68,6 @@ const CreateBusinessModal = () => {
   },[businessModal.isOpen , businessModal.isEditMode])
 
 	const onSubmit = async (data: z.infer<typeof BusinessSchema>) => {
-    console.log(data);
 
     try {
       setIsSubmitting(true);
@@ -90,7 +89,6 @@ const CreateBusinessModal = () => {
 
 			const { data: business } = response.data;
       selectBusiness(business);
-			console.log('Business :>>', business);
       toast.success( businessModal.isEditMode? 
         'Business Info Updated!' : 'Business created successfully!', { icon: '🎉' });
       form.reset();
@@ -248,7 +246,7 @@ const CreateBusinessModal = () => {
                           </SelectTrigger>
                           <SelectContent className='!!w-full flex  !min-w-full z-[999999] shadow-lg rounded-md mt-[1rem] bg-white'>
                                <SelectGroup className='w-full'>
-                                    {categories.map((category)=> <SelectItem  value={category} >{category}</SelectItem>)}
+                                    {categories.map((category)=> <SelectItem key={category}  value={category} >{category}</SelectItem>)}
                                </SelectGroup>
                           </SelectContent>
                         </Select>
