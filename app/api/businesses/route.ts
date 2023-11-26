@@ -58,23 +58,27 @@ const PUT = async (request: NextRequest) => {
       return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
     }
     const { id, ...data } = body;
+    
+    
 
     const existingBusiness = await prisma.business.findFirst({
       where: { id, userId: token.sub }
     });
 
     if (!existingBusiness) throw new Error('Business not found!');
+    
 
     // Ensure sensitive fields like userId, id, createdAt, updatedAt, and parentDocumentId are not changed
-    const allowedFields = ['title', 'content', 'coverImage', 'icon', 'isPublished'];
+    const allowedFields = ['name', 'logo', 'category', 'email', 'registrationNumber', 'mobileNumber', 'description'];
 
     for (const field in data) {
       if (!allowedFields.includes(field)) {
         delete data[field];
       }
     }
-
+     
     const updatedBusiness = await prisma.business.update({ where: { id }, data: data as Prisma.BusinessUpdateInput });
+    
 
     return NextResponse.json({ message: 'Business updated successfully!', data: updatedBusiness }, { status: 200 });
   } catch (error) {
