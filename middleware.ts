@@ -2,10 +2,10 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const middleware = async (request: NextRequest) => {
-  const publicRoutes = ['/invoices/view'];
+  const publicRoutes = ['/invoices/view/:invoiceId'];
   const token = await getToken({ req: request });
 	const isRootRoute = request.nextUrl.pathname === '/';
-  const excludePattern = /^\/(?!api|auth|api\/register|_next\/static|_next\/image|images|assets|favicon.ico).*/;
+  const excludePattern = /^\/(?!api|auth|api\/register|_next\/static|_next\/image|images|assets|favicon.ico|invoices\/view\/[a-zA-Z0-9]{12}).*/;
   
   if (!excludePattern.test(request.nextUrl.pathname) || isRootRoute) {
     return NextResponse.next();
