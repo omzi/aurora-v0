@@ -9,6 +9,8 @@
   
   <br>
   <p align="center">
+  <a href="https://aurora-vx.vercel.app/">Visit Aurora</a> •
+  <a href="#basic-overview">Basic Overview</a> •
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#website">Website</a> •
