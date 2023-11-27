@@ -57,6 +57,7 @@ Follow these steps to start using Invoice Sender:
 
 # Contributors
 
-- John Doe
-- Jane Smith
-- ...
+- omezibe
+- Tito
+- Mary
+- Emmanuel
