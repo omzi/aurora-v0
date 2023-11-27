@@ -5,7 +5,7 @@
 
 
 <div align="center" >
-  <p>A business solution for sending invoices to customers</p>
+  <p>A business solution for sending out invoices and simplifying customer payments</p>
   
   <br>
   <p align="center">
