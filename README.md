@@ -40,7 +40,7 @@ Auroa is a comprehensive business solution designed to simplify and streamline t
 
 Follow these steps to start using Invoice Sender:
 
-1. **Create an account on the application:** click [here](https://example.com) to sign up
+1. **Create an account on the application:** click [here](https://aurora-vx.vercel.app/auth/sign-up) to sign up
 2. **Add a business:** On sign up you would be asked to create a business profile. fill in the requested fields and proceed
 3. **You're all set up:** Now you can proceed to create a customer profile and send out an invoice to this customer.
 4. **Create a customer:** Naavigate to the customer page using the side bar and you will see a button to create a customer, click it and fill in the requested details about the customer.
@@ -51,7 +51,7 @@ Follow these steps to start using Invoice Sender:
 
 # Website
 
-Start using aurora today at [Invoice Sender Website](https://invoicesender.com)
+### Start using aurora today at https://aurora-vx.vercel.app
 
 
 
