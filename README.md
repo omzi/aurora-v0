@@ -10,9 +10,9 @@
   <br>
   <p align="center">
   <a href="#key-features">Key Features</a> •
-  <a href="##how-to-use">How To Use</a> •
-  <a href="##website">Website</a> •
-  <a href="###contributors">Contributors</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#website">Website</a> •
+  <a href="#contributors">Contributors</a> •
 
 </p>
 </div>
@@ -47,13 +47,13 @@ Follow these steps to start using Invoice Sender:
 
    ...
 
-## Website
+# Website
 
 Start using aurora today at [Invoice Sender Website](https://invoicesender.com)
 
 
 
-### Contributors
+# Contributors
 
 - John Doe
 - Jane Smith
