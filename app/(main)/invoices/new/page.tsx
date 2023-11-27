@@ -3,6 +3,7 @@
 import { XIcon } from 'lucide-react';
 import React from 'react';
 import { useConfirmLeave } from '#/hooks/useConfirmLeave';
+import { toast } from 'react-toastify';
 import { useSetInvoice, useInvoiceItems } from '#/hooks/useSetInvoice';
 import {
   SelectValue,
@@ -47,10 +48,14 @@ const NewInvoice = () => {
       quantity,
       total
     };
-    setInvoiceItems(newInvoice);
-    setTotalCost(total);
-    reset();
-    console.log(InvoiceItems);
+    if(!description){
+      toast.error("enter item description!")
+    } else {
+      setInvoiceItems(newInvoice);
+      setTotalCost(total);
+      reset();
+      console.log(InvoiceItems);
+    }
   }
 
   return (
