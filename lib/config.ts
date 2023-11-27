@@ -9,7 +9,10 @@ class Config {
   public EDGE_STORE_SECRET_KEY: string;
   public GOOGLE_CLIENT_ID: string;
   public GOOGLE_CLIENT_SECRET: string;
+  public PAYSTACK_TEST_PK: string;
+  public PAYSTACK_TEST_SK: string;
   public DATABASE_URL: string;
+  public RESEND_API_KEY: string;
   public IS_PRODUCTION: boolean;
 
   constructor() {
@@ -20,7 +23,10 @@ class Config {
     this.EDGE_STORE_SECRET_KEY = process.env.EDGE_STORE_SECRET_KEY || '';
     this.GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
     this.GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+    this.PAYSTACK_TEST_PK = process.env.PAYSTACK_TEST_PK || '';
+    this.PAYSTACK_TEST_SK = process.env.PAYSTACK_TEST_SK || '';
     this.DATABASE_URL = process.env.DATABASE_URL || '';
+    this.RESEND_API_KEY = process.env.RESEND_API_KEY || '';
     this.IS_PRODUCTION = this.NODE_ENV === 'production';
 
     this.validateConfig();

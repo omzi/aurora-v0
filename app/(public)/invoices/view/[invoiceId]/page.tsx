@@ -1,10 +1,12 @@
 'use client';
 
 import Image from 'next/image';
+import config from '#/lib/config';
 import Loader from 'react-ts-loaders';
 import { toast } from 'react-toastify';
 import { Prisma } from '@prisma/client';
 import Status from '#/components/Status';
+import { PaystackButton } from 'react-paystack';
 import { Button } from '#/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { formatNumberWithCommas } from '#/lib/utils';
@@ -50,6 +52,25 @@ const ViewInvoice = () => {
   }
 
   const date = new Date(invoiceDetails?.createdAt as Date);
+  const paystackProps = {
+    email: invoiceDetails!.customer.email,
+    amount: invoiceDetails!.amount,
+    metadata: {
+      businessName: invoiceDetails!.business.name,
+      businessEmail: invoiceDetails!.business.email,
+      customerName: invoiceDetails!.customer.name,
+      customerEmail: invoiceDetails!.customer.email,
+      'custom_fields': []
+    },
+    publicKey: 'pk_test_18f56206df7669ce0096bb5c52145f552f741e88',
+    text: 'Pay Now',
+    onSuccess: () => {
+      // Show success toast, then verify the transaction...
+    },
+    onClose: () => {
+      // Show indismissable modal checking if the transaction was successful...
+    }
+  };
 
   return (
     <div className='flex flex-col p-6'>
@@ -166,6 +187,7 @@ const ViewInvoice = () => {
             <span className='text-lg font-semibold'>{formatNumberWithCommas(invoiceDetails?.amount as number)}</span>
           </CardContent>
           <CardFooter>
+            {invoiceDetails!.status === 'UNPAID' && <PaystackButton {...paystackProps} />}
             <Button className='ml-auto'>Initialize Payment</Button>
           </CardFooter>
         </Card>
