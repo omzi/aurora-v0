@@ -1,3 +1,4 @@
+import * as z from 'zod';
 import prisma from '#/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { getToken } from 'next-auth/jwt';
@@ -16,7 +17,7 @@ const GET = async (request: NextRequest) => {
     const businessId = searchParams.get('businessId');
 
     if (!businessId) {
-      throw new Error('Invalid request. Provide businessId.');
+      return NextResponse.json({ message: 'Invalid request. Provide businessId.' }, { status: 400 });
     }
 
     const business = await prisma.business.findUnique({
@@ -24,7 +25,7 @@ const GET = async (request: NextRequest) => {
     });
 
     if (!business) {
-      throw new Error('Business not found!');
+      return NextResponse.json({ message: 'Business not found!' }, { status: 404 });
     }
 		
     const customers = await prisma.customer.findMany({
@@ -51,7 +52,7 @@ const POST = async (request: NextRequest) => {
     const businessId = searchParams.get('businessId');
 
     if (!businessId) {
-      throw new Error('Invalid request. Provide businessId.');
+      return NextResponse.json({ message: 'Invalid request. Provide businessId.' }, { status: 400 });
     }
 
 		const business = await prisma.business.findUnique({
@@ -59,19 +60,31 @@ const POST = async (request: NextRequest) => {
     });
 
     if (!business) {
-      throw new Error('Business not found!');
+      return NextResponse.json({ message: 'Business not found!' }, { status: 404 });
     }
 
+    body.business = { connect: { id: businessId } };
     const data = CustomerSchema.parse(body) as Prisma.CustomerCreateInput;
-    data.business.connect = { id: businessId };
+
+    const existingCustomer = await prisma.customer.findFirst({
+      where: { businessId: businessId, email: data.email }
+    });
+
+    if (existingCustomer) {
+      return NextResponse.json({ message: 'Customer already exists!' }, { status: 400 });
+    }
 
 		const customer = await prisma.customer.create({ data });
 
     return NextResponse.json({ message: 'Customer created!', data: customer }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
 		console.error('Server Error [POST/Customers]:>>', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ message: 'A validation error occurred', errors: error.formErrors.fieldErrors }, { status: 400 });
+    } else {
+      return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    }
   }
 }
 
-export { POST };
+export { GET, POST };

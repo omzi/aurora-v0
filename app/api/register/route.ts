@@ -35,7 +35,7 @@ const POST = async (request: Request) => {
     // If everything goes well, return a success response
     return NextResponse.json({ message: 'User registered successfully!', user }, { status: 201 });
   } catch (error) {
-    console.log('Registration Error :>>', error);
+    console.log('Registeration Error :>>', error);
     if (error instanceof z.ZodError) {
       // Return validation error messages
       return NextResponse.json({ message: 'A validation error occurred', errors: error.formErrors.fieldErrors }, { status: 400 });

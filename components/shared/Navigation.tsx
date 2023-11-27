@@ -21,7 +21,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useSearch } from '#/hooks/useSearch';
 import { useSettings } from '#/hooks/useSettings';
 import { ElementRef, useEffect, useRef, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import BusinessSwitcher from '../BusinessSwitcher';
 import getBusinesses from '#/lib/actions/getBusinesses';
 import { Business, SuccessResponse } from '#/common.types';
@@ -117,7 +117,6 @@ const Navigation = () => {
 		}
 	}
 
-  const queryClient = useQueryClient();
 	const { data: businesses, isPending } = useQuery({
 		queryKey: [`userBusinesses`],
 		queryFn: async () => {
@@ -138,7 +137,7 @@ const Navigation = () => {
       <aside
 				ref={sideBarRef}
 				className={cn(
-					'group/sidebar h-full bg-[#efefef] dark:bg-black overflow-y-auto relative flex w-60 flex-col z-[99999]', isResetting && 'transition-all ease-in-out duration-300', isMobile && 'w-0'
+					'group/sidebar h-[100vh] bg-[#efefef] dark:bg-black overflow-y-auto relative flex w-60 flex-col z-[99999]', isResetting && 'transition-all ease-in-out duration-300', isMobile && 'w-0'
 				)}
 			>
         <div>
@@ -199,12 +198,12 @@ const Navigation = () => {
 						icon={Settings}
 						active={settings.isOpen}
 					/>
-					<Item
+					{/* <Item
 						onClick={() => navigateTo('/profile')}
 						label='Profile'
 						icon={User}
 						active={pathname === '/profile'}
-					/>
+					/> */}
         </div>
         <div
 					onMouseDown={handleMouseDown}

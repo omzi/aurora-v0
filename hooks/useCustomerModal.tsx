@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type BusinessModalStore = {
+type CustomerModalStore = {
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
@@ -8,7 +8,7 @@ type BusinessModalStore = {
 	toggleEditOpen: () => void;
 }
 
-export const useBusinessModal = create<BusinessModalStore>((set, get) => ({
+export const useCustomerModal = create<CustomerModalStore>((set, get) => ({
 	isOpen: false,
 	isEditMode: false,
 	onOpen: () => set({ isOpen: true }),
@@ -16,7 +16,7 @@ export const useBusinessModal = create<BusinessModalStore>((set, get) => ({
 		isOpen: false,
 		isEditMode: false
 	 }),
-	toggleEditOpen: ()=> set({
+	toggleEditOpen: () => set({
 		isEditMode: true,
 		isOpen: true
 	})

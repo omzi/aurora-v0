@@ -69,9 +69,6 @@ const UserButton = ({
           <Link href='/dashboard'>
             <DropdownMenuItem>Dashboard</DropdownMenuItem>
           </Link>
-          <Link href='/profile'>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-          </Link>
           <Link href='https://github.com/omzi/aurora' target='_blank'>
             <DropdownMenuItem>
               About

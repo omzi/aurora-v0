@@ -55,6 +55,7 @@ export const generateRandomChars = (() => {
     lowerCase: generateChars(97, 122),
     upperCase: generateChars(65, 90),
     special: [...`~!@#$%^&*()_+-=[]\{}|;:'",./<>?`],
+    alphanumeric: [...generateChars(48, 57), ...generateChars(65, 90), ...generateChars(97, 122)]
   };
 
   const iter = function* (len: number, set: string[] | undefined): Generator<string, void, unknown> {
@@ -69,4 +70,8 @@ export const getInitials = (name: string): string => {
   const [first, second = ''] = name.split(' ');
 
   return (first + second).toUpperCase();
+}
+
+export const formatNumberWithCommas = (number: number) => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

@@ -1,20 +1,46 @@
-import { Button } from '#/components/ui/button'
-import Link from 'next/link'
-import React from 'react'
+'use client';
 
-function Page() {
-  return (
-    <div>
-        <div className='flex justify-between px-[2rem] py-4'>
-            {/* top nav with all invoices and filter */}
-            <h1 className='text-[1.3rem] font-semibold'>All Invoices</h1>
-            <Link href={'/invoices/new'}><Button className='bg-blue-600 text-white text-[0.84rem]  hover:bg-blue-400'>New Invoice</Button></Link>
-        </div>
-        <div>
-            {/* table div with headings */}
-        </div>
+import Link from 'next/link';
+import { toast } from 'react-toastify';
+import DataTable from '#/components/DataTable';
+import { columns } from './components/Columns';
+import { Button } from '#/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import getInvoices from '#/lib/actions/getInvoices';
+import { Invoice, SuccessResponse } from '#/common.types';
+import { useUserContext } from '#/components/contexts/UserContext';
+
+const Invoices = () => {
+  const { selectedBusiness } = useUserContext();
+
+	const { data: invoices, isPending } = useQuery({
+    queryKey: ['userInvoices'],
+    queryFn: async () => {
+      try {
+        const response = (await getInvoices(selectedBusiness!.id)) as SuccessResponse<Invoice[]>;
+
+        console.log('Get Invoices Query :>>', response);
+        return response.data;
+      } catch (error) {
+        toast.error('An error occurred while fetching your invoices ;(');
+        throw error;
+      }
+    }
+  });
+	
+	return (
+    <div className='h-full container flex flex-col py-5'>
+      <div className='flex items-center justify-between'>
+        <h2 className='text-2xl font-semibold'>Invoices</h2>
+        <Link href={'/invoices/new'}>
+          <Button type='button' className='relative bg-core hover:bg-blue-800 text-white'>
+            New Invoice
+          </Button>
+        </Link>
+      </div>
+      <DataTable columns={columns} data={isPending ? [] : invoices as Invoice[]} isLoading={isPending} />
     </div>
-  )
+  );
 }
 
-export default Page
+export default Invoices;

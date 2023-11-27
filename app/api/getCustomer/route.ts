@@ -15,11 +15,11 @@ const GET = async (request: NextRequest) => {
     const customerId = searchParams.get('customerId');
 
     if (!businessId) {
-      throw new Error('Invalid request. Provide businessId.');
+      return NextResponse.json({ message: 'Invalid request. Provide businessId.' }, { status: 400 });
     }
 
     if (!customerId) {
-      throw new Error('Invalid request. Provide customerId.');
+      return NextResponse.json({ message: 'Invalid request. Provide customerId.' }, { status: 400 });
     }
 		
     const customer = await prisma.customer.findUnique({

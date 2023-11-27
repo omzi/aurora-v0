@@ -17,7 +17,7 @@ const GET = async (request: NextRequest) => {
     });
 
     if (!lastCreatedBusiness) {
-      throw new Error('User has no created businesses.');
+      return NextResponse.json({ message: 'User has no created businesses.' }, { status: 400 });
     }
 
     return NextResponse.json({ message: `User's last created business`, data: lastCreatedBusiness }, { status: 200 });
