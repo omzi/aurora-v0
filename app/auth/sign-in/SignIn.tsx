@@ -93,6 +93,7 @@ const SignIn = () => {
 	return (
     <div className='flex flex-col justify-center w-full min-h-full p-12 sm:px-6 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-md'>
+        <Link href={'/'}>
         <Image
           className='mx-auto'
           src={'/images/logo.png'}
@@ -101,6 +102,7 @@ const SignIn = () => {
           alt='Aurora'
           fetchPriority='high'
         />
+        </Link>
         <h2 className='mt-6 text-2xl font-bold text-center text-dark-1 dark:text-light-2'>
           Sign in to your Aurora account
         </h2>

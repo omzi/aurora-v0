@@ -12,9 +12,18 @@ import {
 } from '@tremor/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { BanknoteIcon, LandmarkIcon, UsersIcon, WalletIcon } from 'lucide-react';
+import useDashboard from '#/hooks/useDashboard';
+import { useUserContext } from '#/components/contexts/UserContext';
+import { useEffect } from 'react';
 
 const Dashboard = () => {
-  const queryClient = useQueryClient();
+  const {useGetAnalytics} = useDashboard()
+  const {selectedBusiness} = useUserContext()
+  const {analytics, loadingAnalytics} = useGetAnalytics()
+
+ console.log(analytics);
+ 
+
   const chartData = [
     {
       month: 'Jan',
@@ -58,7 +67,7 @@ const Dashboard = () => {
             />
             <div className='truncate'>
               <Text>Total Customers</Text>
-              <Metric className='truncate'>318</Metric>
+              <Metric className='truncate'>{analytics?.customers}</Metric>
             </div>
           </Flex>
         </Card>
@@ -74,7 +83,7 @@ const Dashboard = () => {
             />
             <div className='truncate'>
               <Text>Total Revenue</Text>
-              <Metric className='truncate'>₦ 175,000</Metric>
+              <Metric className='truncate'>₦ {analytics?.revenue}</Metric>
             </div>
           </Flex>
         </Card>
@@ -90,7 +99,7 @@ const Dashboard = () => {
             />
             <div className='truncate'>
               <Text>Total Outstanding</Text>
-              <Metric className='truncate'>₦ 12,750</Metric>
+              <Metric className='truncate'>₦ {analytics?.outstanding}</Metric>
             </div>
           </Flex>
         </Card>
@@ -106,7 +115,7 @@ const Dashboard = () => {
             />
             <div className='truncate'>
               <Text>Total Withdrawn</Text>
-              <Metric className='truncate'>₦ 202,250</Metric>
+              <Metric className='truncate'>₦ {analytics?.withdrawals}</Metric>
             </div>
           </Flex>
         </Card>

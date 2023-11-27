@@ -97,14 +97,15 @@ const SignUp = () => {
 	return (
     <div className='flex flex-col justify-center w-full min-h-full p-12 sm:px-6 lg:px-8'>
       <div className='sm:mx-auto sm:w-full sm:max-w-md'>
-        <Image
+       <Link href={'/'}>
+       <Image
           className='mx-auto'
           src={'/images/logo.png'}
           height={48}
           width={48}
           alt='Aurora'
           fetchPriority='high'
-        />
+        /></Link>
         <h2 className='mt-6 text-2xl font-bold text-center text-dark-2 dark:text-light-2'>
           Create your Aurora account
         </h2>

@@ -21,6 +21,8 @@ import { ExternalLinkIcon } from 'lucide-react';
 import { Button } from '#/components/ui/button';
 import ConfirmLogoutModal from '#/components/modals/ConfirmLogoutModal';
 import { Skeleton } from './ui/skeleton';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './ui/alert-dialog';
+import { DialogTrigger } from './ui/dialog';
 
 interface UserButtonProps {
   profilePicture: string;
@@ -37,8 +39,14 @@ const UserButton = ({
 }: UserButtonProps) => {
 	const logout = () => signOut();
 
+  const handleConfirm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.stopPropagation();
+		signOut()
+	}
+
   return (
-    <DropdownMenu>
+    <AlertDialog>
+      <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' className='relative h-8 w-8 rounded-full'>
           <Avatar className='h-8 w-8'>
@@ -74,14 +82,24 @@ const UserButton = ({
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <ConfirmLogoutModal onConfirm={signOut}>
+          <AlertDialogTrigger className='w-full'>
           <DropdownMenuItem>
             Log Out
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
-        </ConfirmLogoutModal>
+          </AlertDialogTrigger>
       </DropdownMenuContent>
     </DropdownMenu>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirm}>Log Out</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
