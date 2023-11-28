@@ -17,12 +17,14 @@ import { useUserContext } from '#/components/contexts/UserContext';
 import { useEffect } from 'react';
 
 const Dashboard = () => {
-  const {useGetAnalytics} = useDashboard()
+  const {useGetAnalytics, analyticsGetter} = useDashboard()
   const {selectedBusiness} = useUserContext()
   const {analytics, loadingAnalytics} = useGetAnalytics()
 
  console.log(analytics);
  
+
+
 
   const chartData = [
     {

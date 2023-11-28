@@ -8,18 +8,20 @@ function useDashboard() {
     const {selectedBusiness} = useUserContext()
 
     const analyticsGetter = async()=>{
-       try {
-        const response = await axios.get(`/api/dashboardAnalytics?id=${selectedBusiness?.id}`)
-        return response.data.data        
-       } catch (error) {
-            toast.error('something went wrong')
-       }
+      if(selectedBusiness && selectedBusiness.id.length > 1){
+        try {
+            const response = await axios.get(`/api/dashboardAnalytics?id=${selectedBusiness?.id}`)
+            return response.data.data        
+           } catch (error) {
+                //toast.error('something went wrong')
+           }
+      }
 
     }
     const useGetAnalytics = ()=>{
         const {data: analytics, isLoading: loadingAnalytics} = useQuery({
             queryKey: ['analytics'],
-            queryFn: analyticsGetter
+            queryFn:  analyticsGetter
         })
         return {
             analytics,
@@ -30,6 +32,7 @@ function useDashboard() {
  
  
     return {
+        analyticsGetter,
         useGetAnalytics
   }
 }
