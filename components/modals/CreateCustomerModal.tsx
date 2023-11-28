@@ -37,10 +37,7 @@ const CreateCustomerModal = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 	const onClose = useCustomerModal(state => state.onClose);
 	
-	const { selectedBusiness } = useUserContext();
-  if (!selectedBusiness) return;
-  
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+  // eslint-disable-next-line react-hooks/rules-of-hooks
 	const form = useForm<z.infer<typeof CustomerSchema>>({
     resolver: zodResolver(CustomerSchema),
 		defaultValues: {
@@ -50,6 +47,11 @@ const CreateCustomerModal = () => {
       address: ''
     }
   });
+  
+	const { selectedBusiness } = useUserContext();
+  if (!selectedBusiness) return;
+  
+	
 
 	const onSubmit = async (data: z.infer<typeof CustomerSchema>) => {
     try {
