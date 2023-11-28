@@ -47,12 +47,14 @@ import getCustomers from '#/lib/actions/getCustomers';
 import { SuccessResponse, Customer } from '#/common.types';
 import { useUserContext } from '#/components/contexts/UserContext';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '#/components/ui/dropdown-menu';
+import GeneratedInvoiceModal from '#/components/modals/GeneratedInvoiceModal';
 
 type Invoice = {
   description: string;
   quantity: number;
   price: number;
   total: number;
+  invoiceId?: string;
 };
 
 const NewInvoice = () => {
@@ -68,6 +70,8 @@ const NewInvoice = () => {
   const [total, setTotal] = useState(0);
   const [invoiceItems, setInvoiceItems] = useState<Invoice[]>([]);
   const [totalCost, setTotalCost] = useState(0);
+  const [invoiceId, setInvoiceId] = useState('')
+  const [showGeneratedModal, setShowGenratedModal] = useState(false)
 
   useEffect(() => {
     setTotal(quantity * price);
@@ -87,7 +91,6 @@ const NewInvoice = () => {
     }]);
     setTotalCost(totalCost + total);
     reset();
-    console.log(invoiceItems);
   }
 
   const reset = () => {
@@ -117,7 +120,6 @@ const NewInvoice = () => {
       try {
         const response = (await getCustomers(selectedBusiness!.id)) as SuccessResponse<Customer[]>;
 
-        console.log('Get Customers Query :>>', response);
         return response.data;
       } catch (error) {
         toast.error('An error occurred while fetching your customers ;(');
@@ -154,7 +156,7 @@ const NewInvoice = () => {
     const businessId = selectedBusiness!.id;
     const customerId = customer!.id;
     const data = {
-      amount: total,
+      amount: totalCost,
       dueDate: date,
       items: invoiceItems
     }
@@ -163,17 +165,27 @@ const NewInvoice = () => {
       const response = await axios.post<{ data: Invoice }>(`/api/invoices?businessId=${businessId}&customerId=${customerId}`, data);
       const { data: invoice } = response.data;
       
-      console.log('Invoice :>>', invoice);
       toast.success('Invoice created successfully!');
+      if(invoice.invoiceId){
+          setShowGenratedModal(true)
+          setInvoiceId(invoice.invoiceId)
+      }
     } catch (error) {
       console.error('Error creating invoice :>>', error);
       toast.error('An error occurred while creating the invoice.');
     }
   }
+  const handleClose = ()=>{
+    setShowGenratedModal(false)
+  }
 
   return (
     <div className='flex flex-col px-4 py-8 md:px-8 md:py-12'>
-      <h1 className='text-2xl font-semibold'>Create Invoice</h1>
+      <GeneratedInvoiceModal invoiceLink={`/invoices/view/${invoiceId}`} controller={showGeneratedModal} onOpenChange={handleClose} />
+      <div className='flex justify-between w-full'>
+        <h1 className='text-2xl font-semibold'>Create Invoice</h1>
+        <XIcon className='cursor-pointer' onClick={invoiceExit.onOpen} />
+      </div>
       <div className='flex flex-row items-center justify-between gap-4 my-4'>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

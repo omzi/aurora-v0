@@ -101,7 +101,7 @@ const ViewInvoice = () => {
               <Image
                 width={32}
                 height={32}
-                src={invoiceDetails?.business.logo as string}
+                src={invoiceDetails?.business.logo as string || '/images/logo.png'}
                 alt={`${invoiceDetails?.business.name} Business Logo`}
                 className='object-cover'
               />
