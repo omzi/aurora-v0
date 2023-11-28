@@ -137,7 +137,7 @@ const Navigation = () => {
       <aside
 				ref={sideBarRef}
 				className={cn(
-					'group/sidebar h-[100vh] bg-[#efefef] dark:bg-black overflow-y-auto relative flex w-60 flex-col z-[99999]', isResetting && 'transition-all ease-in-out duration-300', isMobile && 'w-0'
+					'group/sidebar h-[100vh] bg-[#efefef] dark:bg-black overflow-y-auto relative flex w-60 flex-col z-[10]', isResetting && 'transition-all ease-in-out duration-300', isMobile && 'w-0'
 				)}
 			>
         <div>
@@ -152,7 +152,8 @@ const Navigation = () => {
 						</div>
 					</div>
 					<Item
-						onClick={() => navigateTo('/dashboard')}
+						isLink
+						path='/dashboard'
 						label='Dashboard'
 						icon={Dashboard}
 						active={pathname === '/dashboard'}
@@ -169,19 +170,22 @@ const Navigation = () => {
 						isSearch
 					/> */}
 					<Item
-						onClick={() => navigateTo('/customers')}
+						isLink
+						path='/customers'
 						label='Customers'
 						icon={Users}
 						active={pathname.startsWith('/customers') }
 					/>
 					<Item
-						onClick={() => navigateTo('/invoices')}
+						isLink
+						path='/invoices'
 						label="Invoices"
 						icon={Receipt}
 						active={pathname.startsWith('/invoices')}
 					/>
 					<Item
-						onClick={() => navigateTo('/business')}
+						isLink
+						path='/business'
 						label='Business Info'
 						icon={Info}
 						active={pathname === '/business'}
@@ -214,7 +218,7 @@ const Navigation = () => {
 			<div
 				ref={navBarRef}
 				className={cn(
-					'absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]',
+					'absolute top-0 z-[9] left-60 w-[calc(100%-240px)]',
 					isResetting && 'transition-all ease-in-out duration-300',
 					isMobile && 'left-0 w-full'
 				)}

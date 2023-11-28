@@ -4,6 +4,7 @@ import { cn } from '#/lib/utils';
 import { LucideIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '#/components/ui/skeleton';
+import Link from 'next/link';
 
 interface ItemProps {
 	label: string;
@@ -12,6 +13,8 @@ interface ItemProps {
 	active?: boolean;
 	isSearch?: boolean;
 	level?: number;
+	path?: string;
+	isLink?: boolean
 }
 
 const Item = ({
@@ -19,12 +22,17 @@ const Item = ({
 	onClick,
 	icon: Icon,
 	active,
-	isSearch
+	isSearch,
+	isLink,
+	path
 }: ItemProps) => {
 	const router = useRouter();
 
 	return (
-    <div
+    <>
+	{isLink?
+		<Link
+		href={path!}
       onClick={onClick}
       role='button'
       className={cn(
@@ -39,7 +47,27 @@ const Item = ({
           <span className='text-xs'>⌘</span>K
         </kbd>
       )}
-    </div>
+    </Link> 
+	:
+	
+		<div
+      onClick={onClick}
+      role='button'
+      className={cn(
+        'group min-h-[24px] text-sm px-3 py-3 w-full hover:bg-primary/5 flex items-center text-dark-1 dark:text-light-2 font-medium',
+        active && 'bg-primary/5 text-primary'
+      )}
+    >
+      <Icon className='shrink-0 h-[18px] mr-2 text-muted-foreground' />
+      <span className='truncate'>{label}</span>
+      {isSearch && (
+        <kbd className='ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
+          <span className='text-xs'>⌘</span>K
+        </kbd>
+      )}
+    </div> 
+	}
+	</>
   );
 }
 

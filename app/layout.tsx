@@ -11,6 +11,7 @@ import { UserProvider } from '#/components/contexts/UserContext';
 import { ThemeProvider } from '#/components/providers/ThemeProvider';
 import { ModalProvider } from '#/components/providers/ModalProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Next13ProgressBar } from 'next13-progressbar';
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const RootLayout = ({
                   />
                   <ModalProvider />
                   {children}
+                  <Next13ProgressBar height="3.5px" color="#24a3fe" options={{ showSpinner: false, speed: 500  }} delay={0} startPosition={0.7} showOnShallow />
                 </EdgeStoreProvider>
               </UserProvider>
             </ThemeProvider>

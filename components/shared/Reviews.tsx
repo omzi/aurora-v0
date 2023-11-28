@@ -46,15 +46,17 @@ const Reviews = () => {
             className="mx-auto max-w-2xl mt-16 grid grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3">
                 <Card
                     name='Omzi'
-                    review='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sodales lacus eget enim tempus sagittis. Maecenas eu porta eros. Cras id mauris vel lorem porttitor placerat bibendum vel leo.'
+                    review={`This platform has revolutionized the way I manage my business. The user-friendly interface makes it 
+                    easy to build and expand my customer base. The integrated invoicing solutions have saved me countless hours, and managing payments
+                     and withdrawals has never been smoother. It's a game-changer for any business owner looking to grow without the hassle!`}
                 />
                 <Card
                     name='Tito'
-                    review='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sodales lacus eget enim tempus sagittis. Maecenas eu porta eros. Cras id mauris vel lorem porttitor placerat bibendum vel leo.'
+                    review={`I can't express how much this platform has simplified my invoicing process. As a small business owner, managing payments and keeping track of invoices used to be a headache. With this site, everything is centralized and easy to navigate. It has improved my cash flow. Highly recommended for anyone in need of efficient invoicing solutions.`}
                 />
                  <Card
                     name='Bohemiancode-x'
-                    review='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sodales lacus eget enim tempus sagittis. Maecenas eu porta eros. Cras id mauris vel lorem porttitor placerat bibendum vel leo.'
+                    review={`This site is more than just a business tool; it's a very good and effective growth companion. Building my customer base has never been more strategic and effective. The features for managing payments and withdrawals are seamless, giving me the confidence to focus on scaling my business. If you're serious about growth, this platform is a must-have!`}
                 />
             </ul>
         </div>
