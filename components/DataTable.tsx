@@ -1,6 +1,16 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import DataTablePagination from '#/components/DataTablePagination';
+import DataTableViewOptions from '#/components/DataTableViewOptions';
+import { Input } from '#/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '#/components/ui/table';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,19 +21,9 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '#/components/ui/table';
-import { Input } from '#/components/ui/input';
-import DataTablePagination from '#/components/DataTablePagination';
-import DataTableViewOptions from '#/components/DataTableViewOptions';
+import { ChangeEvent, useState } from 'react';
 import Loader from 'react-ts-loaders';
 
 interface DataTableProps<TData, TValue> {
@@ -35,7 +35,7 @@ interface DataTableProps<TData, TValue> {
 const DataTable = <TData, TValue>({
   columns,
   data,
-  isLoading = false
+  isLoading = false,
 }: DataTableProps<TData, TValue>) => {
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -45,7 +45,7 @@ const DataTable = <TData, TValue>({
   const handleGlobalFilter = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value || '';
     setGlobalFilter(value);
-  }
+  };
 
   const table = useReactTable({
     data,
@@ -64,22 +64,22 @@ const DataTable = <TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection,
-      globalFilter
-    }
+      globalFilter,
+    },
   });
 
   return (
     <div>
-      <div className='flex items-center py-4'>
+      <div className="flex items-center py-4">
         <Input
-          placeholder='Filter table...'
+          placeholder="Filter table..."
           value={globalFilter}
           onChange={handleGlobalFilter}
-          className='max-w-sm'
+          className="max-w-sm border-0 outline-0 bg-gray-100 dark:bg-[#0A0A0A]"
         />
         <DataTableViewOptions table={table} />
       </div>
-      <div className='rounded-md max-h-[55vh] overflow-y-auto border'>
+      <div className="rounded-md max-h-[55vh] overflow-y-auto border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -104,9 +104,13 @@ const DataTable = <TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className='h-48 text-center'
+                  className="h-48 text-center"
                 >
-                  <Loader size={32} type='spinner' className='text-black dark:text-white' />
+                  <Loader
+                    size={32}
+                    type="spinner"
+                    className="text-black dark:text-white"
+                  />
                 </TableCell>
               </TableRow>
             ) : (
@@ -131,7 +135,7 @@ const DataTable = <TData, TValue>({
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className='h-24 text-center'
+                      className="h-24 text-center"
                     >
                       No results.
                     </TableCell>
@@ -145,6 +149,6 @@ const DataTable = <TData, TValue>({
       <DataTablePagination table={table} />
     </div>
   );
-}
+};
 
 export default DataTable;
