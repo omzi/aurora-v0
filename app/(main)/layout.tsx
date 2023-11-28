@@ -7,6 +7,7 @@ import { Business, SuccessResponse } from '#/common.types';
 import { useBusinessModal } from '#/hooks/useBusinessModal';
 import { useUserContext } from '#/components/contexts/UserContext';
 import getLastCreatedBusiness from '#/lib/actions/getLastCreatedBusiness';
+import { Next13ProgressBar } from 'next13-progressbar';
 
 const UserLayout = ({
   children,
@@ -61,6 +62,7 @@ const UserLayout = ({
 	
   return (
     <div className='h-full overflow-hidden flex'>
+                  <Next13ProgressBar height="3.5px" color="#24a3fe" options={{ showSpinner: false  }} delay={0} startPosition={0.7} showOnShallow />
 			<Navigation />
 			<main className='h-[calc(100%-60px)] mt-[60px] flex-1 overflow-y-auto'>
 				{children}
