@@ -3,7 +3,7 @@
 import { Button } from '#/components/ui/button';
 import React, { useEffect, useState } from 'react';
 import { useConfirmLeave } from '#/hooks/useConfirmLeave';
-import { ChevronsUpDownIcon, SearchIcon, XIcon } from 'lucide-react';
+import { ChevronsUpDownIcon, PlusIcon, SearchIcon, XIcon } from 'lucide-react';
 import {
   CardTitle,
   CardHeader,
@@ -48,6 +48,7 @@ import { SuccessResponse, Customer } from '#/common.types';
 import { useUserContext } from '#/components/contexts/UserContext';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '#/components/ui/dropdown-menu';
 import GeneratedInvoiceModal from '#/components/modals/GeneratedInvoiceModal';
+import { useCustomerModal } from '#/hooks/useCustomerModal';
 
 type Invoice = {
   description: string;
@@ -59,6 +60,8 @@ type Invoice = {
 
 const NewInvoice = () => {
   const invoiceExit = useConfirmLeave();
+  const customerModal = useCustomerModal();
+
   const { selectedBusiness } = useUserContext();
   const [customer, setCustomer] = useState<Customer>();
 
@@ -186,15 +189,16 @@ const NewInvoice = () => {
         <h1 className='text-2xl font-semibold'>Create Invoice</h1>
         <XIcon className='cursor-pointer' onClick={invoiceExit.onOpen} />
       </div>
-      <div className='flex flex-row items-center justify-between gap-4 my-4'>
-        <DropdownMenu>
+      <div className='flex flex-col sm:flex-row items-center justify-between gap-4 my-4'>
+        <div className='flex w-full  gap-3'>
+        <DropdownMenu >
           <DropdownMenuTrigger asChild>
-            <Button variant='outline' className='flex justify-between w-[300px]'>
+            <Button variant='outline' className='flex justify-between w-full sm:max-w-[300px]'>
               <span className='truncate'>{customer?.name || 'Select a customer'}</span>
               <ChevronsUpDownIcon className='w-3.5 h-3.5 ml-2' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='start' className='w-[300px]'>
+          <DropdownMenuContent align='start' className='w-[300px] shadow-lg px-2 py-3'>
             <div className='relative m-0.5 mb-1'>
               <SearchIcon className='absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400' />
               <Input
@@ -204,7 +208,7 @@ const NewInvoice = () => {
                 placeholder='Search customers...'
               />
             </div>
-            <DropdownMenuGroup className='overflow-y-auto h-[250px] flex flex-col items-center justify-center'>
+            <DropdownMenuGroup className='overflow-y-auto h-auto flex flex-col items-center'>
               {isPending ? (
                 <Loader type='spinner' size={36} className='my-4 text-black dark:text-white leading-[0]' />
               ) : (
@@ -232,13 +236,17 @@ const NewInvoice = () => {
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+        <Button onClick={customerModal.onOpen} type='button' className='bg-core hover:bg-blue-800 text-white'>
+        <span className='flex md:hidden'><PlusIcon/></span> <span className='hidden sm:flex md:hidden'>New</span> <span className='hidden md:flex'>New Customer</span> 
+        </Button>
+        </div>
 
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant='outline'
               className={cn(
-                'w-[250px] flex items-center justify-start text-left font-normal',
+                'w-full sm:max-w-[250px] flex items-center justify-start text-left font-normal',
                 !date && 'text-muted-foreground'
               )}
             >
