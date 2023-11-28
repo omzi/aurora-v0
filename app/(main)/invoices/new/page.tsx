@@ -49,6 +49,7 @@ import { useUserContext } from '#/components/contexts/UserContext';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '#/components/ui/dropdown-menu';
 import GeneratedInvoiceModal from '#/components/modals/GeneratedInvoiceModal';
 import { useCustomerModal } from '#/hooks/useCustomerModal';
+import sendEmail from '#/components/sendEmail';
 
 type Invoice = {
   description: string;
@@ -74,6 +75,7 @@ const NewInvoice = () => {
   const [invoiceItems, setInvoiceItems] = useState<Invoice[]>([]);
   const [totalCost, setTotalCost] = useState(0);
   const [invoiceId, setInvoiceId] = useState('')
+  const [appendedMsg, setAppendedMsg] = useState('')
   const [showGeneratedModal, setShowGenratedModal] = useState(false)
 
   useEffect(() => {
@@ -168,8 +170,25 @@ const NewInvoice = () => {
       const response = await axios.post<{ data: Invoice }>(`/api/invoices?businessId=${businessId}&customerId=${customerId}`, data);
       const { data: invoice } = response.data;
       
+
       toast.success('Invoice created successfully!');
       if(invoice.invoiceId){
+        try {
+          const emailSent = await sendEmail(
+            { receiver: customer.email, 
+              url: `https://aurora-vx.vercel.app/invoices/view/${invoice.invoiceId}`,
+              receiverName: customer.name,
+              busnessName: selectedBusiness?.name
+            }) as boolean
+
+              
+          emailSent ? setAppendedMsg(`and sent to ${customer.name}'s email`) 
+          : setAppendedMsg(`but unable to send to ${customer.name}'s email`)
+          
+        } catch (error) {
+          console.log('first error',error);
+          
+        }
           setShowGenratedModal(true)
           setInvoiceId(invoice.invoiceId)
       }
@@ -184,7 +203,7 @@ const NewInvoice = () => {
 
   return (
     <div className='flex flex-col px-4 py-8 md:px-8 md:py-12'>
-      <GeneratedInvoiceModal invoiceLink={`/invoices/view/${invoiceId}`} controller={showGeneratedModal} onOpenChange={handleClose} />
+      <GeneratedInvoiceModal appendedMsg={appendedMsg} invoiceLink={`/invoices/view/${invoiceId}`} controller={showGeneratedModal} onOpenChange={handleClose} />
       <div className='flex justify-between w-full'>
         <h1 className='text-2xl font-semibold'>Create Invoice</h1>
         <XIcon className='cursor-pointer' onClick={invoiceExit.onOpen} />

@@ -73,10 +73,10 @@ const ViewInvoice = () => {
   };
 
   return (
-    <div className='flex flex-col p-6'>
+    <div className='flex flex-col p-2 sm:p-6'>
       <Card className='p-6'>
         <CardHeader className='pl-0'>
-          <div className='flex flex-row items-center justify-between'>
+          <div className='flex flex-col sm:flex-row gap-7 items-center justify-between'>
             <CardTitle>
               Invoice{' '}
               <span className='font-thin leading-none opacity-70'>
@@ -95,8 +95,8 @@ const ViewInvoice = () => {
             </div>
           </div>
         </CardHeader>
-        <div className='flex flex-row items-center justify-between'>
-          <Card className='flex flex-col gap-2 my-4 sm:w-96'>
+        <div className='flex flex-col gap-3 sm:flex-row items-center justify-between'>
+          <Card className='flex flex-col gap-2 my-2 w-full sm:max-w-[48%] md:max-w-[44%] '>
             <CardHeader>
               <Image
                 width={32}
@@ -112,14 +112,14 @@ const ViewInvoice = () => {
               <div>{format(new Date(invoiceDetails?.createdAt as Date), 'do MMM, yyyy')}</div>
             </CardContent>
           </Card>
-          <Card className='flex flex-col items-end gap-2 my-4 sm:w-96'>
+          <Card className='flex flex-col  gap-2 my-4 w-full sm:max-w-[48%] md:max-w-[44%]'>
             <CardHeader>
-              <CardTitle className='text-base font-bold mb-2 uppercase text-gray-900 dark:text-white'>
+              <CardTitle className='text-base font-bold text-left sm:text-right mb-2 uppercase text-gray-900 dark:text-white'>
                 Billed To:
               </CardTitle>
             </CardHeader>
-            <CardContent className='flex flex-col items-end gap-2'>
-              <div>{invoiceDetails?.customer.name} ({invoiceDetails?.customer.email})</div>
+            <CardContent className='flex text-left sm:text-right flex-col  gap-2'>
+              <div className=''>{invoiceDetails?.customer.name} ({invoiceDetails?.customer.email})</div>
               <div>{invoiceDetails?.customer.phoneNumber}</div>
               <div>{invoiceDetails?.customer.address}</div>
             </CardContent>
@@ -153,21 +153,25 @@ const ViewInvoice = () => {
               )}
             </div>
             <table className='table-auto w-full mt-4'>
-              <thead className='bg-white/20'>
-                <tr className='rounded-md'>
-                  <th className='p-3 uppercase text-sm tracking-wide font-thin text-left'>Description</th>
-                  <th className='p-3 uppercase text-sm tracking-wide font-thin text-left'>Quantity</th>
-                  <th className='p-3 uppercase text-sm tracking-wide font-thin text-left'>Price</th>
-                  <th className='p-3 uppercase text-sm tracking-wide font-thin text-left'>Total</th>
+              <thead className='bg-white/20 flex w-full'>
+                <tr className='rounded-md flex justify-between w-full items-center'>
+                  <th className='p-3 uppercase text-sm flex-1 min-w-[10rem] tracking-wide font-thin text-left'>Description</th>
+                  <div className='sm:w-full max-w-[28rem] text-center  sm:grid grid-cols-3'>
+                  <th className='p-3 uppercase hidden sm:flex mx-auto text-sm tracking-wide font-thin text-left'>Quantity</th>
+                  <th className='p-3 uppercase hidden  sm:flex mx-auto text-sm tracking-wide font-thin text-left'>Price</th>
+                  <th className='p-3 uppercase text-sm m-0 sm:mx-auto tracking-wide font-thin text-left'>Total</th>
+                  </div>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='flex w-full flex-col'>
                 {(invoiceDetails?.items as Item[]).map((item, idx) => (
-                  <tr className='bg-transparent' key={idx}>
-                    <td className='p-3'>{item.description}</td>
-                    <td className='p-3'>{item.quantity}</td>
-                    <td className='p-3'>₦ {formatNumberWithCommas(item.price)}</td>
-                    <td className='p-3'>₦ {formatNumberWithCommas(item.total)}</td>
+                  <tr className='bg-transparent flex w-full items-start justify-between' key={idx}>
+                    <td className='p-3 flex flex-1 w-full min-w-[10rem] '>{item.description} <span className='flex ml-2 sm:hidden'>{`-(${item.quantity})`}</span></td>
+                    <div className='sm:w-full max-w-[28rem] items-end text-center sm:grid grid-cols-3'>
+                    <td className='p-3 hidden mx-auto sm:flex'>{item.quantity}</td>
+                    <td className='p-3 hidden mx-auto sm:flex'>₦ {formatNumberWithCommas(item.price)}</td>
+                    <td className='p-3 whitespace-nowrap w-full m-0 sm:mx-auto  sm:text-center '>₦ {formatNumberWithCommas(item.total)}</td>
+                    </div>
                   </tr>
                 ))}
               </tbody>
