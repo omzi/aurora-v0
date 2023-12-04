@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts    Account[]
+  businesses  Business[]
+  withdrawals Withdrawal[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Business {
+  id                 String     @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  logo               String?
+  description        String
+  address            String?
+  user               User       @relation(fields: [userId], references: [id])
+  userId             String     @db.ObjectId
+  customers          Customer[]
+  invoices           Invoice[]
+  registrationNumber String?
+  email              String
+  phoneNumber        String?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+}
+
+model Customer {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  phoneNumber String
+  address     String?
+  business    Business  @relation(fields: [businessId], references: [id])
+  businessId  String    @db.ObjectId
+  invoices    Invoice[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum InvoiceStatus {
+  PAID
+  UNPAID
+}
+
+model Invoice {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  amount      Int
+  dueDate     DateTime
+  status      InvoiceStatus
+  items       Json[]
+  business    Business      @relation(fields: [businessId], references: [id])
+  businessId  String        @db.ObjectId
+  customer    Customer      @relation(fields: [customerId], references: [id])
+  customerId  String        @db.ObjectId
+  invoiceId   String        @unique
+  paymentLink String?       @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum WithdrawalStatus {
+  PENDING
+  APPROVED
+  DECLINED
+}
+
+model Withdrawal {
+  id           String           @id @default(auto()) @map("_id") @db.ObjectId
+  amount       Float
+  status       WithdrawalStatus
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String           @db.ObjectId
+  withdrawalId String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model BankAccount {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  accountNumber String?
+  accountName   String?
+  bankName      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
