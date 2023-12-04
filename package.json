@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npm rebuild canvas --build-from-source && prisma generate"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@edgestore/react": "^0.1.4",
