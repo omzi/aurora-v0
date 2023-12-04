@@ -132,7 +132,7 @@ const ViewInvoice = () => {
         isOpen={showVerifyPaymentModal || isSubmitting}
         onOpenChange={handleClose}
       />
-      <Card className='p-3 my-4 w-52 h-52 mx-auto'>
+      {/* <Card className='p-3 my-4 w-52 h-52 mx-auto'>
         <Image
           width={200}
           height={200}
@@ -140,7 +140,7 @@ const ViewInvoice = () => {
           src={`/api/getInvoiceQR?invoiceId=${invoiceDetails.invoiceId}`}
           alt={`Invoice #${invoiceDetails.invoiceId} QR code`}
         />
-      </Card>
+      </Card> */}
       <Card className='p-6'>
         <CardHeader className='pl-0'>
           <div className='flex flex-col sm:flex-row gap-7 items-center justify-between'>
