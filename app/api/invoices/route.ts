@@ -76,7 +76,6 @@ const POST = async (request: NextRequest) => {
     }
 
 		body.status = 'UNPAID';
-		body.paymentLink = '';
 		body.invoiceId = generateRandomChars(12, ...generateRandomChars.alphanumeric);
     body.business = { connect: { id: businessId } };
     body.customer = { connect: { id: customerId } };

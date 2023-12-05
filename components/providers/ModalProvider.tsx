@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import SettingsModal from '#/components/modals/SettingsModal';
 import CreateBusinessModal from '#/components/modals/CreateBusinessModal';
 import CreateCustomerModal from '#/components/modals/CreateCustomerModal';
-import ConfirmLeaveInvoice from '#/components/modals/ConfirmLeaveInvoice';
+import InvoiceExitModal from '#/components/modals/InvoiceExitModal';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -23,7 +23,7 @@ export const ModalProvider = () => {
       <SettingsModal />
       <CreateBusinessModal />
       <CreateCustomerModal />
-      <ConfirmLeaveInvoice />
+      <InvoiceExitModal />
     </>
   );
 };

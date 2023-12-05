@@ -2,7 +2,7 @@
 
 import { Button } from '#/components/ui/button';
 import React, { useEffect, useState } from 'react';
-import { useConfirmLeave } from '#/hooks/useConfirmLeave';
+import { useInvoiceExit } from '#/hooks/useInvoiceExit';
 import { ArrowLeftIcon, ChevronsUpDownIcon, CogIcon, PlusIcon, SearchIcon, XIcon } from 'lucide-react';
 import {
   CardTitle,
@@ -39,18 +39,20 @@ import {
 import axios from 'axios';
 import Loader from 'react-ts-loaders';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 import { Input } from '#/components/ui/input';
 import { useQuery } from '@tanstack/react-query';
 import InvoiceItem from '#/components/InvoiceItem';
 import { formatNumberWithCommas } from '#/lib/utils';
 import getCustomers from '#/lib/actions/getCustomers';
-import { SuccessResponse, Customer } from '#/common.types';
 import { useCustomerModal } from '#/hooks/useCustomerModal';
 import { useUserContext } from '#/components/contexts/UserContext';
+import { SuccessResponse, Customer, Invoice } from '#/common.types';
 import GeneratedInvoiceModal from '#/components/modals/GeneratedInvoiceModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '#/components/ui/dropdown-menu';
+import Link from 'next/link';
 
-type Invoice = {
+type InvoiceItem = {
   description: string;
   quantity: number;
   price: number;
@@ -58,7 +60,8 @@ type Invoice = {
 };
 
 const NewInvoice = () => {
-  const invoiceExit = useConfirmLeave();
+  const router = useRouter();
+  const invoiceExit = useInvoiceExit();
   const customerModal = useCustomerModal();
 
   const { selectedBusiness } = useUserContext();
@@ -70,11 +73,12 @@ const NewInvoice = () => {
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [total, setTotal] = useState(0);
-  const [invoiceItems, setInvoiceItems] = useState<Invoice[]>([]);
-  const [totalCost, setTotalCost] = useState(0);
+  const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
+  const [overallTotal, setOverallTotal] = useState(0);
   const [invoiceId, setInvoiceId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showGeneratedModal, setShowGeneratedModal] = useState(false);
+  const hasUnsavedChanges = description.trim() !== '' || quantity > 0 || price > 0 || total > 0 || customer || date;
 
   useEffect(() => {
     setTotal(quantity * price);
@@ -92,30 +96,30 @@ const NewInvoice = () => {
       quantity,
       total
     }]);
-    setTotalCost(totalCost + total);
+    setOverallTotal(overallTotal + total);
     toast.success('Item added successfully!');
-    reset();
+    resetInputs();
   }
 
-  const reset = () => {
+  const resetInputs = async () => {
     setDescription('');
     setPrice(0);
     setQuantity(0);
     setTotal(0);
   }
 
-  const resetInvoice = () => {
+  const resetInvoice = async () => {
     setInvoiceItems([]);
-    setTotalCost(0);
+    setOverallTotal(0);
   }
 
   const handleRemoveInvoiceItem = (idx: number) => {
     const removedItem = invoiceItems[idx];
-    const newTotalCost = totalCost - removedItem.total;
+    const newTotalCost = overallTotal - removedItem.total;
     const updatedInvoiceItems = invoiceItems.filter((_, i) => i !== idx);
 
     setInvoiceItems(updatedInvoiceItems);
-    setTotalCost(newTotalCost);
+    setOverallTotal(newTotalCost);
   }
 
   const { data: customers, isPending } = useQuery({
@@ -161,7 +165,7 @@ const NewInvoice = () => {
     const businessId = selectedBusiness!.id;
     const customerId = customer!.id;
     const data = {
-      amount: totalCost,
+      amount: overallTotal,
       dueDate: date,
       items: invoiceItems
     }
@@ -170,9 +174,16 @@ const NewInvoice = () => {
       const response = await axios.post<{ data: Invoice }>(`/api/invoices?businessId=${businessId}&customerId=${customerId}`, data);
       const { data: invoice } = response.data;
 
-      toast.success('Invoice created successfully!');
+      await Promise.all([
+        resetInputs(),
+        resetInvoice(),
+        setCustomer(undefined),
+        setDate(undefined)
+      ]);
+
+      setInvoiceId(invoice.invoiceId);
       setShowGeneratedModal(true);
-      setInvoiceId(invoiceId);
+      toast.success('Invoice created successfully!');
     } catch (error) {
       console.error('Error creating invoice :>>', error);
       toast.error('An error occurred while creating the invoice.');
@@ -190,7 +201,11 @@ const NewInvoice = () => {
       <GeneratedInvoiceModal invoiceLink={`/invoices/view/${invoiceId}`} isOpen={showGeneratedModal} onOpenChange={handleClose} />
       <div className='flex items-center justify-start gap-4 w-full'>
         <Button variant='outline' size='icon' className='rounded-full'>
-          <ArrowLeftIcon className='cursor-pointer' onClick={invoiceExit.onOpen} />
+          {hasUnsavedChanges ? (
+            <ArrowLeftIcon className='cursor-pointer' onClick={invoiceExit.onOpen} />
+          ) : (
+            <Link href='/invoices'><ArrowLeftIcon className='cursor-pointer' /></Link>
+          )}
         </Button>
         <h1 className='text-2xl font-semibold'>Create Invoice</h1>
       </div>
@@ -203,7 +218,7 @@ const NewInvoice = () => {
               <ChevronsUpDownIcon className='w-3.5 h-3.5 ml-2' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align='start' className='w-[300px] shadow-lg px-2 py-3'>
+          <DropdownMenuContent align='start' className='w-[300px] shadow-lg p-1'>
             <div className='relative m-0.5 mb-1'>
               <SearchIcon className='absolute left-2.5 top-2.5 h-4 w-4 text-zinc-500 dark:text-zinc-400' />
               <Input
@@ -213,7 +228,7 @@ const NewInvoice = () => {
                 placeholder='Search customers...'
               />
             </div>
-            <DropdownMenuGroup className='overflow-y-auto h-auto flex flex-col items-center'>
+            <DropdownMenuGroup className='overflow-y-auto h-[250px] flex flex-col items-center'>
               {isPending ? (
                 <Loader type='spinner' size={36} className='my-4 text-black dark:text-white leading-[0]' />
               ) : (
@@ -358,7 +373,7 @@ const NewInvoice = () => {
                 </TableCell>
               
                 <TableCell className='!p-1 w-4 h-4 cursor-pointer rounded-sm bg-white/10 hover:bg-white/25'>
-                  <XIcon onClick={reset} className='w-4 h-4 text-black cursor-pointer' />
+                  <XIcon onClick={resetInputs} className='w-4 h-4 text-black cursor-pointer' />
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -375,7 +390,7 @@ const NewInvoice = () => {
         </CardHeader>
         <CardContent className='flex items-center justify-between'>
           <span className='mr-4'>Total Amount (₦):</span>
-          <span className='text-lg font-semibold'>{formatNumberWithCommas(totalCost)}</span>
+          <span className='text-lg font-semibold'>{formatNumberWithCommas(overallTotal)}</span>
         </CardContent>
       </Card>
       <div className='flex items-center mt-6'>

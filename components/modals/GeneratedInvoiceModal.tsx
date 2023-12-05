@@ -6,7 +6,7 @@ import { Button } from '#/components/ui/button';
 import { ArrowLeftIcon, ExternalLinkIcon } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader } from '#/components/ui/dialog';
 
-interface GenerateInvoiceModalProps {
+interface GeneratedInvoiceModalProps {
   isOpen: boolean;
   onOpenChange: () => void;
   invoiceLink: string;
@@ -18,7 +18,7 @@ const GeneratedInvoiceModal = ({
   onOpenChange,
   invoiceLink,
   appendedMessage
-}: GenerateInvoiceModalProps) => {
+}: GeneratedInvoiceModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className='!w-auto'>

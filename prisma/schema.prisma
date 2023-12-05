@@ -96,7 +96,7 @@ model Invoice {
   customer    Customer      @relation(fields: [customerId], references: [id])
   customerId  String        @db.ObjectId
   invoiceId   String        @unique
-  paymentLink String?       @unique
+  paymentLink String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 }
