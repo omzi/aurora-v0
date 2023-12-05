@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import Item from './Item';
 import { cn, generateDefaultAvatar } from '#/lib/utils';
-import UserItems from './UserItems';
 import { useMediaQuery } from 'usehooks-ts';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSearch } from '#/hooks/useSearch';
@@ -28,7 +27,7 @@ import { Business, SuccessResponse } from '#/common.types';
 import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
 import UserButton from '../UserButton';
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '#/components/ui/skeleton';
 import Logo from './Logo';
 
 const Navigation = () => {
