@@ -74,7 +74,7 @@ NEXTAUTH_URL = # Eg: http://localhost:3000
 
 EDGE_STORE_ACCESS_KEY = # Your EdgeStore access key
 EDGE_STORE_SECRET_KEY = # Your EdgeStore secret key
-BREVO_API_KEY = # Your Brevo API key
+PLUNK_API_SK = # Your Plunk secret key
 
 DATABASE_URL = # Your Database URL
 
@@ -96,7 +96,7 @@ Set the value of **`NEXTAUTH_SECRET`** to the result.
 - **`NEXTAUTH_URL`**: Set it to the URL where your Aurora application is hosted during development.
 For external services:
 - **`EDGE_STORE_ACCESS_KEY`** and **`EDGE_STORE_SECRET_KEY`**: These are access and secret keys for your [EdgeStore](https://edgestore.dev/) (for handling file uploads) service.
-- **`BREVO_API_KEY`**: This is the API key for your Brevo (a transaction) service.
+- **`PLUNK_API_SK`**: This is the secret key for your Plunk (a transactional email provider) service.
 - **`DATABASE_URL`**: Set it to the connection string of your MongoDB cluster.
 - **`PAYSTACK_TEST_PK`**: Your [Paystack](https://paystack.com/) (for payments) test public key. If you don't a Paystack account, you'll have to [create one](https://dashboard.paystack.com/#/signup).
 - **`PAYSTACK_TEST_SK`**: Your Paystack test secret key.
