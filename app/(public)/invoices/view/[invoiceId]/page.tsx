@@ -44,11 +44,7 @@ const ViewInvoice = () => {
       try {
         const response = (await getInvoiceByInvoiceId(invoiceId as string)) as SuccessResponse<InvoiceDetails>;
         console.log('Get Invoice Query :>>', response);
-
-        if (response.data.status === 'PAID') {
-          setShowVerifyPaymentModal(true);
-          toast.success('Payment successful!', { icon: '🥳' });
-        }
+        
         return response.data;
       } catch (error) {
         toast.error('An error occurred while fetching invoice detail ;(');
@@ -59,10 +55,14 @@ const ViewInvoice = () => {
   });
 
   useEffect(() => {
-    if (!showVerifyPaymentModal && isSubmitting) {
+    if (invoiceDetails?.status === 'PAID' && isSubmitting) {
+      toast.success('Payment successful!', { icon: '🥳' });
+      setIsSubmitting(false);
+      setShowVerifyPaymentModal(false);
+    } else if (!showVerifyPaymentModal && isSubmitting) {
       setShowVerifyPaymentModal(true);
     }
-  }, [showVerifyPaymentModal, isSubmitting]);
+  }, [showVerifyPaymentModal, isSubmitting, invoiceDetails]);
 
   if (isPending) {
     return <div className='fixed top-0 left-0 right-0 bottom-0 z-[99999] flex items-center justify-center bg-white dark:bg-black'>
@@ -112,11 +112,11 @@ const ViewInvoice = () => {
 
       queryClient.invalidateQueries({ queryKey: [`invoiceDetails-${invoiceId}`] });
     } catch (error) {
-      console.error('Error verifying payment :>>', error);
-      toast.error('Verification unsuccessful ;(. Please try again.');
-    } finally {
       setIsSubmitting(false);
       setShowVerifyPaymentModal(false);
+      
+      console.error('Error verifying payment :>>', error);
+      toast.error('Verification unsuccessful ;(. Please try again.');
     }
   }
 
@@ -129,7 +129,7 @@ const ViewInvoice = () => {
       <VerifyPaymentModal
         paymentLink={invoiceDetails.paymentLink!}
         isPaid={invoiceDetails.status === 'PAID'}
-        isOpen={showVerifyPaymentModal || isSubmitting}
+        isOpen={showVerifyPaymentModal && isSubmitting}
         onOpenChange={handleClose}
       />
       {/* <Card className='p-3 my-4 w-52 h-52 mx-auto'>
