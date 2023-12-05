@@ -180,7 +180,7 @@ const Navigation = () => {
 						path='/invoices'
 						label="Invoices"
 						icon={Receipt}
-						active={pathname.startsWith('/invoices')}
+						active={pathname === '/invoices'}
 					/>
 					<Item
 						isLink
@@ -190,7 +190,8 @@ const Navigation = () => {
 						active={pathname === '/business'}
 					/>
 					<Item
-						onClick={() => {}}
+						isLink
+						path='/withdrawals'
 						label='Withdrawals'
 						icon={Wallet}
 						active={pathname === '/withdrawals'}

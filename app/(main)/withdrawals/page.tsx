@@ -4,20 +4,16 @@ import Image from 'next/image';
 
 const Withdrawals = () => {
 	return (
-		<div className='h-full flex flex-col items-center justify-center space-y-4'>
-			<div className='relative w-[300px] h-[300px]'>
-				<Image
-					src='/images/empty-state.png'
-					fill
-					className='object-contain'
-					alt='No business created'
-				/>
-			</div>
-			<h2 className='text-lg font-medium'>
-				Welcome to your Aurora
-			</h2>
-		</div>
-	)
+    <div className='h-full flex flex-col items-center justify-center space-y-4'>
+      <Image
+        src='/images/rocket.png'
+        width={96}
+				height={96}
+        alt='😎 Launching soon'
+      />
+      <h2 className='text-xl mt-4 font-medium'>Launching soon</h2>
+    </div>
+  );
 }
 
 export default Withdrawals;
