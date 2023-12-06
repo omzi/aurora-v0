@@ -7,7 +7,7 @@ import { CalendarCheck } from 'lucide-react'
 const Schedule = () => {
   return (
     <section className='grid gap-5 grid-cols-1 lg:grid-cols-2'>
-			<div className='flex flex-col items-start gap-3 px-5'>
+			<div className='flex flex-col items-start gap-3'>
 				<div className='relative w-[100px] h-[100px] mt-5'>
 					<Image 
 						src='/images/logo.png'

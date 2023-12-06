@@ -10,10 +10,10 @@ const Header = () => {
 
 	return (
     <div className='space-y-8'>
-      <h1 className='font-clash-display-bold text-5xl sm:text-7xl md:text-6xl font-bold !leading-[5rem]'>
+      <h1 className='font-clash-display-bold text-5xl sm:text-7xl md:text-6xl !leading-[5rem]'>
         Your All-In-One Solution For Simplifying Small Business Payments.
       </h1>
-      <h3 className='text-base max-w-3xl mx-auto sm:text-xl md:text-2xl font-medium'>
+      <h3 className='max-w-3xl mx-auto sm:text-xl md:text-2xl font-light'>
         Aurora empowers you to effortlessly manage clients, invoices, and
         financial transactions—all in one secure and intuitive platform.
       </h3>
