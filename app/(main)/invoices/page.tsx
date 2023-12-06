@@ -34,25 +34,21 @@ const Invoices = () => {
   });
 
   return (
-    <Card className="ring-0 w-[calc(100%-50px)] my-6 laptop:my-10 container flex flex-col py-5">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Invoices</h2>
+    <Card className='ring-0 w-[calc(100%-50px)] my-6 sm:my-10 container flex flex-col py-5'>
+      <div className='flex items-center justify-between'>
+        <h2 className='text-2xl font-semibold'>Invoices</h2>
         <Link href={'/invoices/new'}>
           <Button
-            type="button"
-            className="relative bg-core hover:bg-blue-800 text-white"
+            type='button'
+            className='relative bg-core hover:bg-blue-800 text-white'
           >
-            <PlusIcon className="h-4 w-4 mr-2" />
+            <PlusIcon className='h-4 w-4 mr-2' />
             New Invoice
           </Button>
         </Link>
       </div>
-      <Separator className="my-5" />
-      <DataTable
-        columns={columns}
-        data={isPending ? [] : (invoices as Invoice[])}
-        isLoading={isPending}
-      />
+      <Separator className='my-5' />
+      <DataTable columns={columns} data={isPending ? [] : (invoices as Invoice[])} isLoading={isPending} />
     </Card>
   );
 };

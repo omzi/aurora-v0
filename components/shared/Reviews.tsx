@@ -14,7 +14,7 @@ const testimonials = [
         "Aurora is incredibly user-friendly; it's like having a personal assistant for my business. I'm amazed at its efficiency.",
       author: {
         name: 'Chike Onyemere',
-        role: 'CEO, Zenith Crafts',
+        role: 'CEO, Zuri Studio',
         image: avatarImage1,
       },
     },
@@ -22,8 +22,8 @@ const testimonials = [
       content:
         'I reached out to Aurora support, and they responded promptly, resolving my issue in no time. Their support is unmatched!',
       author: {
-        name: 'Adewale Ajayi',
-        role: 'Director, Emerald Ventures',
+        name: 'Wale Mutfwang',
+        role: 'Director, Emerald Coutures',
         image: avatarImage4,
       },
     },
@@ -34,7 +34,7 @@ const testimonials = [
         "Aurora has transformed my business operations. Every payday is a joy, and I've seen a positive impact on my bottom line.",
       author: {
         name: 'Nneka Afolayan',
-        role: 'Founder, Pearl Investments',
+        role: 'Founder, The Food Factory',
         image: avatarImage5,
       },
     },
@@ -54,7 +54,7 @@ const testimonials = [
         'Thanks to Aurora, handling tax remittance is seamless. It has eliminated the stress, allowing me to focus on growing my business.',
       author: {
         name: 'Kate Bisung',
-        role: 'Founder, West Africa Innovations',
+        role: 'Founder, Art By Kate',
         image: avatarImage3,
       },
     },

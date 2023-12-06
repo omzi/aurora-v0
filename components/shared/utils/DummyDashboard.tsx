@@ -35,8 +35,8 @@ const DummyDashboard = () => {
       'Monthly Revenue': 257500,
     },
   ];
-  const valueFormatter = (number: number) =>
-    `₦ ${new Intl.NumberFormat('us').format(number).toString()}`;
+  
+  const valueFormatter = (number: number) => `₦ ${new Intl.NumberFormat('us').format(number).toString()}`;
 
 	return (
     <div className='flex flex-col items-center justify-center mt-5 mb-10 space-y-7'>

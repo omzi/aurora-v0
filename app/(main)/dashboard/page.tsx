@@ -21,13 +21,12 @@ import {
 } from 'lucide-react';
 
 const AnalyticSkeleton = () => (
-  <Skeleton className="w-[100px] mt-[2px] h-[30px] rounded" />
+  <Skeleton className='w-[100px] mt-[2px] h-[30px] rounded-sm' />
 );
 
 const Dashboard = () => {
-  const { useGetAnalytics, analyticsGetter } = useDashboard();
   const { selectedBusiness } = useUserContext();
-  const { analytics, loadingAnalytics } = useGetAnalytics();
+  const { analytics, isAnalyticsLoading, charts, isChartsLoading } = useDashboard();
 
   console.log(analytics);
 
@@ -54,120 +53,119 @@ const Dashboard = () => {
     },
   ];
 
-  const valueFormatter = (number: number) =>
-    `₦ ${new Intl.NumberFormat('us').format(number).toString()}`;
+  const valueFormatter = (number: number) => `₦ ${new Intl.NumberFormat('us').format(number).toString()}`;
 
   return (
-    <div className="min-h-full max-w-[1560px] mx-auto pt-6 pb-8 flex flex-col items-center justify-start space-y-7">
-      <Grid numItemsMd={2} numItemsLg={4} className="gap-6 w-[calc(100%-50px)]">
+    <div className='min-h-full max-w-[1560px] mx-auto pt-6 pb-8 flex flex-col items-center justify-start space-y-7'>
+      <Grid numItemsMd={2} numItemsLg={4} className='gap-6 w-[calc(100%-50px)]'>
         {/* Total Customers Card */}
         <Card
-          className="p-4 ring-0 "
-          decoration="top"
-          decorationColor="blue"
-          key="Total Customers"
+          className='p-4 ring-0'
+          decoration='top'
+          decorationColor='blue'
+          key='Total Customers'
         >
-          <Flex alignItems="center" justifyContent="start" className="gap-4">
+          <Flex alignItems='center' justifyContent='start' className='gap-4'>
             <Icon
               icon={UsersIcon}
-              className="rounded-tremor-full"
-              color="blue"
-              variant="light"
-              size="lg"
+              className='rounded-tremor-full'
+              color='blue'
+              variant='light'
+              size='lg'
             />
-            <div className="truncate">
+            <div className='truncate'>
               <Text>Total Customers</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
-                <Metric className="truncate">{analytics?.customers}</Metric>
+                <Metric className='truncate'>{analytics?.customers}</Metric>
               )}
             </div>
           </Flex>
         </Card>
         {/* Total Revenue Card */}
         <Card
-          className="p-4 ring-0 "
-          decoration="top"
-          decorationColor="green"
-          key="Total Revenue"
+          className='p-4 ring-0'
+          decoration='top'
+          decorationColor='green'
+          key='Total Revenue'
         >
-          <Flex alignItems="center" justifyContent="start" className="gap-4">
+          <Flex alignItems='center' justifyContent='start' className='gap-4'>
             <Icon
               icon={BanknoteIcon}
-              className="rounded-tremor-full"
-              color="green"
-              variant="light"
-              size="lg"
+              className='rounded-tremor-full'
+              color='green'
+              variant='light'
+              size='lg'
             />
-            <div className="truncate">
+            <div className='truncate'>
               <Text>Total Revenue</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
-                <Metric className="truncate">₦ {analytics?.revenue}</Metric>
+                <Metric className='truncate'>₦ {analytics?.revenue}</Metric>
               )}
             </div>
           </Flex>
         </Card>
         {/* Total Outstanding Card */}
         <Card
-          className="p-4 ring-0 "
-          decoration="top"
-          decorationColor="red"
-          key="Total Outstanding"
+          className='p-4 ring-0'
+          decoration='top'
+          decorationColor='red'
+          key='Total Outstanding'
         >
-          <Flex alignItems="center" justifyContent="start" className="gap-4">
+          <Flex alignItems='center' justifyContent='start' className='gap-4'>
             <Icon
               icon={LandmarkIcon}
-              className="rounded-tremor-full"
-              color="red"
-              variant="light"
-              size="lg"
+              className='rounded-tremor-full'
+              color='red'
+              variant='light'
+              size='lg'
             />
-            <div className="truncate">
+            <div className='truncate'>
               <Text>Total Outstanding</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
-                <Metric className="truncate">₦ {analytics?.outstanding}</Metric>
+                <Metric className='truncate'>₦ {analytics?.outstanding}</Metric>
               )}
             </div>
           </Flex>
         </Card>
         {/* Total Withdrawn Card */}
         <Card
-          className="p-4 ring-0 "
-          decoration="top"
-          decorationColor="yellow"
-          key="Total Withdrawn"
+          className='p-4 ring-0'
+          decoration='top'
+          decorationColor='yellow'
+          key='Total Withdrawn'
         >
-          <Flex alignItems="center" justifyContent="start" className="gap-4">
+          <Flex alignItems='center' justifyContent='start' className='gap-4'>
             <Icon
               icon={WalletIcon}
-              className="rounded-tremor-full"
-              color="yellow"
-              variant="light"
-              size="lg"
+              className='rounded-tremor-full'
+              color='yellow'
+              variant='light'
+              size='lg'
             />
-            <div className="truncate">
+            <div className='truncate'>
               <Text>Total Withdrawn</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
-                <Metric className="truncate">₦ {analytics?.withdrawals}</Metric>
+                <Metric className='truncate'>₦ {analytics?.withdrawals}</Metric>
               )}
             </div>
           </Flex>
         </Card>
       </Grid>
-      <div className="mt-24 w-[calc(100%-50px)]">
+      <div className='mt-24 w-[calc(100%-50px)]'>
         <Card>
           <Title>Monthly Revenue Trends</Title>
           <AreaChart
-            className="h-[24rem]"
-            data={chartData}
-            index="month"
+            className='h-[24rem]'
+            data={charts as unknown as any[]}
+            index='month'
             categories={['Monthly Revenue']}
             colors={['blue']}
             valueFormatter={valueFormatter}

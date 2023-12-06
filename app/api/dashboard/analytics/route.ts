@@ -10,7 +10,10 @@ const GET = async (request: NextRequest) => {
 
   try {
     if (!token) {
-      return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
+      return NextResponse.json(
+        { message: 'Unauthenticated!' },
+        { status: 401 }
+      );
     }
 
     const existingBusiness = await prisma.business.findFirst({
@@ -19,39 +22,32 @@ const GET = async (request: NextRequest) => {
 
     if (!existingBusiness) throw new Error('Business not found!');
 
-    const customersCount = await prisma.customer.count({
-      where: { businessId },
-    });
+    // Parallelize queries
+    const [customersCount, revenue, outstanding] = await Promise.all([
+      prisma.customer.count({ where: { businessId } }),
+      prisma.invoice.aggregate({
+        where: { businessId, status: InvoiceStatus.PAID },
+        _sum: { amount: true }
+      }),
+      prisma.invoice.aggregate({
+        where: { businessId, status: InvoiceStatus.UNPAID },
+        _sum: { amount: true }
+      })
+    ]);
 
-    const invoices = await prisma.invoice.findMany({
-      where: { businessId },
-    });
-
-    const revenue = invoices.reduce((total, invoice) => {
-      if (invoice.status === InvoiceStatus.PAID) {
-        return total + invoice.amount;
-      }
-      return total;
-    }, 0);
-
-    const outstanding = invoices.reduce((total, invoice) => {
-      if (invoice.status === InvoiceStatus.UNPAID) {
-        return total + invoice.amount;
-      }
-      return total;
-    }, 0);
+    console.log('Customer Count', 'Revenue', 'Outstanding');
+    console.log([customersCount, revenue, outstanding]);
 
     const analytics = {
-      id: businessId,
       customers: `${customersCount}`,
-      revenue: `${formatNumberWithCommas(revenue)}`,
-      outstanding: `${formatNumberWithCommas(outstanding)}`,
+      revenue: `${formatNumberWithCommas(revenue._sum.amount || 0)}`,
+      outstanding: `${formatNumberWithCommas(outstanding._sum.amount || 0)}`,
       withdrawals: '0'
     };
 
     return NextResponse.json({ message: 'Analytics fetched successfully', data: analytics }, { status: 200 });
   } catch (error) {
-    console.error('Server Error [GET/Businesses]:>>', error);
+    console.error('Server Error [GET/DashboardAnalytics]:>>', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 };

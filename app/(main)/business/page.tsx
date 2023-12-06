@@ -14,7 +14,7 @@ const BusinessInfo = () => {
   if (!selectedBusiness) return;
 
   return (
-    <Card className="flex ring-0 w-[calc(100%-50px)] container my-6 laptop:my-10 flex-col px-4 py-5 md:px-8">
+    <Card className="bg-transparent flex ring-0 w-[calc(100%-50px)] container my-6 sm:my-10 flex-col px-4 py-5 md:px-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Business Information</h1>
         <Button

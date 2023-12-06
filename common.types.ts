@@ -58,6 +58,13 @@ export type ErrorResponse = {
   errors?: string[];
 }
 
+export type AnalyticsResponse = {
+  customers: string;
+  revenue: string;
+  outstanding: string;
+  withdrawals: string;
+}
+
 interface PaystackBaseResponse {
   status: boolean;
   message: string;
