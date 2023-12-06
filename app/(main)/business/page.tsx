@@ -14,7 +14,7 @@ const BusinessInfo = () => {
 
 	return (
 		<div className='flex flex-col px-4 py-5 md:px-8'>
-			<div className='flex items-center justify-between'>
+			<div className='flex flex-col sm:flex-row gap-2 items-center justify-between'>
 				<h1 className='text-2xl font-semibold'>Business Information</h1>
 				<Button onClick={businessModal.onOpen} variant='outline'>
 					<PlusIcon className='h-4 w-4 mr-2' />

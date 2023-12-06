@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { $Enums } from '@prisma/client';
 import { Invoice } from '#/common.types';
 import { Button } from '#/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
@@ -23,10 +25,14 @@ export const columns: ColumnDef<Invoice>[] = [
 			<DataTableColumnHeader column={column} title='Invoice ID' />
 		),
     cell: ({ row }) => {
-      const invoiceId = row.getValue('invoiceId');
+      const invoiceId = row.getValue('invoiceId') as string;
+      const copyInvoiceId = () => {
+        navigator.clipboard.writeText(invoiceId);
+        toast.success('Invoice ID copied!');
+      }
 
-      return <span className='ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
-        #${invoiceId as string}
+      return <span onClick={copyInvoiceId} className='ml-auto cursor-pointer inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
+        #{invoiceId}
       </span>;
     }
   },
@@ -49,6 +55,7 @@ export const columns: ColumnDef<Invoice>[] = [
     cell: ({ row }) => {
       const dateString = row.getValue('dueDate');
       const date = new Date(dateString as string);
+      const status = row.getValue('status') as $Enums.InvoiceStatus;
   
       // Format as '27th Nov, 2023'
       const formattedDate = format(date, 'do MMM, yyyy');
@@ -59,10 +66,12 @@ export const columns: ColumnDef<Invoice>[] = [
       return (
         <div className='font-medium'>
           <span>{formattedDate}</span>
-          <br />
-          <small className='mt-1 uppercase ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
-            {relativeTime}
-          </small>
+          {status === 'UNPAID' && <>
+            <br />
+            <small className='mt-1 uppercase ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
+              {relativeTime}
+            </small>
+          </>}
         </div>
       );
     }
@@ -82,6 +91,10 @@ export const columns: ColumnDef<Invoice>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const invoice = row.original;
+      const copyInvoiceId = () => {
+        navigator.clipboard.writeText(invoice.invoiceId);
+        toast.success('Invoice ID copied!');
+      }
  
       return (
         <DropdownMenu>
@@ -92,7 +105,7 @@ export const columns: ColumnDef<Invoice>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(invoice.invoiceId)}>
+            <DropdownMenuItem onClick={copyInvoiceId}>
               Copy Invoice ID
             </DropdownMenuItem>
             <Link href={`/invoices/view/${invoice.invoiceId}`} target='_blank' rel='noopener noreferrer'>

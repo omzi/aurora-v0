@@ -29,7 +29,8 @@ const GET = async (request: NextRequest) => {
     }
 		
     const customers = await prisma.customer.findMany({
-      where: { businessId }
+      where: { businessId },
+      orderBy: { createdAt: 'desc' }
     });
 
     return NextResponse.json({ message: 'All customers', data: customers }, { status: 200 });

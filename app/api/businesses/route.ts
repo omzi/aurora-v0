@@ -14,7 +14,8 @@ const GET = async (request: NextRequest) => {
     }
 
 		const businesses = await prisma.business.findMany({
-      where: { userId: token.sub }
+      where: { userId: token.sub },
+      orderBy: { createdAt: 'desc' }
     });
 
     return NextResponse.json({ message: 'All user businesses', data: businesses }, { status: 200 });
