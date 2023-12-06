@@ -122,22 +122,19 @@ const POST = async (request: NextRequest) => {
 
 		console.log('Initialization Response :>>', paystackResponse);
 		// Send invoice email to customer here...
-    const emailVariables = {
-      invoiceLink: `${config.NEXTAUTH_URL}/invoices/view/${invoice.invoiceId}`,
-      invoiceId: updatedInvoice.invoiceId,
-      businessName: invoice.business.name,
-      customerName: invoice.customer.name,
-      amount: formatNumberWithCommas(invoice.amount),
-      dueDate: format(invoice.dueDate, 'do MMM, yyyy'),
-      email: invoice.customer.email
-    }
-
-    const emailTemplate = invoiceReceivedEmailTemplate(emailVariables);
     await sendBrevoEmail({
       sender: { email: 'no-reply@useaurora.com.ng', name: `${invoice.business.name} from Aurora` },
       to: [{ email: invoice.customer.email, name: invoice.customer.name }],
       subject: `💲 Invoice #${invoice.invoiceId} received from ${invoice.business.name}`,
-      htmlContent: emailTemplate
+      htmlContent: invoiceReceivedEmailTemplate({
+        invoiceLink: `${config.NEXTAUTH_URL}/invoices/view/${invoice.invoiceId}`,
+        invoiceId: updatedInvoice.invoiceId,
+        businessName: invoice.business.name,
+        customerName: invoice.customer.name,
+        amount: formatNumberWithCommas(invoice.amount),
+        dueDate: format(invoice.dueDate, 'do MMM, yyyy'),
+        email: invoice.customer.email
+      })
     });
 
     return NextResponse.json({ message: 'Invoice created successfully!', data: updatedInvoice }, { status: 201 });
