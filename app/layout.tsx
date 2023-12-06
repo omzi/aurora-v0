@@ -20,7 +20,11 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang="en" className="font-kollektif" suppressHydrationWarning>
+      <html
+        lang="en"
+        className="font-satoshi font-normal"
+        suppressHydrationWarning
+      >
         <body>
           <SessionProvider>
             <ThemeProvider
