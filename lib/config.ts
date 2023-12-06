@@ -12,7 +12,7 @@ class Config {
   public PAYSTACK_TEST_PK: string;
   public PAYSTACK_TEST_SK: string;
   public DATABASE_URL: string;
-  public RESEND_API_KEY: string;
+  public BREVO_API_KEY: string;
   public IS_PRODUCTION: boolean;
 
   constructor() {
@@ -26,7 +26,7 @@ class Config {
     this.PAYSTACK_TEST_PK = process.env.PAYSTACK_TEST_PK || '';
     this.PAYSTACK_TEST_SK = process.env.PAYSTACK_TEST_SK || '';
     this.DATABASE_URL = process.env.DATABASE_URL || '';
-    this.RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+    this.BREVO_API_KEY = process.env.BREVO_API_KEY || '';
     this.IS_PRODUCTION = this.NODE_ENV === 'production';
 
     this.validateConfig();

@@ -128,7 +128,6 @@ const ViewInvoice = () => {
     <div className='flex flex-col p-2 sm:p-6' id='invoice'>
       <VerifyPaymentModal
         paymentLink={invoiceDetails.paymentLink!}
-        isPaid={invoiceDetails.status === 'PAID'}
         isOpen={showVerifyPaymentModal && isSubmitting}
         onOpenChange={handleClose}
       />

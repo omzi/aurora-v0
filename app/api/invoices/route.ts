@@ -2,12 +2,15 @@ import * as z from 'zod';
 import axios from 'axios';
 import prisma from '#/lib/prisma';
 import config from '#/lib/config';
+import { format } from 'date-fns';
 import { Prisma } from '@prisma/client';
 import { getToken } from 'next-auth/jwt';
 import { InvoiceSchema } from '#/lib/schema';
-import { generateRandomChars } from '#/lib/utils';
+import sendBrevoEmail from '#/lib/emails/transport';
 import { NextRequest, NextResponse } from 'next/server';
 import { PaystackInitializeResponse } from '#/common.types';
+import { formatNumberWithCommas, generateRandomChars } from '#/lib/utils';
+import invoiceReceivedEmailTemplate from '#/lib/emails/templates/invoiceReceived';
 
 const GET = async (request: NextRequest) => {
   const token = await getToken({ req: request });
@@ -33,7 +36,8 @@ const GET = async (request: NextRequest) => {
     }
 
     const invoices = await prisma.invoice.findMany({
-      where: { businessId }
+      where: { businessId },
+      orderBy: { createdAt: 'desc' }
     });
 
     return NextResponse.json({ message: 'All user invoices', data: invoices }, { status: 200 });
@@ -117,7 +121,24 @@ const POST = async (request: NextRequest) => {
     });
 
 		console.log('Initialization Response :>>', paystackResponse);
-		// TODO: Send invoice email to customer here...
+		// Send invoice email to customer here...
+    const emailVariables = {
+      invoiceLink: `${config.NEXTAUTH_URL}/invoices/view/${invoice.invoiceId}`,
+      invoiceId: updatedInvoice.invoiceId,
+      businessName: invoice.business.name,
+      customerName: invoice.customer.name,
+      amount: formatNumberWithCommas(invoice.amount),
+      dueDate: format(invoice.dueDate, 'do MMM, yyyy'),
+      email: invoice.customer.email
+    }
+
+    const emailTemplate = invoiceReceivedEmailTemplate(emailVariables);
+    await sendBrevoEmail({
+      sender: { email: 'no-reply@useaurora.com.ng', name: `${invoice.business.name} from Aurora` },
+      to: [{ email: invoice.customer.email, name: invoice.customer.name }],
+      subject: `💲 Invoice #${invoice.invoiceId} received from ${invoice.business.name}`,
+      htmlContent: emailTemplate
+    });
 
     return NextResponse.json({ message: 'Invoice created successfully!', data: updatedInvoice }, { status: 201 });
   } catch (error) {
