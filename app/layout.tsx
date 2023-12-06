@@ -24,7 +24,7 @@ const RootLayout = ({
 
   return (
     <QueryClientProvider client={queryClient}>
-      <html lang='en' className='font-kollektif' suppressHydrationWarning>
+      <html lang='en' className='font-satoshi font-normal' suppressHydrationWarning>
         <body>
           <SessionProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem storageKey='theme'>
