@@ -5,8 +5,8 @@ import DummyDashboard from './utils/DummyDashboard';
 
 const Schedule = () => {
   return (
-    <section className="grid gap-5 grid-cols-1 lg:grid-cols-2">
-      <div className="flex flex-col items-start gap-3 px-5">
+    <section className="grid gap-5  grid-cols-1 lg:grid-cols-2">
+      <div className="flex flex-col items-start gap-3">
         <div className="relative w-[100px] h-[100px] mt-5">
           <Image
             src="/images/logo.png"
@@ -15,10 +15,10 @@ const Schedule = () => {
             alt="logo"
           />
         </div>
-        <h4 className="font-clash-display-bold mt-5 text-left text-4xl sm:text-5xl md:text-6xl max-w-xl font-semibold">
+        <h4 className="font-clash-display-bold mt-5 max-w-xl text-left text-4xl sm:text-5xl md:text-6xl font-semibold">
           Solutions for Every Business
         </h4>
-        <p className="text-xl text-left mt-5">
+        <p className="text-xl text-left max-w-4xl mt-5">
           Expand your customer base, streamline invoicing, and effortlessly
           manage payments and withdrawals with Aurora – your trusted tech
           partner in payment solutions.

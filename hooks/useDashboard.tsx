@@ -1,34 +1,44 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useUserContext } from '#/components/contexts/UserContext';
+import { AnalyticsResponse, SuccessResponse } from '#/common.types';
 
 const useDashboard = () => {
   const { selectedBusiness } = useUserContext();
-
-  const analyticsGetter = async () => {
+  const getAnalytics = async () => {
     try {
-      const response = await axios.get(`/api/dashboardAnalytics?id=${selectedBusiness?.id}`);
-      return response.data.data;
+      const { data: analyticsResponse } = await axios.get<SuccessResponse<AnalyticsResponse>>(`/api/dashboard/analytics?id=${selectedBusiness?.id}`);
+      return analyticsResponse.data;
     } catch (error) {
-      // toast.error('Something went wrong...')
+      // console.log('[Error]: Getting dashboard analytics :>>', error);
+      return null;
+    }
+  };
+  const getCharts = async () => {
+    try {
+      const { data: chartsResponse } = await axios.get<SuccessResponse<AnalyticsResponse>>(`/api/dashboard/charts?id=${selectedBusiness?.id}`);
+      return chartsResponse.data;
+    } catch (error) {
+      // console.log('[Error]: Getting dashboard charts :>>', error);
+      return null;
     }
   };
 
-  const useGetAnalytics = () => {
-    const { data: analytics, isLoading: loadingAnalytics } = useQuery({
-      queryKey: ['analytics'],
-      queryFn: analyticsGetter
-    });
+  const { data: analytics, isLoading: isAnalyticsLoading } = useQuery({
+    queryKey: ['analytics'],
+    queryFn: getAnalytics
+  });
 
-    return {
-      analytics,
-      loadingAnalytics
-    };
-  };
+  const { data: charts, isLoading: isChartsLoading } = useQuery({
+    queryKey: ['charts'],
+    queryFn: getCharts
+  });
 
   return {
-    analyticsGetter,
-    useGetAnalytics
+    analytics,
+    isAnalyticsLoading,
+    charts,
+    isChartsLoading
   };
 }
 

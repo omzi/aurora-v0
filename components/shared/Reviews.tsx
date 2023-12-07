@@ -14,7 +14,7 @@ const testimonials = [
         "Aurora is incredibly user-friendly; it's like having a personal assistant for my business. I'm amazed at its efficiency.",
       author: {
         name: 'Chike Onyemere',
-        role: 'CEO, Zenith Crafts',
+        role: 'CEO, Zuri Studio',
         image: avatarImage1,
       },
     },
@@ -22,8 +22,8 @@ const testimonials = [
       content:
         'I reached out to Aurora support, and they responded promptly, resolving my issue in no time. Their support is unmatched!',
       author: {
-        name: 'Adewale Ajayi',
-        role: 'Director, Emerald Ventures',
+        name: 'Wale Mutfwang',
+        role: 'Director, Emerald Coutures',
         image: avatarImage4,
       },
     },
@@ -34,7 +34,7 @@ const testimonials = [
         "Aurora has transformed my business operations. Every payday is a joy, and I've seen a positive impact on my bottom line.",
       author: {
         name: 'Nneka Afolayan',
-        role: 'Founder, Pearl Investments',
+        role: 'Founder, The Food Factory',
         image: avatarImage5,
       },
     },
@@ -54,7 +54,7 @@ const testimonials = [
         'Thanks to Aurora, handling tax remittance is seamless. It has eliminated the stress, allowing me to focus on growing my business.',
       author: {
         name: 'Kate Bisung',
-        role: 'Founder, West Africa Innovations',
+        role: 'Founder, Art By Kate',
         image: avatarImage3,
       },
     },
@@ -93,18 +93,14 @@ const QuoteIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
 
 const Testimonials: React.FC<TestimonialsProps> = () => {
   return (
-    <section
-      id="testimonials"
-      aria-label="What our customers are saying"
-      className="bg-slate-50 dark:bg-[#1f1f1f] w-[100vw] py-16 sm:py-28"
-    >
+    <section className="bg-slate-50 dark:bg-[#1f1f1f] w-[100vw] py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h4 className="font-clash-display-bold mt-5 text-4xl sm:text-5xl md:text-6xl font-semibold">
+          <h4 className="font-clash-display-bold mt-5 mx-auto text-4xl sm:text-5xl md:text-6xl font-semibold">
             Loved By
             <br className="hidden md:block" /> Thousands Of Businesses
           </h4>
-          <p className="text-xl mt-5">
+          <p className="text-xl mt-5 font-light">
             Experience the irresistible simplicity of our software that captures
             hearts effortlessly. At Aurora, we redefine simplicity by focusing
             on what truly matters, without skipping the mission-critical
@@ -120,19 +116,19 @@ const Testimonials: React.FC<TestimonialsProps> = () => {
               <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
                 {column.map((testimonial, testimonialIndex) => (
                   <li key={testimonialIndex}>
-                    <figure className="relative text-left rounded-2xl bg-white lg:h-[250px] h-auto dark:bg-black p-6 shadow-xl shadow-slate-900/10">
-                      <QuoteIcon className="absolute left-6 top-6 fill-black/10 dark:fill-white/10" />
+                    <figure className="relative text-left rounded-2xl bg-white dark:bg-black p-6 shadow-xl shadow-slate-900/10">
+                      <QuoteIcon className="absolute left-6 top-6 fill-black/5 dark:fill-white/10" />
                       <blockquote className="relative">
                         <p className="text-lg font-thin tracking-tight text-slate-900 dark:text-slate-100">
                           {testimonial.content}
                         </p>
                       </blockquote>
-                      <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-900 dark:border-slate-100 pt-6">
+                      <figcaption className="relative mt-6 flex items-center justify-between border-t border-black/20 dark:border-white/20 dark:border-slate-100 pt-6">
                         <div>
                           <div className="font-display text-base text-slate-900 dark:text-slate-100">
                             {testimonial.author.name}
                           </div>
-                          <div className="mt-1 text-sm text-slate-700 dark:text-slate-300">
+                          <div className="mt-1 text-sm italic text-slate-700 dark:text-slate-300">
                             {testimonial.author.role}
                           </div>
                         </div>
@@ -140,7 +136,7 @@ const Testimonials: React.FC<TestimonialsProps> = () => {
                           <Image
                             className="h-14 w-14 object-cover"
                             src={testimonial.author.image}
-                            alt=""
+                            alt="..."
                             width={56}
                             height={56}
                           />

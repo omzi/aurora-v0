@@ -21,13 +21,13 @@ import {
 } from 'lucide-react';
 
 const AnalyticSkeleton = () => (
-  <Skeleton className="w-[100px] mt-[2px] h-[30px] rounded" />
+  <Skeleton className="w-[100px] mt-[2px] h-[30px] rounded-sm" />
 );
 
 const Dashboard = () => {
-  const { useGetAnalytics, analyticsGetter } = useDashboard();
   const { selectedBusiness } = useUserContext();
-  const { analytics, loadingAnalytics } = useGetAnalytics();
+  const { analytics, isAnalyticsLoading, charts, isChartsLoading } =
+    useDashboard();
 
   console.log(analytics);
 
@@ -62,7 +62,7 @@ const Dashboard = () => {
       <Grid numItemsMd={2} numItemsLg={4} className="gap-6 w-[calc(100%-50px)]">
         {/* Total Customers Card */}
         <Card
-          className="p-4 ring-0 "
+          className="p-4 ring-0"
           decoration="top"
           decorationColor="blue"
           key="Total Customers"
@@ -77,7 +77,7 @@ const Dashboard = () => {
             />
             <div className="truncate">
               <Text>Total Customers</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
                 <Metric className="truncate">{analytics?.customers}</Metric>
@@ -87,7 +87,7 @@ const Dashboard = () => {
         </Card>
         {/* Total Revenue Card */}
         <Card
-          className="p-4 ring-0 "
+          className="p-4 ring-0"
           decoration="top"
           decorationColor="green"
           key="Total Revenue"
@@ -102,7 +102,7 @@ const Dashboard = () => {
             />
             <div className="truncate">
               <Text>Total Revenue</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
                 <Metric className="truncate">₦ {analytics?.revenue}</Metric>
@@ -112,7 +112,7 @@ const Dashboard = () => {
         </Card>
         {/* Total Outstanding Card */}
         <Card
-          className="p-4 ring-0 "
+          className="p-4 ring-0"
           decoration="top"
           decorationColor="red"
           key="Total Outstanding"
@@ -127,7 +127,7 @@ const Dashboard = () => {
             />
             <div className="truncate">
               <Text>Total Outstanding</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
                 <Metric className="truncate">₦ {analytics?.outstanding}</Metric>
@@ -137,7 +137,7 @@ const Dashboard = () => {
         </Card>
         {/* Total Withdrawn Card */}
         <Card
-          className="p-4 ring-0 "
+          className="p-4 ring-0"
           decoration="top"
           decorationColor="yellow"
           key="Total Withdrawn"
@@ -152,7 +152,7 @@ const Dashboard = () => {
             />
             <div className="truncate">
               <Text>Total Withdrawn</Text>
-              {loadingAnalytics ? (
+              {isAnalyticsLoading ? (
                 <AnalyticSkeleton />
               ) : (
                 <Metric className="truncate">₦ {analytics?.withdrawals}</Metric>
@@ -166,7 +166,7 @@ const Dashboard = () => {
           <Title>Monthly Revenue Trends</Title>
           <AreaChart
             className="h-[24rem]"
-            data={chartData}
+            data={charts as unknown as any[]}
             index="month"
             categories={['Monthly Revenue']}
             colors={['blue']}

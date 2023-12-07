@@ -4,6 +4,7 @@ import { Invoice, SuccessResponse } from '#/common.types';
 import DataTable from '#/components/DataTable';
 import { useUserContext } from '#/components/contexts/UserContext';
 import { Button } from '#/components/ui/button';
+import { Separator } from '#/components/ui/separator';
 import getInvoices from '#/lib/actions/getInvoices';
 import { useQuery } from '@tanstack/react-query';
 import { PlusIcon } from 'lucide-react';
@@ -32,7 +33,7 @@ const Invoices = () => {
   });
 
   return (
-    <div className="w-[calc(100%-50px)] my-6 laptop:my-10 container flex flex-col py-5">
+    <div className="w-[calc(100%-50px)] my-6 sm:my-10 container flex flex-col py-5">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold">Invoices</h2>
         <Link href={'/invoices/new'}>
@@ -45,6 +46,7 @@ const Invoices = () => {
           </Button>
         </Link>
       </div>
+      <Separator className="my-5" />
       <DataTable
         columns={columns}
         data={isPending ? [] : (invoices as Invoice[])}

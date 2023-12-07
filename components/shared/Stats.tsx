@@ -34,7 +34,7 @@ const Stats = () => {
             Our track record
           </h2>
           <h4 className="font-clash-display-bold text-white mt-5 text-4xl sm:text-5xl md:text-6xl font-semibold">
-            Trusted By <br />
+            Trusted By <br className="hidden md:block" />
             Businesses Worldwide
           </h4>
           <p className="mt-6 text-xl leading-8 text-gray-300">

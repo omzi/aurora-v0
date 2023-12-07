@@ -35,12 +35,13 @@ const DummyDashboard = () => {
       'Monthly Revenue': 257500,
     },
   ];
+
   const valueFormatter = (number: number) =>
     `₦ ${new Intl.NumberFormat('us').format(number).toString()}`;
 
   return (
     <div className="flex flex-col items-center justify-center mt-5 mb-10 space-y-7">
-      <Grid numItemsMd={2} className="gap-6 w-[calc(100%-50px)]">
+      <Grid numItemsMd={2} className="gap-6 w-[100%]">
         {/* Total Customers Card */}
         <Card
           className="p-4 ring-0 "
@@ -84,7 +85,7 @@ const DummyDashboard = () => {
           </Flex>
         </Card>
       </Grid>
-      <div className="mt-24 w-[calc(100%-50px)]">
+      <div className="mt-24 w-[100%]">
         <Card>
           <Title>Monthly Revenue Trends</Title>
           <AreaChart
@@ -94,7 +95,7 @@ const DummyDashboard = () => {
             categories={['Monthly Revenue']}
             colors={['purple']}
             valueFormatter={valueFormatter}
-            yAxisWidth={90}
+            yAxisWidth={95}
           />
         </Card>
       </div>

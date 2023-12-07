@@ -57,7 +57,7 @@ const Features = () => {
           <h4 className='font-clash-display-bold text-black dark:text-white mt-5 text-4xl sm:text-5xl md:text-6xl font-semibold'>
             Elevate Your Business with Aurora&apos;s Powerful Features
           </h4>
-          <p className='mt-6 text-xl leading-8 text-gray-600'>
+          <p className='mt-6 text-xl leading-8 text-gray-600 dark:text-gray-400 font-light'>
             Discover how Aurora transforms small business management with a
             suite of cutting-edge features designed to simplify your workflow
             and boost efficiency.
@@ -76,7 +76,7 @@ const Features = () => {
                   </div>
                   <span className='text-xl font-medium'>{feature.name}</span>
                 </dt>
-                <dd className='mt-2 text-lg leading-7 text-gray-600'>
+                <dd className='mt-2 text-lg leading-7 text-gray-600 dark:text-gray-400 font-light'>
                   {feature.description}
                 </dd>
               </div>
