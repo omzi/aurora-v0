@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '#/components/ui/avatar';
 import { Button } from '#/components/ui/button';
 import { Skeleton } from '#/components/ui/skeleton';
 import { useBusinessModal } from '#/hooks/useBusinessModal';
-import { Card } from '@tremor/react';
 import { ImageIcon, PenIcon, PlusIcon } from 'lucide-react';
 
 const BusinessInfo = () => {
@@ -14,7 +13,7 @@ const BusinessInfo = () => {
   if (!selectedBusiness) return;
 
   return (
-    <Card className="flex ring-0 w-[calc(100%-50px)] container my-6 laptop:my-10 flex-col px-4 py-5 md:px-8">
+    <div className="flex w-[calc(100%-50px)] container my-6 laptop:my-10 flex-col px-4 py-5 md:px-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Business Information</h1>
         <Button
@@ -105,7 +104,7 @@ const BusinessInfo = () => {
         <PenIcon className="h-4 w-4 mr-2" />
         Edit Business Informatiion
       </Button>
-    </Card>
+    </div>
   );
 };
 

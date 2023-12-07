@@ -101,7 +101,8 @@ const Testimonials: React.FC<TestimonialsProps> = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h4 className="font-clash-display-bold mt-5 text-4xl sm:text-5xl md:text-6xl font-semibold">
-            Loved By Thousands Of Businesses
+            Loved By
+            <br className="hidden md:block" /> Thousands Of Businesses
           </h4>
           <p className="text-xl mt-5">
             Experience the irresistible simplicity of our software that captures

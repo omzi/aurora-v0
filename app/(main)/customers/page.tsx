@@ -8,7 +8,6 @@ import { Separator } from '#/components/ui/separator';
 import { useCustomerModal } from '#/hooks/useCustomerModal';
 import getCustomers from '#/lib/actions/getCustomers';
 import { useQuery } from '@tanstack/react-query';
-import { Card } from '@tremor/react';
 import { PlusIcon } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { columns } from './components/Columns';
@@ -35,7 +34,7 @@ const Customers = () => {
   });
 
   return (
-    <Card className="ring-0 w-[calc(100%-50px)] container flex my-6 laptop:my-10 flex-col py-5">
+    <div className="w-[calc(100%-50px)] container flex my-6 laptop:my-10 flex-col py-5">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-semibold">Customers</h2>
         <Button
@@ -46,13 +45,12 @@ const Customers = () => {
           <PlusIcon /> <span>New Customer</span>
         </Button>
       </div>
-      <Separator className="my-5" />
       <DataTable
         columns={columns}
         data={isPending ? [] : (customers as Customer[])}
         isLoading={isPending}
       />
-    </Card>
+    </div>
   );
 };
 
