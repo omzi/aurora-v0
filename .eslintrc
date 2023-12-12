@@ -1,0 +1,32 @@
+{
+	"extends": ["eslint:recommended", "prettier", "next/core-web-vitals", "next"],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["simple-import-sort", "import"],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+	"rules": {
+		"simple-import-sort/exports": "error",
+		"import/first": "error",
+		"import/newline-after-import": "error",
+		"import/no-duplicates": "error",
+		"simple-import-sort/imports": [
+			"error",
+			{
+				"groups": [
+					["^(next)(/.*|$)"],
+					["^react", "^@?\\w"],
+					["^\\u0000"],
+					["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+					["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+					["^.+\\.s?css$"]
+				]
+			}
+		]
+	}
+}

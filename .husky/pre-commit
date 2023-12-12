@@ -1,0 +1,21 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🚀 Initiating code checks..."
+
+# Check Prettier standards on staged files
+git diff --staged --name-only --diff-filter=ACMRTUXB | grep -E "\.(ts|tsx|js)$" | xargs npx prettier --check ||
+(
+	echo "🚨 Whoops! Code style violation detected 🤖. Fix it with `npm run format`, add changes, and try again.";
+	false;
+)
+
+# Check ESLint standards on staged files
+git diff --staged --name-only --diff-filter=ACMRTUXB | grep -E "\.(ts|tsx|js)$" | xargs npx eslint --format=pretty ||
+(
+	echo "🚫 Hold up! ESLint is not impressed 🤔. Make the necessary changes, add them, and attempt the commit once more."
+	false;
+)
+
+# If everything passes... Now we can commit
+echo "✅ Code checks successful! 🤖 Initiating commit sequence..."
