@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 All systems go! Your code looks stellar 😍. Initiating build process..."
+
+npm run build ||
+(
+	echo "🛑 Uh-oh! We hit a snag during the build 💀. Investigate the errors above and fix them to proceed."
+	false;
+)
+
+# If everything passes... Now we can commit
+echo "✨ Sweet! Your code is ready for liftoff 🎉. Initiating push sequence... "

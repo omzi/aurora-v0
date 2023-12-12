@@ -1,4 +1,4 @@
-// nextauth.d.ts
+/* eslint-disable no-unused-vars */
 import { $Enums } from '@prisma/client';
 import { DefaultSession, DefaultUser } from 'next-auth';
 
