@@ -1,37 +1,39 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import axios from 'axios';
 import { format } from 'date-fns';
-import config from '#/lib/config';
-import prisma from '#/lib/prisma';
-import sendBrevoEmail from '#/lib/emails/transport';
-import { formatNumberWithCommas } from '#/lib/utils';
-import { NextRequest, NextResponse } from 'next/server';
+
 import { PaystackVerifyResponse } from '#/common.types';
-import paymentCompletedCustomerEmailTemplate from '#/lib/emails/templates/paymentCompletedCustomer';
+import config from '#/lib/config';
 import paymentCompletedBusinessEmailTemplate from '#/lib/emails/templates/paymentCompletedBusiness';
+import paymentCompletedCustomerEmailTemplate from '#/lib/emails/templates/paymentCompletedCustomer';
+import sendBrevoEmail from '#/lib/emails/transport';
+import prisma from '#/lib/prisma';
+import { formatNumberWithCommas } from '#/lib/utils';
 
 const GET = async (request: NextRequest) => {
 	try {
-		const searchParams = request.nextUrl.searchParams;
-    const invoiceId = searchParams.get('invoiceId');
+		const {searchParams} = request.nextUrl;
+		const invoiceId = searchParams.get('invoiceId');
 
-    if (!invoiceId) {
-      return NextResponse.json({ message: 'Invalid request. Provide invoiceId.' }, { status: 400 });
-    }
+		if (!invoiceId) {
+			return NextResponse.json({ message: 'Invalid request. Provide invoiceId.' }, { status: 400 });
+		}
 		
-    const invoice = await prisma.invoice.findUnique({
-      where: { invoiceId },
-      include: {
-        customer: true,
-        business: true
-      }
-    });
+		const invoice = await prisma.invoice.findUnique({
+			where: { invoiceId },
+			include: {
+				customer: true,
+				business: true
+			}
+		});
 
-    if (!invoice) {
-      return NextResponse.json({ message: 'Invoice not found!' }, { status: 404 });
-    }
+		if (!invoice) {
+			return NextResponse.json({ message: 'Invoice not found!' }, { status: 404 });
+		}
 
 		if (invoice.status === 'PAID') {
-      return NextResponse.json({ message: 'Invoice has already been paid!' }, { status: 200 });
+			return NextResponse.json({ message: 'Invoice has already been paid!' }, { status: 200 });
 		}
 
 		const url = `https://api.paystack.co/transaction/verify/${invoiceId}`;
@@ -48,8 +50,8 @@ const GET = async (request: NextRequest) => {
 		if (paystackVerificationResponse.data.status === 'success') {
 			await prisma.invoice.update({
 				where: { id: invoice.id },
-        data: { status: 'PAID' }
-      });
+				data: { status: 'PAID' }
+			});
 			
 			await Promise.all([
 				// Send success email to customer here...
@@ -85,10 +87,10 @@ const GET = async (request: NextRequest) => {
 		} else {
 			return NextResponse.json({ message: 'Payment unsuccessful!' }, { status: 400 });
 		}
-  } catch (error) {
+	} catch (error) {
 		console.error('Server Error [GET/PaystackVerify]:>>', error);
-    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
-  }
+		return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+	}
 }
 
 export { GET };

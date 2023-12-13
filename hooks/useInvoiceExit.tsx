@@ -4,7 +4,7 @@ type InvoiceExitStore = {
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
-}
+};
 
 export const useInvoiceExit = create<InvoiceExitStore>((set, get) => ({
 	isOpen: false,

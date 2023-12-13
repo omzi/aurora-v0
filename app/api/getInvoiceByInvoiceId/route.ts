@@ -1,34 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { getToken } from 'next-auth/jwt';
-
 import prisma from '#/lib/prisma';
 
 const GET = async (request: NextRequest) => {
-	const token = await getToken({ req: request });
-
 	try {
-		if (!token) {
-			return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
-		}
-
 		const {searchParams} = request.nextUrl;
-		const businessId = searchParams.get('businessId');
 		const invoiceId = searchParams.get('invoiceId');
-
-		if (!businessId) {
-			return NextResponse.json({ message: 'Invalid request. Provide businessId.' }, { status: 400 });
-		}
 
 		if (!invoiceId) {
 			return NextResponse.json({ message: 'Invalid request. Provide invoiceId.' }, { status: 400 });
 		}
 
 		const invoice = await prisma.invoice.findUnique({
-			where: { id: invoiceId, business: {
-				id: businessId,
-				userId: token.sub
-			}}
+			where: { invoiceId },
+			include: {
+				customer: true,
+				business: true
+			}
 		});
 
 		if (!invoice) {
@@ -37,7 +25,7 @@ const GET = async (request: NextRequest) => {
 
 		return NextResponse.json({ message: `User's invoice`, data: invoice }, { status: 200 });
 	} catch (error) {
-		console.error('Server Error [GET/Invoice]:>>', error);
+		console.error('Server Error [GET/InvoiceByInvoiceId]:>>', error);
 		return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
 	}
 }

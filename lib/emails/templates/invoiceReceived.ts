@@ -1,10 +1,10 @@
 import fs from 'fs';
-import path from 'path';
 import handlebars from 'handlebars';
+import path from 'path';
 
 interface EmailVariables {
 	invoiceLink: string;
-  invoiceId: string;
+	invoiceId: string;
 	businessName: string;
 	customerName: string;
 	amount: string;
@@ -13,17 +13,17 @@ interface EmailVariables {
 }
 
 const invoiceReceivedEmailTemplate = (variables: EmailVariables): string => {
-  try {
+	try {
 		const templatePath = path.resolve(process.cwd(), 'lib/emails/templates/invoiceReceived.handlebars');
-    const template = fs.readFileSync(templatePath, 'utf8');
-    const compiledTemplate = handlebars.compile(template);
-    const compiledHTML = compiledTemplate(variables);
+		const template = fs.readFileSync(templatePath, 'utf8');
+		const compiledTemplate = handlebars.compile(template);
+		const compiledHTML = compiledTemplate(variables);
 
-    return compiledHTML;
-  } catch (error) {
-    console.error('Error compiling email template [invoiceReceived]:>>', error);
-    return '';
-  }
-}
+		return compiledHTML;
+	} catch (error) {
+		console.error('Error compiling email template [invoiceReceived]:>>', error);
+		return '';
+	}
+};
 
 export default invoiceReceivedEmailTemplate;

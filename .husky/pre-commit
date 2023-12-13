@@ -3,17 +3,13 @@
 
 echo "🚀 Initiating code checks..."
 
-# Check Prettier standards on staged files
-git diff --staged --name-only --diff-filter=ACMRTUXB | grep -E "\.(ts|tsx|js)$" | xargs npx prettier --check ||
-(
-	echo "🚨 Whoops! Code style violation detected 🤖. Fix it with `npm run format`, add changes, and try again.";
-	false;
-)
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+[ -z "$FILES" ] && exit 0
 
 # Check ESLint standards on staged files
-git diff --staged --name-only --diff-filter=ACMRTUXB | grep -E "\.(ts|tsx|js)$" | xargs npx eslint --format=pretty ||
+echo "$FILES" | xargs ./node_modules/.bin/eslint --format=pretty --quiet '*' ||
 (
-	echo "🚫 Hold up! ESLint is not impressed 🤔. Make the necessary changes, add them, and attempt the commit once more."
+	echo "🚨 Whoops! Code style violation detected 🤖. Fix it with 'npm run format', add changes, and try again."
 	false;
 )
 
