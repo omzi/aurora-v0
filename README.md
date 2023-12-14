@@ -13,9 +13,9 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?color=222FE6)](https://github.com/omzi/aurora/issues)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?color=222FE6)](https://opensource.org/licenses/MIT)
 ![](https://img.shields.io/twitter/follow/0xOmzi.svg?style=social&label=@0xOmzi)
-![](https://img.shields.io/twitter/follow/pappitito.svg?style=social&label=@pappitito)
+![](https://img.shields.io/twitter/follow/titoonw.svg?style=social&label=@titoonw)
 ![](https://img.shields.io/twitter/follow/bohemiancode-x.svg?style=social&label=@bohemiancode-x)
-![](https://img.shields.io/twitter/follow/kaepmy.svg?style=social&label=@kaepmy)
+![](https://img.shields.io/twitter/follow/Ademarymi.svg?style=social&label=@Ademarymi)
 
 </div>
 
@@ -80,7 +80,7 @@ NEXTAUTH_URL = # Eg: http://localhost:3000
 
 EDGE_STORE_ACCESS_KEY = # Your EdgeStore access key
 EDGE_STORE_SECRET_KEY = # Your EdgeStore secret key
-PLUNK_API_SK = # Your Plunk secret key
+BREVO_API_KEY = # Your Brevo API key
 
 DATABASE_URL = # Your Database URL
 
@@ -105,7 +105,7 @@ Set the value of **`NEXTAUTH_SECRET`** to the result.
 - **`NEXTAUTH_URL`**: Set it to the URL where your Aurora application is hosted during development.
   For external services:
 - **`EDGE_STORE_ACCESS_KEY`** and **`EDGE_STORE_SECRET_KEY`**: These are access and secret keys for your [EdgeStore](https://edgestore.dev/) (for handling file uploads) service.
-- **`PLUNK_API_SK`**: This is the secret key for your Plunk (a transactional email provider) service.
+- **`BREVO_API_KEY`**: This is the API key for the Brevo (a transactional email provider) service.
 - **`DATABASE_URL`**: Set it to the connection string of your MongoDB cluster.
 - **`PAYSTACK_TEST_PK`**: Your [Paystack](https://paystack.com/) (for payments) test public key. If you don't a Paystack account, you'll have to [create one](https://dashboard.paystack.com/#/signup).
 - **`PAYSTACK_TEST_SK`**: Your Paystack test secret key.
@@ -121,9 +121,9 @@ Visit the URL `http://localhost:3000/` in your browser to access the Aurora appl
 ## 👥 **Contributors**
 
 - [Omezibe Obioha](https://github.com/omzi/) (@0xOmzi)
-- [Tito Onwudinjo](https://github.com/pappitito/) (@titodili)
+- [Tito Onwudinjo](https://github.com/titoonw/) (@titodili)
 - [Emmanuel Adisa](https://github.com/bohemiancode-x/) (@emmie_porsche)
-- [Adebanjo Mary](https://github.com/Kaempy/) (@kaepmy)
+- [Adebanjo Mary](https://github.com/Kaempy/) (@Ademarymi)
 
 ## 📄 **License**
 
