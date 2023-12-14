@@ -65,7 +65,7 @@ const UserLayout = ({
 		<div className='h-full overflow-hidden flex'>
 			<Next13ProgressBar height='3.5px' color='#24a3fe' options={{ showSpinner: false }} startPosition={0.7} showOnShallow />
 			<Navigation />
-			<main className='h-[calc(100%-60px)] mt-[60px] flex-1 overflow-y-auto'>
+			<main className='h-[calc(100%-60px)] mt-[60px] flex-1 overflow-hidden overflow-y-auto'>
 				{children}
 			</main>
 		</div>

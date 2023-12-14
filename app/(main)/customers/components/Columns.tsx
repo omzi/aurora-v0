@@ -12,6 +12,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from '#/components/ui/dropdown-menu';
+import { copyToClipboard } from '#/lib/utils';
 
 export const columns: ColumnDef<Customer>[] = [
 	{
@@ -52,7 +53,7 @@ export const columns: ColumnDef<Customer>[] = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
-						<DropdownMenuItem onClick={() => navigator.clipboard.writeText(customer.email)}>
+						<DropdownMenuItem onClick={() => copyToClipboard(customer.email, 'Customer email copied!')}>
               Copy Customer Email
 						</DropdownMenuItem>
 						<DropdownMenuItem>Edit Customer</DropdownMenuItem>

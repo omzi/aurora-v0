@@ -117,10 +117,10 @@ const UserButton = ({
 						</div>
 					</div>
 				</AlertDialogHeader>
-				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
+				<div className='flex justify-center sm:justify-end gap-4'>
+					<AlertDialogCancel className='mt-0'>Cancel</AlertDialogCancel>
 					<AlertDialogAction onClick={handleConfirm}>Log Out</AlertDialogAction>
-				</AlertDialogFooter>
+				</div>
 			</AlertDialogContent>
 		</AlertDialog>
 	);

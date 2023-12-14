@@ -10,7 +10,6 @@ import { Customer, SuccessResponse } from '#/common.types';
 import { useUserContext } from '#/components/contexts/UserContext';
 import DataTable from '#/components/DataTable';
 import { Button } from '#/components/ui/button';
-import { Separator } from '#/components/ui/separator';
 import { useCustomerModal } from '#/hooks/useCustomerModal';
 import getCustomers from '#/lib/actions/getCustomers';
 

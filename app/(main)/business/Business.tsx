@@ -14,10 +14,10 @@ const BusinessInfo = () => {
 	if (!selectedBusiness) return;
 
 	return (
-		<div className='h-full px-2 sm:px-6 flex flex-col py-5'>
+		<div className='px-2 sm:px-6 flex flex-col py-5 mb-5'>
 			<div className='flex flex-col sm:flex-row gap-2 items-center justify-between'>
 				<h1 className='text-2xl font-semibold'>Business Information</h1>
-				<Button onClick={businessModal.onOpen} className='bg-core hover:bg-blue-800 text-white' variant='default'>
+				<Button onClick={businessModal.onOpen} className='bg-core hover:bg-blue-800 text-white'>
 					<PlusIcon className='h-4 w-4 mr-2' />
           New Business
 				</Button>

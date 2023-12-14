@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-useless-escape */
+import { toast } from 'react-toastify';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-import { ErrorResponse,SuccessResponse } from '#/common.types';
+import { ErrorResponse, SuccessResponse } from '#/common.types';
 
 export const cn = (...inputs: ClassValue[]) => {
 	return twMerge(clsx(inputs));
@@ -88,4 +89,31 @@ export const getInitials = (name: string): string => {
 
 export const formatNumberWithCommas = (number: number) => {
 	return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+export const copyToClipboard = async (text: string, successMessage: string): Promise<boolean> => {
+	try {
+		await navigator.clipboard.writeText(text);
+		toast.success(successMessage, { icon: '🌟' });
+		return true;
+	} catch (error) {
+		try {
+			const textarea = document.createElement('textarea');
+			textarea.value = text;
+			textarea.setAttribute('readonly', '');
+			textarea.style.position = 'absolute';
+			textarea.style.left = '-9999px';
+			document.body.appendChild(textarea);
+			
+			textarea.select();
+			document.execCommand('copy');
+			document.body.removeChild(textarea);
+			toast.success(successMessage, { icon: '🌟' });
+
+			return true;
+		} catch (fallbackError) {
+			console.error('Copying to clipboard failed :>>', fallbackError);
+			return false;
+		}
+	}
 };

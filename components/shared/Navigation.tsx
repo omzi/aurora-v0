@@ -73,6 +73,10 @@ const Navigation = () => {
 		}
 	};
 
+	const handleCloseSidebar = () => {
+		if (isMobile) closeSidebar();
+	}
+
 	const { data: businesses, isPending } = useQuery({
 		queryKey: [`userBusinesses`],
 		queryFn: async () => {
@@ -117,6 +121,7 @@ const Navigation = () => {
 						path='/dashboard'
 						label='Dashboard'
 						icon={Dashboard}
+						onClick={handleCloseSidebar}
 						active={pathname === '/dashboard'}
 					/>
 					{/* <Item
@@ -135,13 +140,15 @@ const Navigation = () => {
 						path='/customers'
 						label='Customers'
 						icon={Users}
-						active={pathname.startsWith('/customers')}
+						onClick={handleCloseSidebar}
+						active={pathname === '/customers'}
 					/>
 					<Item
 						isLink
 						path='/invoices'
 						label='Invoices'
 						icon={Receipt}
+						onClick={handleCloseSidebar}
 						active={pathname === '/invoices'}
 					/>
 					<Item
@@ -149,6 +156,7 @@ const Navigation = () => {
 						path='/business'
 						label='Business Info'
 						icon={Info}
+						onClick={handleCloseSidebar}
 						active={pathname === '/business'}
 					/>
 					<Item
@@ -156,6 +164,7 @@ const Navigation = () => {
 						path='/withdrawals'
 						label='Withdrawals'
 						icon={Wallet}
+						onClick={handleCloseSidebar}
 						active={pathname === '/withdrawals'}
 					/>
 					<Item
@@ -169,6 +178,7 @@ const Navigation = () => {
 						path='/profile'
 						label='Profile'
 						icon={User}
+						onClick={handleCloseSidebar}
 						active={pathname === '/profile'}
 					/>
 				</div>

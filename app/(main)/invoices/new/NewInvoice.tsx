@@ -331,8 +331,7 @@ const NewInvoice = () => {
 					<CardTitle>Invoice Items</CardTitle>
 				</CardHeader>
 				<CardContent className='flex gap-1'>
-					<Table>
-						<TableCaption></TableCaption>
+					<Table className='min-w-[30rem]'>
 						<TableHeader>
 							<TableRow className='hover:bg-transparent'>
 								<TableHead className='pl-0'>Description</TableHead>

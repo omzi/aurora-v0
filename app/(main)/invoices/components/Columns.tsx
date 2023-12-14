@@ -18,7 +18,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from '#/components/ui/dropdown-menu';
-import { formatNumberWithCommas } from '#/lib/utils';
+import { copyToClipboard, formatNumberWithCommas } from '#/lib/utils';
 
 export const columns: ColumnDef<Invoice>[] = [
 	{
@@ -28,12 +28,11 @@ export const columns: ColumnDef<Invoice>[] = [
 		),
 		cell: ({ row }) => {
 			const invoiceId = row.getValue('invoiceId') as string;
-			const copyInvoiceId = () => {
-				navigator.clipboard.writeText(invoiceId);
-				toast.success('Invoice ID copied!');
-			}
 
-			return <span onClick={copyInvoiceId} className='ml-auto cursor-pointer inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
+			return <span
+				onClick={() => copyToClipboard(invoiceId, 'Invoice ID copied!')}
+				className='ml-auto cursor-pointer inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'
+			>
         #{invoiceId}
 			</span>;
 		}
@@ -93,10 +92,6 @@ export const columns: ColumnDef<Invoice>[] = [
 		id: 'actions',
 		cell: ({ row }) => {
 			const invoice = row.original;
-			const copyInvoiceId = () => {
-				navigator.clipboard.writeText(invoice.invoiceId);
-				toast.success('Invoice ID copied!');
-			}
  
 			return (
 				<DropdownMenu>
@@ -107,7 +102,7 @@ export const columns: ColumnDef<Invoice>[] = [
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align='end'>
-						<DropdownMenuItem onClick={copyInvoiceId}>
+						<DropdownMenuItem onClick={() => copyToClipboard(invoice.invoiceId, 'Invoice ID copied!')}>
               Copy Invoice ID
 						</DropdownMenuItem>
 						<Link href={`/invoices/view/${invoice.invoiceId}`} target='_blank' rel='noopener noreferrer'>
