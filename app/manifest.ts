@@ -4,8 +4,7 @@ const manifest = (): MetadataRoute.Manifest => {
 	return {
 		name: 'Aurora',
 		short_name: 'Aurora',
-		description:
-			'Your all-in-one solution for simplifying small business payments. ✨',
+		description: 'Your all-in-one solution for simplifying small business payments. ✨',
 		start_url: '/',
 		display: 'standalone',
 		background_color: '#000',

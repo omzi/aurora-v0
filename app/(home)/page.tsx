@@ -9,9 +9,8 @@ import Schedule from '#/components/shared/Schedule';
 import Stats from '#/components/shared/Stats';
 
 export const metadata: Metadata = {
-	title: 'Home | Aurora',
-	description:
-    'Your All-In-One Solution For Simplifying Small Business Payments.'
+	title: 'Home ~ Aurora',
+	description: 'Your all-in-one solution for simplifying small business payments. ✨'
 };
 const Home = () => {
 	return (

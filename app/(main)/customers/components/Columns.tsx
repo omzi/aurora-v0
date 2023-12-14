@@ -57,6 +57,7 @@ export const columns: ColumnDef<Customer>[] = [
 						</DropdownMenuItem>
 						<DropdownMenuItem>Edit Customer</DropdownMenuItem>
 						<DropdownMenuItem>View Customer</DropdownMenuItem>
+						<DropdownMenuItem>View Invoice History</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			)

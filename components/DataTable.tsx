@@ -75,7 +75,7 @@ const DataTable = <TData, TValue>({
 					placeholder='Filter table...'
 					value={globalFilter}
 					onChange={handleGlobalFilter}
-					className='max-w-sm'
+					className='w-full lg:max-w-sm'
 				/>
 				<DataTableViewOptions table={table} />
 			</div>

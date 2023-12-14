@@ -222,12 +222,13 @@ const Navigation = () => {
 						icon={Settings}
 						active={settings.isOpen}
 					/>
-					{/* <Item
-						onClick={() => navigateTo('/profile')}
+					<Item
+						isLink
+						path='/profile'
 						label='Profile'
 						icon={User}
 						active={pathname === '/profile'}
-					/> */}
+					/>
 				</div>
 				<div
 					onMouseDown={handleMouseDown}
