@@ -13,7 +13,7 @@ import { formatNumberWithCommas } from '#/lib/utils';
 
 const GET = async (request: NextRequest) => {
 	try {
-		const {searchParams} = request.nextUrl;
+		const { searchParams } = request.nextUrl;
 		const invoiceId = searchParams.get('invoiceId');
 
 		if (!invoiceId) {

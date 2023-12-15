@@ -41,7 +41,7 @@ import { useEdgeStore } from '#/lib/edgestore';
 import { isBase64Image } from '#/lib/utils';
 import { BusinessSchema } from '#/lib/validations';
 
-const CreateBusinessModal = () => {
+const BusinessModal = () => {
 	const queryClient = useQueryClient();
 	const { edgestore } = useEdgeStore();
 	const businessModal = useBusinessModal();
@@ -68,10 +68,7 @@ const CreateBusinessModal = () => {
 			form.setValue('name', selectedBusiness?.name as string);
 			form.setValue('email', selectedBusiness?.email as string);
 			form.setValue('address', selectedBusiness?.address as string);
-			form.setValue(
-				'registrationNumber',
-				selectedBusiness?.registrationNumber as string
-			);
+			form.setValue('registrationNumber', selectedBusiness?.registrationNumber as string);
 			form.setValue('phoneNumber', selectedBusiness?.phoneNumber as string);
 			form.setValue('description', selectedBusiness?.description as string);
 			form.setValue('logo', selectedBusiness?.logo);
@@ -101,20 +98,16 @@ const CreateBusinessModal = () => {
 			queryClient.invalidateQueries({ queryKey: ['userBusinesses'] });
 			const { data: business } = response.data;
 			selectBusiness(business);
-			toast.success(
-				businessModal.isEditMode
-					? 'Business info updated!'
-					: 'Business created successfully!',
-				{ icon: '🎉' }
-			);
+			const toastMessage = businessModal.isEditMode ? 'Business info updated!' : 'Business created successfully!';
+			toast.success(toastMessage, { icon: '🎉' });
 			form.reset();
 			onClose();
 			!businessModal.isEditMode && window.location.assign('/dashboard');
 
 			return;
 		} catch (error) {
-			console.log('Create Business Error :>>', error);
-			toast.error('An error occurred while creating your business');
+			console.log(`${businessModal.isEditMode ? 'Create' : 'Update'} Business Error :>>`, error);
+			toast.error(`An error occurred while ${businessModal.isEditMode ? 'creating' : 'updating'} your business`);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -145,66 +138,61 @@ const CreateBusinessModal = () => {
 
 	return (
 		<Dialog open={businessModal.isOpen} onOpenChange={businessModal.onClose}>
-			<DialogContent className="overflow-hidden">
-				<DialogHeader className="border-b pb-2">
-					<h2 className="text-lg font-normal text-dark-1 dark:text-light-2">
-						{businessModal.isEditMode
-							? 'Edit Business Info'
-							: 'Create A Business'}
+			<DialogContent className='overflow-hidden'>
+				<DialogHeader className='border-b pb-2'>
+					<h2 className='text-lg font-normal text-dark-1 dark:text-light-2'>
+						{businessModal.isEditMode ? 'Edit Business Info' : 'Create A Business'}
 					</h2>
 				</DialogHeader>
-				<ScrollArea className="h-full max-h-[75vh]">
-					<div className="flex items-center px-2 mb-4 justify-between">
+				<ScrollArea className='h-full max-h-[75vh]'>
+					<div className='flex items-center px-2 mb-4 justify-between'>
 						<Form {...form}>
-							<form
-								onSubmit={form.handleSubmit(onSubmit)}
-								className="flex flex-col justify-start gap-4 w-full"
-							>
+							<form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col justify-start gap-4 w-full'>
 								{/* Business Logo */}
 								<FormField
 									control={form.control}
-									name="logo"
+									name='logo'
 									render={({ field }) => (
 										<>
-											<FormItem className="flex gap-4 flex-col items-start sm:flex-row sm:items-center">
-												<FormLabel className="account-form-image-label">
+											<FormItem className='flex gap-4 flex-col items-start sm:flex-row sm:items-center'>
+												<FormLabel className='account-form-image-label'>
 													{field.value ? (
 														<Image
 															src={field.value}
-															alt="Business Logo"
+															alt='Business Logo'
 															width={60}
 															height={60}
 															priority
-															className="w-[60px] h-[60px] rounded-full object-cover"
+															className='w-[60px] h-[60px] rounded-full object-cover'
 														/>
 													) : (
 														<ImageIcon
 															width={48}
 															height={48}
-															className="p-2 rounded-full"
+															className='p-2 rounded-full'
 														/>
 													)}
 												</FormLabel>
-												<FormControl className="cursor-pointer">
-													<label htmlFor="image">
-														<span className="rounded-md bg-white px-2.5 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+												<FormControl className='cursor-pointer'>
+													<label htmlFor='image'>
+														<span className='rounded-md bg-white px-2.5 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'>
 															{businessModal.isEditMode
 																? 'Change Business Logo'
 																: 'Upload Business Logo'}
 														</span>
 														<Input
-															type="file"
+															type='file'
 															disabled={isSubmitting}
-															id="image"
-															accept="image/*"
-															className="sr-only"
+															id='image'
+															accept='image/*'
+															className='sr-only'
 															onChange={e => handleImageUpload(e, field.onChange)
 															}
 														/>
 													</label>
 												</FormControl>
 											</FormItem>
-											<FormMessage className="text-red-400" />
+											<FormMessage className='text-red-400' />
 										</>
 									)}
 								/>
@@ -212,34 +200,34 @@ const CreateBusinessModal = () => {
 								{/* Business Name */}
 								<FormField
 									control={form.control}
-									name="name"
+									name='name'
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel
 												htmlFor={field.name}
-												className="text-base-semibold text-dark-1 dark:text-light-2"
+												className='text-base-semibold text-dark-1 dark:text-light-2'
 											>
 												Business Name
 											</FormLabel>
 											<FormControl>
-												<div className="relative rounded-md shadow-sm">
-													<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+												<div className='relative rounded-md shadow-sm'>
+													<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
 														<StoreIcon
-															className="w-5 h-5 text-gray-400"
-															aria-hidden="true"
+															className='w-5 h-5 text-gray-400'
+															aria-hidden='true'
 														/>
 													</div>
 													<Input
-														type="text"
+														type='text'
 														disabled={isSubmitting}
 														id={field.name}
-														placeholder="Your business name"
-														className="account-form-input block w-full rounded-md border-0 py-1.5 pl-10"
+														placeholder='Your business name'
+														className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
 														{...field}
 													/>
 												</div>
 											</FormControl>
-											<FormMessage className="text-red-400" />
+											<FormMessage className='text-red-400' />
 										</FormItem>
 									)}
 								/>
@@ -247,34 +235,34 @@ const CreateBusinessModal = () => {
 								{/* Business Address */}
 								<FormField
 									control={form.control}
-									name="address"
+									name='address'
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel
 												htmlFor={field.name}
-												className="text-base-semibold text-dark-1 dark:text-light-2"
+												className='text-base-semibold text-dark-1 dark:text-light-2'
 											>
 												Business Address
 											</FormLabel>
 											<FormControl>
-												<div className="relative rounded-md shadow-sm">
-													<div className="absolute inset-y-0 top-0 left-0 pt-3 pl-3 pointer-events-none">
+												<div className='relative rounded-md shadow-sm'>
+													<div className='absolute inset-y-0 top-0 left-0 pt-3 pl-3 pointer-events-none'>
 														<MapPinIcon
-															className="w-5 h-5 text-gray-400"
-															aria-hidden="true"
+															className='w-5 h-5 text-gray-400'
+															aria-hidden='true'
 														/>
 													</div>
 													<Textarea
 														id={field.name}
 														disabled={isSubmitting}
 														rows={1}
-														placeholder="Enter your business address"
-														className="account-form-textarea custom-scrollbar block w-full rounded-md border-0 py-1.5 pl-10"
+														placeholder='Enter your business address'
+														className='account-form-textarea custom-scrollbar block w-full rounded-md border-0 py-1.5 pl-10'
 														{...field}
 													/>
 												</div>
 											</FormControl>
-											<FormMessage className="text-red-400" />
+											<FormMessage className='text-red-400' />
 										</FormItem>
 									)}
 								/>
@@ -282,70 +270,70 @@ const CreateBusinessModal = () => {
 								{/* Registeration Number */}
 								<FormField
 									control={form.control}
-									name="registrationNumber"
+									name='registrationNumber'
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel
 												htmlFor={field.name}
-												className="text-base-semibold text-dark-1 dark:text-light-2"
+												className='text-base-semibold text-dark-1 dark:text-light-2'
 											>
 												Registeration number
 											</FormLabel>
 											<FormControl>
-												<div className="relative rounded-md shadow-sm">
-													<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+												<div className='relative rounded-md shadow-sm'>
+													<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
 														<BookCheckIcon
-															className="w-5 h-5 text-gray-400"
-															aria-hidden="true"
+															className='w-5 h-5 text-gray-400'
+															aria-hidden='true'
 														/>
 													</div>
 													<Input
-														type="text"
+														type='text'
 														disabled={isSubmitting}
 														id={field.name}
-														placeholder="Your business registeration number"
-														className="account-form-input block w-full rounded-md border-0 py-1.5 pl-10"
+														placeholder='Your business registeration number'
+														className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
 														{...field}
 													/>
 												</div>
 											</FormControl>
-											<FormMessage className="text-red-400" />
+											<FormMessage className='text-red-400' />
 										</FormItem>
 									)}
 								/>
 
-								<div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4 items-start">
+								<div className='grid grid-cols-1 sm:grid-cols-2 w-full gap-4 items-start'>
 									{/* Business Email */}
 									<FormField
 										control={form.control}
-										name="email"
+										name='email'
 										render={({ field }) => (
 											<FormItem>
 												<FormLabel
 													htmlFor={field.name}
-													className="text-base-semibold text-dark-1 dark:text-light-2"
+													className='text-base-semibold text-dark-1 dark:text-light-2'
 												>
 													Business Email
 												</FormLabel>
 												<FormControl>
-													<div className="relative rounded-md shadow-sm">
-														<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+													<div className='relative rounded-md shadow-sm'>
+														<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
 															<AtSignIcon
-																className="w-5 h-5 text-gray-400"
-																aria-hidden="true"
+																className='w-5 h-5 text-gray-400'
+																aria-hidden='true'
 															/>
 														</div>
 														<Input
-															type="text"
+															type='text'
 															disabled={isSubmitting}
 															id={field.name}
-															placeholder="Your business email"
-															className="account-form-input block w-full rounded-md border-0 py-1.5 pl-10"
+															placeholder='Your business email'
+															className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
 															{...field}
 														/>
 													</div>
 												</FormControl>
-												<FormMessage className="text-red-400" />
+												<FormMessage className='text-red-400' />
 											</FormItem>
 										)}
 									/>
@@ -353,34 +341,34 @@ const CreateBusinessModal = () => {
 									{/* Business Phone Number */}
 									<FormField
 										control={form.control}
-										name="phoneNumber"
+										name='phoneNumber'
 										render={({ field }) => (
 											<FormItem>
 												<FormLabel
 													htmlFor={field.name}
-													className="text-base-semibold text-dark-1 dark:text-light-2"
+													className='text-base-semibold text-dark-1 dark:text-light-2'
 												>
 													Business Phone Number
 												</FormLabel>
 												<FormControl>
-													<div className="relative rounded-md shadow-sm">
-														<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+													<div className='relative rounded-md shadow-sm'>
+														<div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
 															<PhoneIcon
-																className="w-5 h-5 text-gray-400"
-																aria-hidden="true"
+																className='w-5 h-5 text-gray-400'
+																aria-hidden='true'
 															/>
 														</div>
 														<Input
-															type="text"
+															type='text'
 															disabled={isSubmitting}
 															id={field.name}
-															placeholder="Your business mobile number"
-															className="account-form-input block w-full rounded-md border-0 py-1.5 pl-10"
+															placeholder='Your business mobile number'
+															className='account-form-input block w-full rounded-md border-0 py-1.5 pl-10'
 															{...field}
 														/>
 													</div>
 												</FormControl>
-												<FormMessage className="text-red-400" />
+												<FormMessage className='text-red-400' />
 											</FormItem>
 										)}
 									/>
@@ -389,71 +377,71 @@ const CreateBusinessModal = () => {
 								{/* Business Description */}
 								<FormField
 									control={form.control}
-									name="description"
+									name='description'
 									render={({ field }) => (
 										<FormItem>
 											<FormLabel
 												htmlFor={field.name}
-												className="text-base-semibold text-dark-1 dark:text-light-2"
+												className='text-base-semibold text-dark-1 dark:text-light-2'
 											>
 												Business Description
 											</FormLabel>
 											<FormControl>
-												<div className="relative rounded-md shadow-sm">
-													<div className="absolute inset-y-0 top-0 left-0 pt-3 pl-3 pointer-events-none">
+												<div className='relative rounded-md shadow-sm'>
+													<div className='absolute inset-y-0 top-0 left-0 pt-3 pl-3 pointer-events-none'>
 														<PencilIcon
-															className="w-5 h-5 text-gray-400"
-															aria-hidden="true"
+															className='w-5 h-5 text-gray-400'
+															aria-hidden='true'
 														/>
 													</div>
 													<Textarea
 														id={field.name}
 														disabled={isSubmitting}
 														rows={1}
-														placeholder="Describe your business in 100 characters"
-														className="account-form-textarea custom-scrollbar block w-full rounded-md border-0 py-1.5 pl-10"
+														placeholder='Describe your business in 100 characters'
+														className='account-form-textarea custom-scrollbar block w-full rounded-md border-0 py-1.5 pl-10'
 														{...field}
 													/>
 												</div>
 											</FormControl>
-											<FormMessage className="text-red-400" />
+											<FormMessage className='text-red-400' />
 										</FormItem>
 									)}
 								/>
 
-								<div className="space-x-2 flex items-center justify-end">
+								<div className='space-x-2 flex items-center justify-end'>
 									<Button
-										variant="outline"
-										type="button"
+										variant='outline'
+										type='button'
 										disabled={isSubmitting}
 										onClick={businessModal.onClose}
 									>
 										Cancel
 									</Button>
 									<Button
-										type="submit"
+										type='submit'
 										disabled={isSubmitting}
-										className="relative bg-core hover:bg-blue-800 text-white"
+										className='relative bg-core hover:bg-blue-800 text-white'
 									>
 										{isSubmitting ? (
-											<span className="opacity-0">
+											<span className='opacity-0'>
 												{businessModal.isEditMode
 													? 'Save changes'
 													: 'Create business'}
 											</span>
 										) : (
-											<span className="opacity-100">
+											<span className='opacity-100'>
 												{businessModal.isEditMode
 													? 'Save changes'
 													: 'Create business'}
 											</span>
 										)}
 										{isSubmitting && (
-											<div className="absolute flex items-center justify-center w-full h-full">
+											<div className='absolute flex items-center justify-center w-full h-full'>
 												<Loader
-													type="spinner"
+													type='spinner'
 													size={28}
-													className="text-black dark:text-white leading-[0]"
+													className='text-black dark:text-white leading-[0]'
 												/>
 											</div>
 										)}
@@ -468,4 +456,4 @@ const CreateBusinessModal = () => {
 	);
 };
 
-export default CreateBusinessModal;
+export default BusinessModal;

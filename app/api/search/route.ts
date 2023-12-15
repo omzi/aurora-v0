@@ -12,7 +12,7 @@ const GET = async (request: NextRequest) => {
 			return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
 		}
     
-		const {searchParams} = request.nextUrl;
+		const { searchParams } = request.nextUrl;
 		const query = searchParams.get('query');
 
 		if (!query) {

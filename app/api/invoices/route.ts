@@ -22,7 +22,7 @@ const GET = async (request: NextRequest) => {
 			return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
 		}
 
-		const {searchParams} = request.nextUrl;
+		const { searchParams } = request.nextUrl;
 		const businessId = searchParams.get('businessId');
 
 		if (!businessId) {
@@ -58,7 +58,7 @@ const POST = async (request: NextRequest) => {
 			return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
 		}
 
-		const {searchParams} = request.nextUrl;
+		const { searchParams } = request.nextUrl;
 		const businessId = searchParams.get('businessId');
 		const customerId = searchParams.get('customerId');
 
@@ -160,7 +160,7 @@ const PUT = async (request: NextRequest) => {
 		}
 		const { id, ...data } = body;
 
-		const {searchParams} = request.nextUrl;
+		const { searchParams } = request.nextUrl;
 		const businessId = searchParams.get('businessId');
 		const customerId = searchParams.get('customerId');
 

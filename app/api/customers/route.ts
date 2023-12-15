@@ -15,7 +15,7 @@ const GET = async (request: NextRequest) => {
 			return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
 		}
 
-		const {searchParams} = request.nextUrl;
+		const { searchParams } = request.nextUrl;
 		const businessId = searchParams.get('businessId');
 
 		if (!businessId) {
@@ -51,7 +51,7 @@ const POST = async (request: NextRequest) => {
 			return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
 		}
     
-		const {searchParams} = request.nextUrl;
+		const { searchParams } = request.nextUrl;
 		const businessId = searchParams.get('businessId');
 
 		if (!businessId) {
@@ -90,4 +90,65 @@ const POST = async (request: NextRequest) => {
 	}
 }
 
-export { GET, POST };
+const PUT = async (request: NextRequest) => {
+	const body = await request.json();
+	const token = await getToken({ req: request });
+
+	try {
+		if (!token) {
+			return NextResponse.json({ message: 'Unauthenticated!' }, { status: 401 });
+		}
+
+		const { searchParams } = request.nextUrl;
+		const businessId = searchParams.get('businessId');
+
+		if (!businessId) {
+			return NextResponse.json({ message: 'Invalid request. Provide businessId.' }, { status: 400 });
+		}
+
+		const business = await prisma.business.findUnique({
+			where: { id: businessId, userId: token.sub }
+		});
+
+		if (!business) {
+			return NextResponse.json({ message: 'Business not found!' }, { status: 404 });
+		}
+
+		const { id, ...data } = body;
+		// Check if customer exists
+		const customer = await prisma.customer.findUnique({
+			where: { id, businessId: business.id }
+		});
+
+		if (!customer) {
+			return NextResponse.json({ message: 'Customer not found!' }, { status: 404 });
+		}
+
+		// Check if customer exists with same email
+		const existingCustomer = await prisma.customer.findFirst({
+			where: { id: { not: id }, email: data.email, businessId: business.id }
+		});
+
+		if (existingCustomer) {
+			return NextResponse.json({ message: 'Customer with same email exists!' }, { status: 400 });
+		}
+
+		// Ensure sensitive fields like businessId, id, createdAt, and updatedAt are not changed
+		const allowedFields = ['name', 'email', 'address', 'phoneNumber'];
+
+		for (const field in data) {
+			if (!allowedFields.includes(field)) {
+				delete data[field];
+			}
+		}
+    
+		const updatedCustomer = await prisma.customer.update({ where: { id }, data: data as Prisma.CustomerUpdateInput });
+    
+		return NextResponse.json({ message: 'Customer updated successfully!', data: updatedCustomer }, { status: 200 });
+	} catch (error) {
+		console.error('Server Error [PUT/Customers]:>>', error);
+		return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+	}
+}
+
+export { GET, POST, PUT };

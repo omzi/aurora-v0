@@ -95,7 +95,7 @@ const BusinessInfo = () => {
 				</div>
 			</div>
 			<Button
-				onClick={businessModal.toggleEditOpen}
+				onClick={businessModal.toggleEditMode}
 				className='self-start mx-auto bg-core hover:bg-blue-800 text-white'
 			>
 				<PenIcon className='h-4 w-4 mr-2' />

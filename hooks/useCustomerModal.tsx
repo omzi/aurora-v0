@@ -1,11 +1,14 @@
 import { create } from 'zustand';
 
+import { Customer } from '#/common.types';
+
 type CustomerModalStore = {
 	isOpen: boolean;
 	onOpen: () => void;
 	onClose: () => void;
 	isEditMode: boolean;
-	toggleEditOpen: () => void;
+	toggleEditMode: (customer: Customer) => void;
+	customer: Customer | null;
 };
 
 export const useCustomerModal = create<CustomerModalStore>((set, get) => ({
@@ -14,10 +17,13 @@ export const useCustomerModal = create<CustomerModalStore>((set, get) => ({
 	onOpen: () => set({ isOpen: true }),
 	onClose: () => set({
 		isOpen: false,
-		isEditMode: false
+		isEditMode: false,
+		customer: null
 	}),
-	toggleEditOpen: () => set({
+	toggleEditMode: (customer: Customer) => set({
 		isEditMode: true,
-		isOpen: true
-	})
+		isOpen: true,
+		customer
+	}),
+	customer: null
 }));

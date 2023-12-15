@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import CreateBusinessModal from '#/components/modals/CreateBusinessModal';
-import CreateCustomerModal from '#/components/modals/CreateCustomerModal';
+import BusinessModal from '#/components/modals/BusinessModal';
+import CustomerModal from '#/components/modals/CustomerModal';
 import InvoiceExitModal from '#/components/modals/InvoiceExitModal';
 import SettingsModal from '#/components/modals/SettingsModal';
 
@@ -21,8 +21,8 @@ export const ModalProvider = () => {
 	return (
 		<>
 			<SettingsModal />
-			<CreateBusinessModal />
-			<CreateCustomerModal />
+			<BusinessModal />
+			<CustomerModal />
 			<InvoiceExitModal />
 		</>
 	);

@@ -12,6 +12,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from '#/components/ui/dropdown-menu';
+import { useCustomerModal } from '#/hooks/useCustomerModal';
 import { copyToClipboard } from '#/lib/utils';
 
 export const columns: ColumnDef<Customer>[] = [
@@ -43,6 +44,8 @@ export const columns: ColumnDef<Customer>[] = [
 		id: 'actions',
 		cell: ({ row }) => {
 			const customer = row.original;
+			// eslint-disable-next-line react-hooks/rules-of-hooks
+			const customerModal = useCustomerModal();
  
 			return (
 				<DropdownMenu>
@@ -56,7 +59,9 @@ export const columns: ColumnDef<Customer>[] = [
 						<DropdownMenuItem onClick={() => copyToClipboard(customer.email, 'Customer email copied!')}>
               Copy Customer Email
 						</DropdownMenuItem>
-						<DropdownMenuItem>Edit Customer</DropdownMenuItem>
+						<DropdownMenuItem onClick={() => customerModal.toggleEditMode(customer)}>
+							Edit Customer
+						</DropdownMenuItem>
 						<DropdownMenuItem>View Customer</DropdownMenuItem>
 						<DropdownMenuItem>View Invoice History</DropdownMenuItem>
 					</DropdownMenuContent>
