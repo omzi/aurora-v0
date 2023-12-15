@@ -234,7 +234,7 @@ const NewInvoice = () => {
 									placeholder='Search customers...'
 								/>
 							</div>
-							<DropdownMenuGroup className='overflow-y-auto h-[250px] flex flex-col items-center'>
+							<DropdownMenuGroup className='overflow-y-auto min-h-[52.5px] max-h-[250px] flex flex-col items-center'>
 								{isPending ? (
 									<Loader type='spinner' size={36} className='my-4 text-black dark:text-white leading-[0]' />
 								) : (

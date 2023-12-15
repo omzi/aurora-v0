@@ -143,7 +143,7 @@ const ViewInvoice = () => {
         />
       </Card> */}
 			<Card className='p-6'>
-				<CardHeader className='pl-0'>
+				<CardHeader className='px-0'>
 					<div className='flex flex-col sm:flex-row gap-7 items-center justify-between'>
 						<CardTitle>
               Invoice{' '}
@@ -164,8 +164,8 @@ const ViewInvoice = () => {
 						</div>
 					</div>
 				</CardHeader>
-				<div className='flex flex-col gap-3 sm:flex-row items-center justify-between'>
-					<Card className='flex flex-col gap-2 my-2 w-full sm:max-w-[48%] md:max-w-[44%] '>
+				<div className='flex flex-col gap-3 lg:flex-row items-center justify-between'>
+					<Card className='flex flex-col gap-2 my-2 w-full'>
 						<CardHeader>
 							<Image
 								width={32}
@@ -181,16 +181,16 @@ const ViewInvoice = () => {
 							<div>{format(new Date(invoiceDetails?.createdAt as Date), 'do MMM, yyyy')}</div>
 						</CardContent>
 					</Card>
-					<Card className='flex flex-col  gap-2 my-4 w-full sm:max-w-[48%] md:max-w-[44%]'>
+					<Card className='flex flex-col gap-2 my-4 w-full'>
 						<CardHeader>
-							<CardTitle className='text-base font-bold text-left sm:text-right mb-2 uppercase text-gray-900 dark:text-white'>
+							<CardTitle className='text-base font-bold text-left sm:text-right mb-4 uppercase text-gray-900 dark:text-white'>
                 Billed To:
 							</CardTitle>
 						</CardHeader>
-						<CardContent className='flex text-left sm:text-right flex-col  gap-2'>
-							<div className=''>{invoiceDetails?.customer.name} ({invoiceDetails?.customer.email})</div>
+						<CardContent className='flex text-left sm:text-right flex-col gap-2'>
+							<div className=''>{invoiceDetails?.customer.name} <span className='font-thin leading-none opacity-70'>({invoiceDetails?.customer.email})</span></div>
 							<div>{invoiceDetails?.customer.phoneNumber}</div>
-							<div>{invoiceDetails?.customer.address}</div>
+							<div className='font-thin leading-none opacity-70'>{invoiceDetails?.customer.address}</div>
 						</CardContent>
 					</Card>
 				</div>
@@ -199,21 +199,21 @@ const ViewInvoice = () => {
 						<CardTitle>Details</CardTitle>
 					</CardHeader>
 					<CardContent className='flex flex-col gap-4'>
-						<div className='flex items-center gap-2'>
+						<div className='flex flex-col md:flex-row items-start md:items-center gap-2'>
 							<div>Invoice ID:</div>
 							<span className='font-thin leading-none opacity-70'>#{invoiceDetails?.invoiceId}</span>
 						</div>
-						<div className='flex items-center gap-2'>
+						<div className='flex flex-col md:flex-row items-start md:items-center gap-2'>
 							<div>Due Date:</div>
 							<div className='font-thin leading-none opacity-70'>
 								{format(date, 'do MMM, yyyy')} ({formatDistanceToNow(date, { addSuffix: true })})
 							</div>
 						</div>
-						<div className='flex items-center gap-2'>
+						<div className='flex flex-col md:flex-row items-start md:items-center gap-2'>
 							<div>Amount:</div>
 							<div className='font-thin leading-none opacity-70'>₦ {formatNumberWithCommas(invoiceDetails?.amount as number)}</div>
 						</div>
-						<div className='flex items-center gap-2'>
+						<div className='flex flex-col md:flex-row items-start md:items-center gap-2'>
 							<div>Status:</div>
 							{invoiceDetails?.status === 'PAID' ? (
 								<Status status='PAID' />
@@ -221,9 +221,9 @@ const ViewInvoice = () => {
 								<Status status='UNPAID' />
 							)}
 						</div>
-						<table className='table-auto w-full mt-4'>
-							<thead className='bg-white/20 flex w-full'>
-								<tr className='rounded-md flex justify-between w-full items-center'>
+						<table className='table-auto overflow-y-auto block mt-4'>
+							<thead className='rounded-md bg-white/20 min-w-[24rem] flex w-full'>
+								<tr className='flex justify-between w-full items-center'>
 									<th className='p-3 uppercase text-sm flex-1 min-w-[10rem] tracking-wide font-thin text-left'>Description</th>
 									<div className='sm:w-full max-w-[28rem] text-center  sm:grid grid-cols-3'>
 										<th className='p-3 uppercase hidden sm:flex mx-auto text-sm tracking-wide font-thin text-left'>Quantity</th>
@@ -232,10 +232,10 @@ const ViewInvoice = () => {
 									</div>
 								</tr>
 							</thead>
-							<tbody className='flex w-full flex-col'>
+							<tbody className='flex min-w-[24rem] flex-col'>
 								{(invoiceDetails?.items as Item[]).map((item, idx) => (
 									<tr className='bg-transparent flex w-full items-start justify-between' key={idx}>
-										<td className='p-3 flex flex-1 items-center w-full min-w-[10rem]'>{item.description} <span className='ml-2 sm:hidden font-thin leading-none opacity-70'>{`- (${item.quantity} * ₦ ${formatNumberWithCommas(item.price)})`}</span></td>
+										<td className='p-3 flex flex-1 items-center w-full min-w-[10rem]'>{item.description} <span className='ml-2 block sm:hidden font-thin leading-none opacity-70'>{`- (${item.quantity} * ₦ ${formatNumberWithCommas(item.price)})`}</span></td>
 										<div className='sm:w-full max-w-[28rem] items-end text-center sm:grid grid-cols-3'>
 											<td className='p-3 hidden mx-auto sm:flex'>{item.quantity}</td>
 											<td className='p-3 hidden mx-auto sm:flex'>₦ {formatNumberWithCommas(item.price)}</td>
@@ -260,7 +260,7 @@ const ViewInvoice = () => {
 						<span className='text-lg font-semibold'>{formatNumberWithCommas(invoiceDetails?.amount as number)}</span>
 					</CardContent>
 					{invoiceDetails.status === 'UNPAID' && <>
-						<CardFooter className='justify-between'>
+						<CardFooter className='justify-between flex-col sm:flex-row gap-3'>
 							<Button
 								onClick={verifyPayment}
 								disabled={showVerifyPaymentModal}
