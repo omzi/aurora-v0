@@ -1,5 +1,4 @@
 'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -9,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Loader from 'react-ts-loaders';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AtSignIcon, KeyIcon } from 'lucide-react';
+import { AtSignIcon, EyeIcon, EyeOffIcon,KeyIcon } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import * as z from 'zod';
 
@@ -34,6 +33,7 @@ const SignIn = () => {
 	const router = useRouter();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [googleLoading, setGoogleLoading] = useState(false);
+	const [showPassword, setShowPassword] = useState(false)
 	const form = useForm<z.infer<typeof SignInSchema>>({
 		resolver: zodResolver(SignInSchema),
 		defaultValues: {
@@ -185,14 +185,17 @@ const SignIn = () => {
 													/>
 												</div>
 												<Input
-													type="password"
+													type={showPassword ? 'text' : 'password'}
 													autoComplete="password"
 													disabled={isSubmitting}
 													id={field.name}
 													placeholder="Your password"
-													className="account-form-input block w-full rounded-md border-0 py-1.5 pl-10"
+													className="account-form-input block w-full rounded-md border-0 py-1.5 px-10 "
 													{...field}
 												/>
+												<div onClick={()=> setShowPassword(prev => !prev)} className="absolute  inset-y-0 right-0 flex text-gray-400 items-center pr-3 cursor-pointer">
+													{showPassword ? <EyeOffIcon className='w-5 h-5' /> : <EyeIcon className='w-5 h-5' />}
+												</div>
 											</div>
 										</FormControl>
 										<FormMessage className="text-red-400" />
