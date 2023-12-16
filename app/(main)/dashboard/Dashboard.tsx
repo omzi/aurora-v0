@@ -42,13 +42,13 @@ const Dashboard = () => {
 	const valueFormatter = (number: number) => `₦ ${new Intl.NumberFormat('us').format(number).toString()}`;
 
 	return (
-		<div className='min-h-full w-[calc(100%-50px)] max-w-[1560px] mx-auto pt-6 pb-8 flex flex-col md:grid md:grid-cols-3 gap-6 py-4'>
+		<div className=' w-[calc(100%-50px)] max-w-[1560px] mx-auto pt-6 pb-8 flex flex-col sm:grid-cols-2 lg:grid lg:grid-cols-3 gap-6 py-4'>
 			{session && session.user ? (
-				<Card className='md:col-span-1 h-[275px] md:h-[300px] relative z-[1]'>
+				<Card className='md:col-span-1 max-h-[275px] min-w-[9rem] md:max-h-[420px] h-full relative z-[1]'>
 					<div className='flex flex-col justify-between h-full'>
 						<div>
 							<h2 className='text-xl font-bold'>👋🏽 Hi, {session?.user?.name?.split(' ').shift()}!</h2>
-							<div className='flex flex-row justify-between mt-8 mb-4 gap-2 items-center text-start'>
+							<div className='flex flex-row justify-between mt-5 mb-4 gap-2 items-center text-start'>
 								<p className='mb-2 leading-1.5'>Ready to streamline your business payments? Explore quick actions below.</p>
 								<Image
 									src='/images/money-target.png'
@@ -59,14 +59,14 @@ const Dashboard = () => {
 								/>
 							</div>
 						</div>
-						<div>
+						<div className='flex flex-col gap-3 sm:flex-row lg:flex-col sm:gap-5 lg:gap-3'>
 							<Link href='/invoices/new'>
-								<Button variant='secondary' className='mt-2 h-auto py-1 px-3 bg-core hover:bg-blue-800 text-white'>
+								<Button variant='secondary' className='mt-0 h-auto py-1 px-3 bg-core hover:bg-blue-800 text-white'>
 									<PlusIcon className='h-4 w-4 mr-2' />
 									Create An Invoice
 								</Button>
-							</Link><br />
-							<Button onClick={customerModal.onOpen} className='mt-2 h-auto py-1 px-3 bg-core hover:bg-blue-800 text-white'>
+							</Link>
+							<Button onClick={customerModal.onOpen} className='mt-0 max-w-[10rem] h-auto py-1 px-3 bg-core hover:bg-blue-800 text-white'>
 								<UserIcon className='h-4 w-4 mr-2' />
 								Add A Customer
 							</Button>
@@ -81,7 +81,7 @@ const Dashboard = () => {
 					/>
 				</Card>
 			) : (
-				<Card className='md:col-span-1 h-[275px] md:h-[300px] relative z-[1]'>
+				<Card className='md:col-span-1 max-h-[275px] min-w-[9rem] md:max-h-[420px] h-full relative z-[1]'>
 					<div className='flex flex-col justify-between h-full'>
 						<div>
 							<Skeleton className='w-2/3 h-8 rounded-md' />
@@ -101,7 +101,7 @@ const Dashboard = () => {
 					/>
 				</Card>
 			)}
-			<Grid numItemsSm={1} numItemsMd={2} className='md:col-span-2 gap-6'>
+			<Grid numItemsSm={1} numItemsMd={2} className='md:col-span-2 gap-6 h-full md:max-h-[420px]'>
 				{isAnalyticsLoading ? (
 					Array.from({ length: 4 }).map((_, idx) => (
 						<Card key={idx} className='flex flex-col p-4 ring-0' decoration='top' decorationColor='gray'>
