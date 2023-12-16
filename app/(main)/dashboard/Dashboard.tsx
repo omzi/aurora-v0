@@ -44,7 +44,7 @@ const Dashboard = () => {
 	return (
 		<div className='min-h-full w-[calc(100%-50px)] max-w-[1560px] mx-auto pt-6 pb-8 flex flex-col md:grid md:grid-cols-3 gap-6 py-4'>
 			{session && session.user ? (
-				<Card className='md:col-span-1 h-[250px] md:h-[300px] relative z-[1]'>
+				<Card className='md:col-span-1 h-[275px] md:h-[300px] relative z-[1]'>
 					<div className='flex flex-col justify-between h-full'>
 						<div>
 							<h2 className='text-xl font-bold'>👋🏽 Hi, {session?.user?.name?.split(' ').shift()}!</h2>
@@ -81,11 +81,11 @@ const Dashboard = () => {
 					/>
 				</Card>
 			) : (
-				<Card className='md:col-span-1 h-[250px] md:h-[300px] relative z-[1]'>
+				<Card className='md:col-span-1 h-[275px] md:h-[300px] relative z-[1]'>
 					<div className='flex flex-col justify-between h-full'>
 						<div>
 							<Skeleton className='w-2/3 h-8 rounded-md' />
-							<Skeleton className='w-full h-14 md:h-28 mt-6 mb-4 rounded-md' />
+							<Skeleton className='w-full h-20 md:h-28 mt-6 mb-4 rounded-md' />
 						</div>
 						<div>
 							<Skeleton className='w-2/3 h-6 rounded-md' />

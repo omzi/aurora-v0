@@ -121,7 +121,7 @@ Visit the URL `http://localhost:3000/` in your browser to access the Aurora appl
 ## 👥 **Contributors**
 
 - [Omezibe Obioha](https://github.com/omzi/) (@0xOmzi)
-- [Tito Onwudinjo](https://github.com/titoonw/) (@titodili)
+- [Tito Onwudinjo](https://github.com/titoonw/) (@titoonw)
 - [Emmanuel Adisa](https://github.com/bohemiancode-x/) (@emmie_porsche)
 - [Adebanjo Mary](https://github.com/Kaempy/) (@Ademarymi)
 
