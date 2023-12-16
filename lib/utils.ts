@@ -117,3 +117,30 @@ export const copyToClipboard = async (text: string, successMessage: string): Pro
 		}
 	}
 };
+
+export const chartColors = {
+	increase: 'emerald',
+	moderateIncrease: 'emerald',
+	unchanged: 'orange',
+	moderateDecrease: 'rose',
+	decrease: 'rose'
+};
+
+type DeltaType = keyof typeof chartColors;
+
+export const formatPercentageDelta = (percentage: string): { absoluteValue: number; deltaType: DeltaType } => {
+	const numericPercentage = parseFloat(percentage);
+	const absoluteValue = Math.abs(numericPercentage);
+
+	if (numericPercentage > 35) {
+		return { absoluteValue, deltaType: 'increase' };
+	} else if (numericPercentage > 0) {
+		return { absoluteValue, deltaType: 'moderateIncrease' };
+	} else if (numericPercentage === 0) {
+		return { absoluteValue, deltaType: 'unchanged' };
+	} else if (numericPercentage >= -35) {
+		return { absoluteValue, deltaType: 'moderateDecrease' };
+	} else {
+		return { absoluteValue, deltaType: 'decrease' };
+	}
+};

@@ -59,10 +59,22 @@ export type ErrorResponse = {
 };
 
 export type AnalyticsResponse = {
-	customers: string;
-	revenue: string;
-	outstanding: string;
-	withdrawals: string;
+	customers: {
+		count: string;
+		monthlyPercentageChange: string;
+	};
+	revenue: {
+		amount: string;
+		monthlyPercentageChange: string;
+	};
+	outstanding: {
+		amount: string;
+		monthlyPercentageChange: string;
+	};
+	withdrawals: {
+		amount: string;
+		monthlyPercentageChange: string;
+	};
 };
 
 interface PaystackBaseResponse {
