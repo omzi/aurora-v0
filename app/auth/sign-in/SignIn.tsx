@@ -8,11 +8,14 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Loader from 'react-ts-loaders';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Business } from '@prisma/client';
 import { AtSignIcon, EyeIcon, EyeOffIcon,KeyIcon } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import * as z from 'zod';
 
+import { SuccessResponse } from '#/common.types';
 import AuthSocialButton from '#/components/AuthSocialButton';
+import { useUserContext } from '#/components/contexts/UserContext';
 import {
 	Form,
 	FormControl,
@@ -22,6 +25,7 @@ import {
 	FormMessage
 } from '#/components/ui/form';
 import { Input } from '#/components/ui/input';
+import getBusinesses from '#/lib/actions/getBusinesses';
 import { UserSchema } from '#/lib/validations';
 
 const SignInSchema = UserSchema.pick({
@@ -34,6 +38,7 @@ const SignIn = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [googleLoading, setGoogleLoading] = useState(false);
 	const [showPassword, setShowPassword] = useState(false)
+	const {selectBusiness} = useUserContext()
 	const form = useForm<z.infer<typeof SignInSchema>>({
 		resolver: zodResolver(SignInSchema),
 		defaultValues: {
@@ -83,8 +88,20 @@ const SignIn = () => {
 			if (callback?.error) return toast.error('Invalid credentials!');
 
 			if (callback?.ok) {
-				form.reset();
-				router.push('/dashboard');
+				try {
+					const response = await getBusinesses() as any
+					if (response.data){
+						// eslint-disable-next-line prefer-destructuring
+						const business = response.data[0]
+						selectBusiness(business)
+					}
+					form.reset();
+					router.push('/dashboard');
+				} catch (error) {
+					console.log(error);
+					form.reset();
+					router.push('/dashboard')
+				}
 			}
 
 			toast.success('Login successful!');
