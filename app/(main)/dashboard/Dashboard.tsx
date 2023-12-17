@@ -95,9 +95,9 @@ const Dashboard = () => {
 					<Image
 						src='/images/money-target.png'
 						alt='...'
-						height={175}
-						width={175}
-						className='absolute right-2.5 bottom-2.5 z-[-1] opacity-20 block lg:hidden'
+						height={150}
+						width={150}
+						className='absolute right-2.5 bottom-2.5 lg:bottom-12 z-[-1] opacity-60 lg:scale-75 lg:opacity-80'
 					/>
 				</Card>
 			)}
