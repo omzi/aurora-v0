@@ -28,72 +28,9 @@ import { useCustomerModal } from '#/hooks/useCustomerModal';
 import getCustomer from '#/lib/actions/getCustomer';
 import { chartColors, copyToClipboard, formatNumberWithCommas, formatPercentageDelta, generateDefaultAvatar } from '#/lib/utils';
 
-const data = [
-	{
-		Month: 'Jan',
-		'Paid': 28900,
-		'Unpaid': 2400
-	},
-	{
-		Month: 'Feb',
-		'Paid': 178900,
-		'Unpaid': 100
-	},
-	{
-		Month: 'Mar',
-		'Paid': 35890,
-		'Unpaid': 2950
-	},
-	{
-		Month: 'Apr',
-		'Paid': 40000,
-		'Unpaid': 1500
-	},
-	{
-		Month: 'May',
-		'Paid': 42000,
-		'Unpaid': 1200
-	},
-	{
-		Month: 'Jun',
-		'Paid': 0,
-		'Unpaid': 0
-	},
-	{
-		Month: 'Jul',
-		'Paid': 45000,
-		'Unpaid': 1000
-	},
-	{
-		Month: 'Aug',
-		'Paid': 87950,
-		'Unpaid': 12800
-	},
-	{
-		Month: 'Sep',
-		'Paid': 39000,
-		'Unpaid': 1600
-	},
-	{
-		Month: 'Oct',
-		'Paid': 0,
-		'Unpaid': 12100
-	},
-	{
-		Month: 'Nov',
-		'Paid': 240000,
-		'Unpaid': 1500
-	},
-	{
-		Month: 'Dec',
-		'Paid': 42000,
-		'Unpaid': 1200
-	}
-];
-
 const valueFormatter = (number: number) => `₦ ${Intl.NumberFormat('us').format(number).toString()}`;
 
-const ViewCustomers = () => {
+const ViewCustomer = () => {
 	const params = useParams();
 	const { customerId } = params;
 	const customerModal = useCustomerModal();
@@ -312,4 +249,4 @@ const ViewCustomers = () => {
 	);
 };
 
-export default ViewCustomers;
+export default ViewCustomer;

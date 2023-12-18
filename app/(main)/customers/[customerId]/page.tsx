@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import Customers from '#/app/(main)/customers/[customerId]/ViewCustomer';
+import ViewCustomer from '#/app/(main)/customers/[customerId]/ViewCustomer';
 
 export const metadata: Metadata = {
 	title: 'Customer Overview ~ Aurora',
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const Page = () => {
-	return <Customers />;
+	return <ViewCustomer />;
 };
 
 export default Page;
