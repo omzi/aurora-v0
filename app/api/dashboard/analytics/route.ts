@@ -4,7 +4,7 @@ import { InvoiceStatus } from '@prisma/client';
 import { getToken } from 'next-auth/jwt';
 
 import prisma from '#/lib/prisma';
-import { formatNumberWithCommas } from '#/lib/utils';
+import { calculateMonthlyPercentageChange, formatNumberWithCommas, getFirstDayOfMonth, getLastDayOfMonth } from '#/lib/utils';
 
 const GET = async (request: NextRequest) => {
 	const token = await getToken({ req: request });
@@ -88,17 +88,5 @@ const getStatsForMonth = async (businessId: string, month: number) => {
 		outstanding: outstanding._sum.amount || 0
 	};
 };
-
-const calculateMonthlyPercentageChange = (currentValue: number, previousValue: number) => {
-	if (previousValue === 0) {
-		return currentValue > 0 ? '100' : '0'; // If it's the first month, consider it as a 100% increase
-	}
-
-	const monthlyPercentageChange = ((currentValue - previousValue) / previousValue) * 100;
-	return monthlyPercentageChange.toFixed(2);
-};
-
-const getFirstDayOfMonth = (month: number) => new Date(new Date().getFullYear(), month, 1);
-const getLastDayOfMonth = (month: number) => new Date(new Date().getFullYear(), month + 1, 0);
 
 export { GET };

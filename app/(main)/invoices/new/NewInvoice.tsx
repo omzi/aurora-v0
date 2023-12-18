@@ -206,13 +206,15 @@ const NewInvoice = () => {
 		<div className='h-full px-2 sm:px-6 flex flex-col py-5'>
 			<GeneratedInvoiceModal invoiceLink={`/invoices/view/${invoiceId}`} isOpen={showGeneratedModal} onOpenChange={handleClose} />
 			<div className='flex items-center justify-start gap-4 w-full'>
-				<Button variant='outline' size='icon' className='rounded-full'>
-					{hasUnsavedChanges ? (
+				{hasUnsavedChanges ? (
+					<Button variant='outline' size='icon' className='rounded-full'>
 						<ArrowLeftIcon className='cursor-pointer' onClick={invoiceExit.onOpen} />
-					) : (
-						<Link href='/invoices'><ArrowLeftIcon className='cursor-pointer' /></Link>
-					)}
-				</Button>
+					</Button>
+				) : (
+					<Link href='/invoices'>
+						<Button variant='outline' size='icon' className='rounded-full'><ArrowLeftIcon /></Button>
+					</Link>
+				)}
 				<h1 className='text-2xl font-semibold'>Create Invoice</h1>
 			</div>
 			<div className='flex flex-col sm:flex-row items-center justify-between gap-4 my-4'>

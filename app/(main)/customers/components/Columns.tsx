@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 
@@ -62,8 +64,12 @@ export const columns: ColumnDef<Customer>[] = [
 						<DropdownMenuItem onClick={() => customerModal.toggleEditMode(customer)}>
 							Edit Customer
 						</DropdownMenuItem>
-						<DropdownMenuItem>View Customer</DropdownMenuItem>
-						<DropdownMenuItem>View Invoice History</DropdownMenuItem>
+						<Link href={`/customers/${customer.id}`}>
+							<DropdownMenuItem>View Customer</DropdownMenuItem>
+						</Link>
+						<Link href={`/customers/${customer.id}/invoices`}>
+							<DropdownMenuItem>View Invoice History</DropdownMenuItem>
+						</Link>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			)

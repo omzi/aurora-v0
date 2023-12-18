@@ -12,7 +12,8 @@ import {
 	getSortedRowModel,
 	SortingState,
 	useReactTable,
-	VisibilityState} from '@tanstack/react-table';
+	VisibilityState
+} from '@tanstack/react-table';
 
 import DataTablePagination from '#/components/DataTablePagination';
 import DataTableViewOptions from '#/components/DataTableViewOptions';

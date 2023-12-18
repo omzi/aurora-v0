@@ -39,7 +39,8 @@ const GET = async (request: NextRequest) => {
 
 		const invoices = await prisma.invoice.findMany({
 			where: { businessId },
-			orderBy: { createdAt: 'desc' }
+			orderBy: { createdAt: 'desc' },
+			select: { id: true, invoiceId: true, amount: true, dueDate: true, status: true }
 		});
 
 		return NextResponse.json({ message: 'All user invoices', data: invoices }, { status: 200 });

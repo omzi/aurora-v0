@@ -2,13 +2,12 @@
 
 import Link from 'next/link';
 
-import { toast } from 'react-toastify';
 import { $Enums } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
 import { format, formatDistanceToNow } from 'date-fns';
 import { MoreHorizontal } from 'lucide-react';
 
-import { Invoice } from '#/common.types';
+import { SelectedInvoiceFields } from '#/common.types';
 import { DataTableColumnHeader } from '#/components/DataTableColumnHeader';
 import Status from '#/components/Status';
 import { Button } from '#/components/ui/button';
@@ -20,7 +19,7 @@ import {
 } from '#/components/ui/dropdown-menu';
 import { copyToClipboard, formatNumberWithCommas } from '#/lib/utils';
 
-export const columns: ColumnDef<Invoice>[] = [
+export const columns: ColumnDef<SelectedInvoiceFields>[] = [
 	{
 		accessorKey: 'invoiceId',
 		header: ({ column }) => (
@@ -57,20 +56,14 @@ export const columns: ColumnDef<Invoice>[] = [
 			const dateString = row.getValue('dueDate');
 			const date = new Date(dateString as string);
 			const status = row.getValue('status') as $Enums.InvoiceStatus;
-  
-			// Format as '27th Nov, 2023'
-			const formattedDate = format(date, 'do MMM, yyyy');
-
-			// Format as '2 days ago', '3 days left', etc.
-			const relativeTime = formatDistanceToNow(date, { addSuffix: true });
 
 			return (
 				<div className='font-medium'>
-					<span>{formattedDate}</span>
+					<span>{format(date, 'do MMM, yyyy')}</span>
 					{status === 'UNPAID' && <>
 						<br />
 						<small className='mt-1 uppercase ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100'>
-							{relativeTime}
+							{formatDistanceToNow(date, { addSuffix: true })}
 						</small>
 					</>}
 				</div>

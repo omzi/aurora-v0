@@ -144,3 +144,15 @@ export const formatPercentageDelta = (percentage: string): { absoluteValue: numb
 		return { absoluteValue, deltaType: 'decrease' };
 	}
 };
+
+export const calculateMonthlyPercentageChange = (currentValue: number, previousValue: number) => {
+	if (previousValue === 0) {
+		return currentValue > 0 ? '100' : '0'; // If it's the first month, consider it as a 100% increase
+	}
+
+	const monthlyPercentageChange = ((currentValue - previousValue) / previousValue) * 100;
+	return monthlyPercentageChange.toFixed(2);
+};
+
+export const getFirstDayOfMonth = (month: number) => new Date(new Date().getFullYear(), month, 1);
+export const getLastDayOfMonth = (month: number) => new Date(new Date().getFullYear(), month + 1, 0);

@@ -77,6 +77,28 @@ export type AnalyticsResponse = {
 	};
 };
 
+export type SelectedInvoiceFields = Pick<Invoice, 'id' | 'invoiceId' | 'amount' | 'dueDate' | 'status'>
+
+export type GetCustomerResponse = {
+	customer: Customer;
+	invoices: SelectedInvoiceFields[];
+	stats: {
+		paid: {
+			amount: string;
+			monthlyPercentageChange: string;
+		};
+		unpaid: {
+			amount: string;
+			monthlyPercentageChange: string;
+		};
+		chart: {
+			month: string;
+			paid: number;
+			unpaid: number;
+		}[];
+	}
+}
+
 interface PaystackBaseResponse {
 	status: boolean;
 	message: string;
