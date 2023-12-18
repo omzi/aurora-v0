@@ -1,14 +1,14 @@
-import React from 'react';
+import { FC, ReactNode } from 'react';
 import Loader from 'react-ts-loaders';
 
 export interface AuthSocialButtonProps {
-  loading: boolean;
+	loading: boolean;
 	text: string;
-	icon: React.ReactNode | string;
+	icon: ReactNode | string;
 	onClick: () => void;
 }
 
-const AuthSocialButton: React.FC<AuthSocialButtonProps> = ({
+const AuthSocialButton: FC<AuthSocialButtonProps> = ({
 	loading,
 	text,
 	icon,
@@ -16,10 +16,17 @@ const AuthSocialButton: React.FC<AuthSocialButtonProps> = ({
 }) => {
 	const isSVGString = typeof icon === 'string' && icon.startsWith('<svg');
 
-  return (
-    <div>
-			<button type='button' disabled={loading} onClick={onClick} className="inline-flex justify-center w-full px-4 py-2 text-gray-500 bg-white hover:bg-gray-50 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 disabled:bg-gray-200 disabled:hover:bg-gray-200 focus:outline-offset-0">
-				{loading ? <Loader size={24} className='leading-[0] text-black' /> : (
+	return (
+		<div>
+			<button
+				type="button"
+				disabled={loading}
+				onClick={onClick}
+				className="inline-flex justify-center w-full px-4 py-2 text-gray-500 bg-white hover:bg-gray-50 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 disabled:bg-gray-200 disabled:hover:bg-gray-200 focus:outline-offset-0"
+			>
+				{loading ? (
+					<Loader size={24} className="leading-[0] text-black" />
+				) : (
 					<>
 						<span className="sr-only">{text}</span>
 						{isSVGString ? (
@@ -31,7 +38,7 @@ const AuthSocialButton: React.FC<AuthSocialButtonProps> = ({
 				)}
 			</button>
 		</div>
-  );
+	);
 };
 
 export default AuthSocialButton;

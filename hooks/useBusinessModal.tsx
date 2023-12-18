@@ -5,18 +5,18 @@ type BusinessModalStore = {
 	onOpen: () => void;
 	onClose: () => void;
 	isEditMode: boolean;
-	toggleEditOpen: () => void;
-}
+	toggleEditMode: () => void;
+};
 
 export const useBusinessModal = create<BusinessModalStore>((set, get) => ({
 	isOpen: false,
 	isEditMode: false,
 	onOpen: () => set({ isOpen: true }),
-	onClose: () => set({ 
+	onClose: () => set({
 		isOpen: false,
 		isEditMode: false
-	 }),
-	toggleEditOpen: ()=> set({
+	}),
+	toggleEditMode: () => set({
 		isEditMode: true,
 		isOpen: true
 	})

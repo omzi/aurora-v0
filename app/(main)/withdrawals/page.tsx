@@ -1,19 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
 
-import Image from 'next/image';
+import Withdrawals from '#/app/(main)/withdrawals/Withdrawals';
 
-const Withdrawals = () => {
-	return (
-    <div className='h-full flex flex-col items-center justify-center space-y-4'>
-      <Image
-        src='/images/rocket.png'
-        width={96}
-				height={96}
-        alt='😎 Launching soon'
-      />
-      <h2 className='text-xl mt-4 font-medium'>Launching soon</h2>
-    </div>
-  );
-}
+export const metadata: Metadata = {
+	title: 'Withdrawals ~ Aurora',
+	description: 'Initiate and track your business withdrawals.'
+};
 
-export default Withdrawals;
+const Page = () => {
+	return <Withdrawals />;
+};
+
+export default Page;

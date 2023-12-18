@@ -1,23 +1,14 @@
-'use client';
+import type { Metadata } from 'next';
 
-import Image from 'next/image';
+import Profile from '#/app/(main)/profile/Profile';
 
-const Profile = () => {
-	return (
-		<div className='h-full flex flex-col items-center justify-center space-y-4'>
-			<div className='relative w-[300px] h-[300px]'>
-				<Image
-					src='/images/empty-state.png'
-					fill
-					className='object-contain'
-					alt='No business created'
-				/>
-			</div>
-			<h2 className='text-lg font-medium'>
-				Welcome to your Aurora
-			</h2>
-		</div>
-	)
-}
+export const metadata: Metadata = {
+	title: 'Edit Profile ~ Aurora',
+	description: 'Edit your Aurora profile.'
+};
 
-export default Profile;
+const Page = () => {
+	return <Profile />;
+};
+
+export default Page;
