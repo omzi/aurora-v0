@@ -105,7 +105,7 @@ const SignUp = () => {
 	return (
 		<div className="flex flex-col justify-center w-full min-h-full py-12 px-4 sm:px-6 lg:px-8">
 			<div className="sm:mx-auto sm:w-full sm:max-w-md">
-				<Link href={'/'}>
+				<Link href={'/'} className='block w-10 h-10 mx-auto'>
 					<Image
 						className="mx-auto"
 						src={'/images/logo.png'}

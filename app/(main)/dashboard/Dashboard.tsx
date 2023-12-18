@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { QueryClient, useQuery } from '@tanstack/react-query';
 import {
 	AreaChart,
 	BadgeDelta,
@@ -14,6 +15,7 @@ import {
 	Text,
 	Title
 } from '@tremor/react';
+import axios from 'axios';
 import {
 	BanknoteIcon,
 	LandmarkIcon,
@@ -25,19 +27,41 @@ import {
 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 
+import { DashboardAnalyticsResponse, DashboardChartResponse, SuccessResponse } from '#/common.types';
 import { useUserContext } from '#/components/contexts/UserContext';
 import { Button } from '#/components/ui/button';
 import { Skeleton } from '#/components/ui/skeleton';
-import { useBusinessModal } from '#/hooks/useBusinessModal';
 import { useCustomerModal } from '#/hooks/useCustomerModal';
-import useDashboard from '#/hooks/useDashboard';
 import { chartColors, formatPercentageDelta } from '#/lib/utils';
 
 const Dashboard = () => {
 	const { data: session } = useSession();
 	const customerModal = useCustomerModal();
 	const { selectedBusiness } = useUserContext();
-	const { analytics, isAnalyticsLoading, charts, isChartsLoading } = useDashboard();
+	
+	const { data: analytics, isLoading: isAnalyticsLoading } = useQuery({
+		queryKey: ['dashboardAnalytics'],
+		queryFn: async () => {
+			try {
+				const { data: analyticsResponse } = await axios.get<SuccessResponse<DashboardAnalyticsResponse>>(`/api/dashboard/analytics?id=${selectedBusiness?.id}`);
+				return analyticsResponse.data;
+			} catch (error) {
+				return null;
+			}
+		}
+	});
+
+	const { data: charts, isLoading: isChartsLoading } = useQuery({
+		queryKey: ['dashboardCharts'],
+		queryFn: async () => {
+			try {
+				const { data: chartsResponse } = await axios.get<SuccessResponse<DashboardChartResponse>>(`/api/dashboard/charts?id=${selectedBusiness?.id}`);
+				return chartsResponse.data;
+			} catch (error) {
+				return null;
+			}
+		}
+	});
 
 	const valueFormatter = (number: number) => `₦ ${new Intl.NumberFormat('us').format(number).toString()}`;
 
@@ -55,12 +79,12 @@ const Dashboard = () => {
 									alt='Business Financial Target'
 									height={100}
 									width={100}
-									className='mr-2 hidden  lg:hidden'
+									className='mr-2 hidden lg:hidden'
 								/>
 							</div>
 						</div>
 						<div className='flex flex-col gap-3 sm:flex-row lg:flex-col sm:gap-5 lg:gap-3'>
-							<Link href='/invoices/new'>
+							<Link href='/invoices/new' className='inline-block w-max'>
 								<Button variant='secondary' className='mt-0 h-auto py-1 px-3 bg-core hover:bg-blue-800 text-white'>
 									<PlusIcon className='h-4 w-4 mr-2' />
 									Create An Invoice
@@ -102,7 +126,7 @@ const Dashboard = () => {
 				</Card>
 			)}
 			<Grid numItemsSm={1} numItemsMd={2} className='md:col-span-2 gap-6 h-full md:max-h-[420px]'>
-				{isAnalyticsLoading ? (
+				{selectedBusiness && isAnalyticsLoading ? (
 					Array.from({ length: 4 }).map((_, idx) => (
 						<Card key={idx} className='flex flex-col p-4 ring-0' decoration='top' decorationColor='gray'>
 							<Flex alignItems='center' justifyContent='start' className='gap-2'>
@@ -214,7 +238,7 @@ const Dashboard = () => {
 				)}
 			</Grid>
 			<div className='md:col-span-3'>
-				{isChartsLoading ? (
+				{selectedBusiness && isChartsLoading ? (
 					<Card>
 						<Skeleton className='w-1/2 h-7 mb-4 rounded-sm' />
 						<Skeleton className='w-full h-[24rem] mt-4 rounded-sm' />

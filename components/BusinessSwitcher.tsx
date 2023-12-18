@@ -41,7 +41,7 @@ const BusinessSwitcher = ({ className, items = [] }: BusinessSwitcherProps) => {
 	const onBusinessSelect = (business: Business) => {
 		setOpen(false);
 		selectBusiness(business);
-		window.location.assign('/dashboard');
+		window.location.reload();
 	};
 
 	return (

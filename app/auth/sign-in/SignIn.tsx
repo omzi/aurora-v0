@@ -1,19 +1,19 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import Loader from 'react-ts-loaders';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Business } from '@prisma/client';
+import { QueryClient } from '@tanstack/react-query';
 import { AtSignIcon, EyeIcon, EyeOffIcon,KeyIcon } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import * as z from 'zod';
 
-import { SuccessResponse } from '#/common.types';
+import { Business, SuccessResponse } from '#/common.types';
 import AuthSocialButton from '#/components/AuthSocialButton';
 import { useUserContext } from '#/components/contexts/UserContext';
 import {
@@ -35,10 +35,13 @@ const SignInSchema = UserSchema.pick({
 
 const SignIn = () => {
 	const router = useRouter();
+	const queryClient = new QueryClient();
+	const searchParams = useSearchParams();
+	const callbackUrl = searchParams.get('callbackUrl');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [googleLoading, setGoogleLoading] = useState(false);
 	const [showPassword, setShowPassword] = useState(false)
-	const {selectBusiness} = useUserContext()
+	const {selectBusiness} = useUserContext();
 	const form = useForm<z.infer<typeof SignInSchema>>({
 		resolver: zodResolver(SignInSchema),
 		defaultValues: {
@@ -88,23 +91,18 @@ const SignIn = () => {
 			if (callback?.error) return toast.error('Invalid credentials!');
 
 			if (callback?.ok) {
-				try {
-					const response = await getBusinesses() as any
-					if (response.data){
-						// eslint-disable-next-line prefer-destructuring
-						const business = response.data[0]
-						selectBusiness(business)
-					}
-					form.reset();
-					router.push('/dashboard');
-				} catch (error) {
-					console.log(error);
-					form.reset();
-					router.push('/dashboard')
+				const businesses = await queryClient.fetchQuery({ queryKey: ['userBusinesses'], queryFn: getBusinesses }) as Business[];
+				if (businesses && businesses.length > 0) {
+					const [business] = businesses;
+					selectBusiness(business);
+				} else {
+					selectBusiness(null);
 				}
-			}
 
-			toast.success('Login successful!');
+				form.reset();
+				toast.success('Login successful!');
+				window.location.href = callbackUrl ?? '/dashboard';
+			}
 		} catch (error: any) {
 			console.error('Sign-In Error :>>', error);
 			toast.error(error.message ?? 'An error occurred while signing you in');
@@ -117,7 +115,7 @@ const SignIn = () => {
 	return (
 		<div className="flex flex-col justify-center w-full min-h-full py-12 px-4 sm:px-6 lg:px-8">
 			<div className="sm:mx-auto sm:w-full sm:max-w-md">
-				<Link href={'/'}>
+				<Link href={'/'} className='block w-10 h-10 mx-auto'>
 					<Image
 						className="mx-auto"
 						src={'/images/logo.png'}

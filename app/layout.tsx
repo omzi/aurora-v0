@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { Theme, ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
@@ -16,33 +16,38 @@ import { ModalProvider } from '#/components/providers/ModalProvider';
 import { ThemeProvider } from '#/components/providers/ThemeProvider';
 import { EdgeStoreProvider } from '#/lib/edgestore';
 
-const queryClient = new QueryClient();
-
 const RootLayout = ({ children }: { children: ReactNode }) => {
 	const { theme } = useTheme();
+	const [queryClient] = useState(() => new QueryClient({
+		defaultOptions: {
+			queries: {
+				staleTime: 60 * 1000
+			}
+		}
+	}));
 
 	return (
 		<QueryClientProvider client={queryClient}>
 			<html
-				lang="en"
-				className="font-satoshi font-normal"
+				lang='en'
+				className='font-satoshi font-normal'
 				suppressHydrationWarning
 			>
 				<head>
-					<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+					<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' />
 				</head>
 				<body>
 					<SessionProvider>
 						<ThemeProvider
-							attribute="class"
-							defaultTheme="system"
+							attribute='class'
+							defaultTheme='system'
 							enableSystem
-							storageKey="theme"
+							storageKey='theme'
 						>
 							<UserProvider>
 								<EdgeStoreProvider>
 									<ToastContainer
-										position="bottom-right"
+										position='bottom-right'
 										autoClose={5000}
 										hideProgressBar={false}
 										newestOnTop
@@ -54,8 +59,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 									<ModalProvider />
 									{children}
 									<Next13ProgressBar
-										height="3.5px"
-										color="#24a3fe"
+										height='3.5px'
+										color='#24a3fe'
 										options={{ showSpinner: false, speed: 500 }}
 										delay={0}
 										startPosition={0.7}

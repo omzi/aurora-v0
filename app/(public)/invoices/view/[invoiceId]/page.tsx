@@ -112,13 +112,13 @@ const ViewInvoice = () => {
 			const response = await axios.get(`/api/paystack/verify?invoiceId=${invoiceId}`);
 			console.log('Verify Response :>>', response);
 
-			queryClient.invalidateQueries({ queryKey: [`invoiceDetails-${invoiceId}`] });
+			await queryClient.invalidateQueries({ queryKey: [`invoiceDetails-${invoiceId}`] });
 		} catch (error) {
 			setIsSubmitting(false);
 			setShowVerifyPaymentModal(false);
       
 			console.error('Error verifying payment :>>', error);
-			toast.error('Verification unsuccessful ;(. Please try again.');
+			toast.info(`Payment hasn't been made yet ;(`);
 		}
 	}
 
@@ -232,7 +232,7 @@ const ViewInvoice = () => {
 									</div>
 								</tr>
 							</thead>
-							<tbody className='flex min-w-[24rem] flex-col'>
+							<tbody className='flex min-w-[30rem] flex-col'>
 								{(invoiceDetails?.items as Item[]).map((item, idx) => (
 									<tr className='bg-transparent flex w-full items-start justify-between' key={idx}>
 										<td className='p-3 flex flex-1 items-center w-full min-w-[10rem]'>{item.description} <span className='ml-2 block sm:hidden font-thin leading-none opacity-70'>{`- (${item.quantity} * ₦ ${formatNumberWithCommas(item.price)})`}</span></td>

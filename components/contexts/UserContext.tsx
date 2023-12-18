@@ -26,9 +26,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
 	const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(() => {
 		if (typeof window !== 'undefined') {
 			const storedBusiness = localStorage.getItem('selectedBusiness');
-			return storedBusiness && storedBusiness !== 'undefined'
-				? JSON.parse(storedBusiness)
-				: null;
+			return storedBusiness && storedBusiness !== 'undefined' ? JSON.parse(storedBusiness) : null;
 		} else {
 			return null;
 		}

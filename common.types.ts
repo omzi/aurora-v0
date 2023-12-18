@@ -58,7 +58,7 @@ export type ErrorResponse = {
 	errors?: string[];
 };
 
-export type AnalyticsResponse = {
+export type DashboardAnalyticsResponse = {
 	customers: {
 		count: string;
 		monthlyPercentageChange: string;
@@ -76,6 +76,10 @@ export type AnalyticsResponse = {
 		monthlyPercentageChange: string;
 	};
 };
+
+export type DashboardChartResponse = {
+  [key: string]: string | number;
+}[];
 
 export type SelectedInvoiceFields = Pick<Invoice, 'id' | 'invoiceId' | 'amount' | 'dueDate' | 'status'>
 

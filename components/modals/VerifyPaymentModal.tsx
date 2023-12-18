@@ -21,7 +21,7 @@ const VerifyPaymentModal = ({
 }: VerifyPaymentModalProps) => {
 	return (
 		<Dialog open={isOpen} onOpenChange={onOpenChange}>
-			<DialogContent className='!w-auto px-16'>
+			<DialogContent className='!w-auto'>
 				<DialogHeader className='text-center my-3 mx-auto'>
 					<Loader size={56} type='spinner' className='text-black dark:text-white p-8'/>
 				</DialogHeader>
