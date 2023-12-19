@@ -233,7 +233,7 @@ const NewInvoice = () => {
 				invoiceLink={`/invoices/view/${invoiceId}`}
 				isOpen={showGeneratedModal}
 				onOpenChange={handleClose}
-				appendedMessage={`Invoice generated successfully and sent to the email provided for ${customer?.name}`}
+				appendedMessage={`Invoice generated successfully and sent to the email provided for customer`}
 			/>
 			<div className="flex items-center justify-start gap-4 w-full">
 				{hasUnsavedChanges ? (
