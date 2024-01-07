@@ -20,7 +20,7 @@
 </div>
 
 <br>
-<h4><a href="https://aurora-vx.vercel.app/"><i>Live Demo</i> 🚀</a></h4>
+<h4><a href="https://aurora-v0.vercel.app/"><i>Live Demo</i> 🚀</a></h4>
 
 ---
 
@@ -60,7 +60,7 @@ Before proceeding, make sure your system satisfies the prerequisites mentioned a
 Firstly, clone the Aurora repository into your desired folder and navigate into it:
 
 ```shell
-$ git clone https://github.com/omzi/aurora && cd aurora
+$ git clone https://github.com/omzi/aurora-v0 && cd aurora
 ```
 
 Install the project dependencies using npm (or yarn if you prefer):
