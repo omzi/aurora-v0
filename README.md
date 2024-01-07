@@ -5,12 +5,12 @@
 
 <div align="center">
 
-![](https://img.shields.io/github/stars/omzi/aurora.svg?color=ff0)
-![](https://img.shields.io/github/forks/omzi/aurora.svg?color=ff0)
-![](https://img.shields.io/github/languages/top/omzi/aurora?color=222FE6)
-![](https://img.shields.io/github/languages/code-size/omzi/aurora?color=222FE6)
-![](https://img.shields.io/github/issues/omzi/aurora.svg)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?color=222FE6)](https://github.com/omzi/aurora/issues)
+![](https://img.shields.io/github/stars/omzi/aurora-v0.svg?color=ff0)
+![](https://img.shields.io/github/forks/omzi/aurora-v0.svg?color=ff0)
+![](https://img.shields.io/github/languages/top/omzi/aurora-v0?color=222FE6)
+![](https://img.shields.io/github/languages/code-size/omzi/aurora-v0?color=222FE6)
+![](https://img.shields.io/github/issues/omzi/aurora-v0.svg)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?color=222FE6)](https://github.com/omzi/aurora-v0/issues)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?color=222FE6)](https://opensource.org/licenses/MIT)
 ![](https://img.shields.io/twitter/follow/0xOmzi.svg?style=social&label=@0xOmzi)
 ![](https://img.shields.io/twitter/follow/titoonw.svg?style=social&label=@titoonw)
